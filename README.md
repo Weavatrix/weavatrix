@@ -12,6 +12,25 @@ questions. **34 network-free tools. No repository data leaves your machine.**
 - Source: [github.com/sergii-ziborov/weavatrix](https://github.com/sergii-ziborov/weavatrix)
 - npm: [`weavatrix`](https://www.npmjs.com/package/weavatrix) — `npx -y weavatrix <repoRoot>`
 
+## Pure-Rust engine
+
+[`weavatrix-rust`](https://github.com/sergii-ziborov/weavatrix-rust) is the
+pure-Rust read-only MCP and library implementation. It covers the 35 read-only
+capabilities of the JavaScript line and adds cross-repository Git, vector
+search, semantic/SEO linking, and temporal-memory context through independent
+MIT crates.
+
+```sh
+cargo install weavatrix-rust
+weavatrix mcp <repoRoot> --profile=code
+```
+
+The Rust engine does not invoke `git`, `rg`, Node.js, Python, a language server,
+or code from the analyzed repository. Use `--profile=all`, `code`, or `seo` to
+expose one bounded view without running duplicate MCP servers. Same-revision
+benchmarks and limitations are published in its
+[benchmark report](https://github.com/sergii-ziborov/weavatrix-rust/blob/main/docs/benchmarks.md).
+
 This package is the complete offline engine under the MIT license: it reads and analyzes your code,
 initiates no outbound HTTP, and never edits your source. It is the read-only base of a layered stack —
 add [`weavatrix-refactor`](https://github.com/sergii-ziborov/weavatrix-refactor) (Apache-2.0) to apply
