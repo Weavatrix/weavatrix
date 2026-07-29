@@ -152,6 +152,8 @@ jobs:
           if-no-files-found: error
           retention-days: 30
       - name: Publish existing canonical package with provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         shell: bash
         run: |
           VERSION="$(node -p "require('./npm/weavatrix/package.json').version")"
