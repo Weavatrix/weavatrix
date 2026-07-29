@@ -1,252 +1,191 @@
 # Weavatrix
 
-**Local repository intelligence for AI coding agents — understand an application fast, then change it with evidence.**
+[![CI](https://github.com/sergii-ziborov/weavatrix-rust/actions/workflows/ci.yml/badge.svg)](https://github.com/sergii-ziborov/weavatrix-rust/actions/workflows/ci.yml)
+[![crates.io](https://img.shields.io/crates/v/weavatrix-rust.svg)](https://crates.io/crates/weavatrix-rust)
+[![docs.rs](https://docs.rs/weavatrix-rust/badge.svg)](https://docs.rs/weavatrix-rust)
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/sergii-ziborov/weavatrix-rust/blob/main/LICENSE)
 
-Weavatrix builds a reusable living graph of any local repository — files, symbols, imports, calls,
-inheritance, Health findings, clone families and Git-history coupling — and gives Claude Code, Codex
-or any MCP client a bounded map for fast understanding and low repeated context. The same graph then
-answers change impact, Health, dead-code review, duplicates, history and intended-architecture
-questions. **34 network-free tools. No repository data leaves your machine.**
+Weavatrix is a local, read-only repository-intelligence engine and MCP
+server. It compiles source files, Git objects, measured coverage, clone
+evidence, lexical search, vectors, semantic links, and temporal memory into one
+bounded evidence graph for coding agents.
 
-- Website: [weavatrix.com](https://weavatrix.com)
-- Source: [github.com/sergii-ziborov/weavatrix](https://github.com/sergii-ziborov/weavatrix)
-- npm: [`weavatrix`](https://www.npmjs.com/package/weavatrix) — `npx -y weavatrix <repoRoot>`
+It does not invoke `git`, `rg`, Node.js, Python, a language server, or code from
+the analyzed repository. Source discovery, graph storage, Git reads, search,
+clone detection, vector search, semantic linking, and memory are independent
+MIT Rust crates connected through feature-gated boundaries.
 
-## Pure-Rust engine
+## Why one MCP
 
-[`weavatrix-rust`](https://github.com/sergii-ziborov/weavatrix-rust) is the
-pure-Rust read-only MCP and library implementation. It covers the 35 read-only
-capabilities of the JavaScript line and adds cross-repository Git, vector
-search, semantic/SEO linking, and temporal-memory context through independent
-MIT crates.
+Code and content intelligence share repository identity, provenance, search,
+graph traversal, and token budgeting. Starting two servers would duplicate
+state and could return inconsistent snapshots. One binary therefore exposes
+three capability profiles:
 
-```sh
+```powershell
+weavatrix mcp . --profile=all
+weavatrix mcp . --profile=code
+weavatrix mcp . --profile=seo
+```
+
+The `seo` profile is a bounded view of the same read-only engine. SEO policy
+stays in the separate `weavatrix-semantic` library; it is not mixed into the
+deterministic code graph.
+
+## Capabilities
+
+- deterministic scan with ignore rules, skip evidence, revision hashes, and
+  incremental refresh;
+- typed repository, file, JSON configuration/lockfile, symbol, endpoint, SQL,
+  GraphQL, Protobuf/gRPC, Kubernetes, Kafka, `RabbitMQ`, JMS, NATS, SQS/SNS and
+  `MongoDB` graph evidence;
+- Rust AST extraction plus Go, C, C++, Bash, SQL, YAML/Kubernetes, JavaScript,
+  TypeScript, Python, Java, and C# adapters;
+- lossless tokenization in `weavatrix-parse`: every source byte remains
+  recoverable for future compiler and source-to-source translation work;
+- direct Git object history, graph diff, change impact, co-change analytics,
+  and cross-repository history/shared-object/diff operations;
+- literal and regex search without a ripgrep executable;
+- Type-1/2/3 clone detection;
+- exact and HNSW vector search, semantic linking, and directional SEO
+  recommendations;
+- event-sourced temporal memory context compilation;
+- LCOV, Istanbul, Tarpaulin JSON, and LLVM coverage ingestion;
+- architecture contracts, endpoint tracing, dead-code review queues, audits,
+  blast radius, shortest paths, communities, and compact context bundles.
+
+`tools/list` exposes 39 tools in the default build. Optional tools disappear
+from the catalog when their Cargo feature is disabled; they are not advertised
+as unavailable stubs.
+
+## Install and run
+
+```powershell
+npx -y weavatrix .
+
+# Or install/use the Rust crate directly:
 cargo install weavatrix-rust
-weavatrix mcp <repoRoot> --profile=code
+weavatrix analyze . --pretty
+weavatrix list-tools
+weavatrix tool graph_stats .
+weavatrix mcp . --profile=code
 ```
 
-The Rust engine does not invoke `git`, `rg`, Node.js, Python, a language server,
-or code from the analyzed repository. Use `--profile=all`, `code`, or `seo` to
-expose one bounded view without running duplicate MCP servers. Same-revision
-benchmarks and limitations are published in its
-[benchmark report](https://github.com/sergii-ziborov/weavatrix-rust/blob/main/docs/benchmarks.md).
+The MCP transport is newline-delimited JSON-RPC over stdio. `mcport` 0.3.0
+supports modern MCP `2026-07-28` discovery/results as well as compatible
+`2025-11-25` and `2025-06-18` clients. Tool results support structured JSON or
+compact text via `output_format`.
 
-This package is the complete offline engine under the MIT license: it reads and analyzes your code,
-initiates no outbound HTTP, and never edits your source. It is the read-only base of a layered stack —
-add [`weavatrix-refactor`](https://github.com/sergii-ziborov/weavatrix-refactor) (Apache-2.0) to apply
-hash-verified, reversible edits, or [`weavatrix-online`](https://github.com/sergii-ziborov/weavatrix-online)
-for authorized Cloud or self-hosted sync. Each is an optional superset that depends on this core through
-a supported extension API; the offline/online split is documented in
-[docs/adr/0001-v0.3-offline-online-split.md](docs/adr/0001-v0.3-offline-online-split.md).
+For a minimal graph-only build:
 
-## Install
-
-Requires Node ≥ 18.
-
-```sh
-# Claude Code
-claude mcp add -s user weavatrix -- npx -y weavatrix <repoRoot>
-
-# Codex CLI
-codex mcp add weavatrix -- npx -y weavatrix <repoRoot>
+```powershell
+cargo build --no-default-features
 ```
+
+That build keeps the library plus the standalone `analyze`, `list-tools`, and
+`tool` CLI commands, while omitting `mcport` and the stdio server. Library
+consumers can use the same boundary explicitly:
 
 ```toml
-# or in ~/.codex/config.toml
-[mcp_servers.weavatrix]
-command = "npx"
-args = ["-y", "weavatrix", "C:/path/to/repo"]
-startup_timeout_sec = 20
-tool_timeout_sec = 60
+[dependencies]
+weavatrix-rust = { version = "1", default-features = false }
 ```
 
-Or run from a clone:
+Add the `mcp` feature only when the embedding application needs the stdio
+transport.
 
-```sh
-git clone https://github.com/sergii-ziborov/weavatrix
-cd weavatrix && npm install
-claude mcp add -s user weavatrix -- node <path-to>/weavatrix/bin/weavatrix-mcp.mjs <repoRoot>
-```
+## JavaScript parity and measured speed
 
-`<repoRoot>` is the repository to start with. Graphs are derived data and never live in your repo:
-they are stored in the per-user registry at `~/.weavatrix/graphs/<repository-storage-key>/graph.json`
-(with a stable `.repository-id` beside them). No graph yet? Ask the agent to call `rebuild_graph`, or
-just use a tool — graph and Health reads auto-reconcile the working graph before answering.
+The Rust catalog covers all 34 tools shared with `weavatrix-js` and adds five
+native tools for cross-repository, vector, semantic, SEO, and temporal-memory
+workflows.
 
-An agent skill with recipes ships in [skill/SKILL.md](skill/SKILL.md) — install it as
-`~/.claude/skills/weavatrix/SKILL.md` (Claude Code) or `~/.codex/skills/weavatrix/SKILL.md` (Codex).
+An immutable JavaScript 0.3.14 checkout (502 files) was built by both engines
+and normalized to the same edge identities. Rust covered every JavaScript
+import, method, and re-export edge. Every JavaScript call target was also
+present: 2,024 edges matched exactly, while 299 differed only because Rust
+attached the containing symbol as an owner; there were zero missing or
+wrong targets.
 
-## Configure
-
-**Security profile** — pass a profile as the final positional argument (omitted = `offline`):
-
-| Profile | Local repository switching | Cross-repo graph reads | Network requests | Tools |
+| Edge | Rust | JavaScript | Common | JavaScript misses/wrong targets |
 |---|---:|---:|---:|---:|
-| `offline` (default) | Yes, only via `open_repo` | Yes, only via `trace_api_contract` | None | 34 |
-| `pinned` | No | No | None | 31 |
+| imports | 2,320 | 1,126 | 1,126 | 0 / 0 |
+| method | 63 | 4 | 4 | 0 / 0 |
+| `re_exports` | 80 | 75 | 75 | 0 / 0 |
+| calls | 3,403 | 2,323 | 2,024 exact + 299 owner-only | 0 / 0 |
 
-```sh
-# hard-pin one repository and expose no cross-repo tools:
-claude mcp add -s user weavatrix -- npx -y weavatrix <repoRoot> pinned
-```
+The npm release boundary is measured separately because a fast library can
+still become a slow MCP package. On 2026-07-29, packaged `weavatrix` 1.0.0
+(Rust engine 1.0.1) and
+`weavatrix-js` 0.3.15 were installed into isolated roots. Each tool used three
+paired fresh processes with alternating engine order, empty per-process
+HOME/cache directories, identity/protocol checks, and five warm calls after
+the cold call. The boundary starts at spawning the installed package bin and
+ends at the first successful tool response.
 
-Advanced registrations may pass an exact comma-separated capability set instead:
-`graph,search,source,health,build,retarget,crossrepo`. A custom list must include `crossrepo` to
-expose `trace_api_contract`. Legacy `online`/`osv`/`hosted`/`full` names fail loudly and point to
-`weavatrix-online`.
+| Tool | Rust cold median | JavaScript cold median | Speedup |
+|---|---:|---:|---:|
+| `graph_stats` | 249.87 ms | 7,561.94 ms | 30.73x |
+| `list_endpoints` | 321.07 ms | 7,400.17 ms | 26.15x |
+| `find_dead_code` | 310.45 ms | 9,298.27 ms | 31.81x |
+| `run_audit` | 378.47 ms | 11,583.83 ms | 35.62x |
 
-**Semantic precision** — a bounded, read-only TypeScript/JavaScript language-server overlay is on by
-default for new graphs and upgrades confirmed references to `EXACT_LSP`. Turn it off for parser-only
-operation with `WEAVATRIX_PRECISION=off` (env), `precision:"off"` on `rebuild_graph`/`open_repo`, or
-the MCPB installer's precision choice. Java and Rust have no bundled language server; their edges stay
-parser-derived.
+The median over all 12 paired cold-boundary ratios is **30.34x**; every
+selected tool is faster than JavaScript. Warm-call medians are 3.17 ms for Rust
+and 494.83 ms for JavaScript, a **156.10x** speedup. The cold release gate requires
+at least 24x and the warm gate requires 30x. The release binary uses fat LTO,
+one codegen unit, abort-on-panic, and stripped symbols.
 
-The startup prewarm queries 32 ranked symbols (never more than 64) by default. For a deliberate
-high-budget pass, set `WEAVATRIX_PRECISION_MAX_SYMBOLS` above 64 or `WEAVATRIX_PRECISION_PREWARM=full`
-to cover every eligible target up to a 10,000-symbol ceiling; `WEAVATRIX_PRECISION_MAX_REFERENCES`,
-`WEAVATRIX_PRECISION_MAX_LINKS` and `WEAVATRIX_PRECISION_TIMEOUT_MS` tune the budgets. Repositories
-that exceed a hard ceiling stay honestly `PARTIAL`.
+See [the benchmark report](docs/benchmarks.md) for revisions, methodology,
+component competitors, raw artifacts, and limitations.
 
-**Repository config files** (all optional, repository-root):
+## Evidence and safety
 
-- `.weavatrixignore` — analysis-only exclusions that should stay tracked in Git (`*`, `**`, `?`,
-  root-anchored `/patterns`, directory suffixes, ordered `!` re-includes).
-- `.weavatrix.json` — cross-repository HTTP client/wrapper contracts (`httpContracts`) and
-  `classify.product` overrides.
-- `.weavatrix-deps.json` — `entrypoints`, `nonRuntimeRoots`, and Python `managedDependencies` /
-  `ignoreDependencies` for conventions that cannot be inferred safely.
+Every relationship carries extractor identity, evidence type, confidence, and
+an optional source span. Static reachability is never labeled as measured test
+coverage.
 
-**Test execution** — `verified_change` is read-only by default. Running an existing package
-test/check/verify script requires both `run_tests:true` and `WEAVATRIX_ALLOW_TEST_RUNS=1`; arbitrary
-commands are always rejected.
-
-After an upgrade, reconnect the MCP server or start a new agent task before checking the tool list —
-many clients snapshot `tools/list` for the lifetime of a connection. `graph_stats` reports the running
-version, enabled capabilities and registered-tool count so a cached process is distinguishable from
-the installed package.
-
-## Tools
-
-The 34 methods project the same reusable graph into the smallest view a task needs.
-
-- **graph** — `graph_stats`, `get_node`, `get_neighbors`, `query_graph`, `god_nodes`, `shortest_path`,
-  `get_community`, `list_communities`, `module_map`, `get_dependents`, `change_impact`,
-  `verified_change`, `git_history`, `graph_diff`, `get_architecture_contract`, `prepare_change`.
-  Runtime, TypeScript type-only and language compile-only edges are reported separately; every edge
-  carries versioned provenance (`EXTRACTED` / `RESOLVED` / `INFERRED`, upgraded to `EXACT_LSP` only by
-  the bundled TS/JS overlay, `CONFLICT` when evidence disagrees).
-- **search / source** — `search_code` (ripgrep-backed with a pure-Node fallback and
-  repository-relative path globs), `read_source`, `context_bundle`, `inspect_symbol`,
-  `list_endpoints` (Express/Fastify/Nest/Flask/FastAPI/Go mux/Rust axum & actix-web/Spring),
-  `trace_endpoint`.
-- **health** — `find_dead_code`, `run_audit` (capability matrix + unused files/exports/dependencies,
-  missing/duplicate deps, offline OSV vulnerabilities, typosquats, lockfile drift; `base_ref` +
-  `debt: new|existing|all` for review-scoped results), `find_duplicates` (MOSS winnowing, catches
-  renamed clones), `coverage_map`, `hot_path_review`, `verify_architecture`,
-  `explain_architecture_violation`, `propose_architecture_exception`.
-- **build** — `rebuild_graph` (reports the structural delta, keeps the prior state as `graph.prev.json`).
-- **retarget** *(in `offline`, absent from `pinned`)* — `open_repo`, `list_known_repos`.
-- **crossrepo** *(in `offline`, absent from `pinned`)* — `trace_api_contract` (joins routes to client
-  call-sites across registered local graphs; reads no source). Results are compact and paginated by
-  default (`page_size`, opaque `cursor`, and bounded `per_item_limit` samples); `response_detail="full"`
-  is an explicit opt-in and remains paginated.
-
-Every finding is review evidence, never an auto-delete verdict: `find_dead_code` /
-`run_audit category=unused` always return `REVIEW_REQUIRED` with `autoDelete:false`. Typecheck, tests
-and runtime checks remain the release authority.
-
-## Always-fresh graph
-
-There is no watcher daemon to run and no manual refresh step: every graph/health call reconciles the
-graph before answering. A Git-token freshness probe (HEAD + dirty/untracked content, debounced 2 s)
-decides whether anything changed; when it did, a bounded incremental refresh reparses only the changed
-files plus their reverse importers (≤ 24 changed / ≤ 80 reparsed JS/TS files) and merges the scoped
-result into the previous graph under a file lock. Config/lockfile edits, export-surface changes,
-barrel files and non-JS/TS languages fall back to a full rebuild — correctness always wins over speed.
-Each refreshed answer carries a structured `refresh` record (`none` / `incremental` / `full`, changed
-file count), so an agent can tell exactly which repository state it is reasoning about. The same
-guarantees hold across concurrent MCP clients sharing one canonical graph.
-
-## Benchmarks
-
-Two gates ship in the repository:
-
-- `npm run benchmark` — a reproducible golden suite for TypeScript, JavaScript, Python, Go, Java and
-  Rust, plus cross-repository HTTP matching, framework conventions and the MCP graph lifecycle.
-- `npm run benchmark:real` — compares revision-pinned local snapshots against the checked-in 0.2.1
-  relation baseline; it fails on unexplained signal loss (`MISSING`/`STALE`/`UNBASELINED` stay
-  incomplete, not green).
-
-Representative local regression run (Windows x64, Node 24.15.0):
-
-| Gate | Result | Selected evidence |
-|---|---:|---|
-| Six language fixtures | 6/6 PASS | exact symbols/edges and complete edge provenance |
-| Cross-repo fixture | PASS, ~432 ms cold | endpoint match, typed wrapper, external use |
-| Lifecycle | PASS | `full → incremental → none → reconnect/none` |
-| Total fixture cold build | ~1.31 s | all six language graphs |
-| Real-repository baseline | 6/6 PASS | TS, JS, Python, Go, Java and Rust snapshots |
-
-Real snapshots ranged from 473 nodes / 1,165 edges in 0.22 s (Go) to 8,192 nodes / 21,814 edges in
-9.44 s (TypeScript). These are regression measurements on one machine, not competitor benchmarks. See
-[benchmark/cases.mjs](benchmark/cases.mjs) and [docs/benchmarking.md](docs/benchmarking.md).
-
-## Security model
-
-Socket capability alerts describe the expected powers of a local code-analysis tool; they are not
-vulnerability findings. Where each comes from and how it is bounded:
-
-| Capability alert | Why it exists | Activation and boundary |
-|---|---|---|
-| Network access | None in the MIT core | `offline`/`pinned` expose only local tools; online integration is a separate package |
-| Shell access | Local `git` (staleness/impact), `rg` (search), the bundled tsserver for JS/TS semantics, Windows child-tree termination, optional `verified_change` test scripts | The semantic provider never runs repository code; test execution needs `run_tests:true` + `WEAVATRIX_ALLOW_TEST_RUNS=1` and rejects arbitrary commands |
-| Debug / dynamic loading | Cache-busted `import()` hot-reloads watched MCP tool modules; `createRequire` loads package metadata and parser deps | Loads files from the installed package only; no `eval` |
-| Environment access | Reads local `WEAVATRIX_*` settings; children inherit a credential-stripped env | Connector secrets are removed; tsserver receives only allowlisted OS/temp/locale values |
-| Filesystem access | Reads the active repository, graph, lockfiles and coverage; writes derived graphs and caches | Realpath containment blocks traversal and symlink escapes; `pinned` removes `open_repo` |
-| URL strings | Advisory findings may contain fixed OSV documentation links | The core has no outbound request implementation |
-
-`read_source` accepts repo-relative regular files only, caps a read at 2 MB, and refuses lexical or
-realpath escapes. Report suspected vulnerabilities privately as described in [SECURITY.md](SECURITY.md).
-
-## Languages
-
-JavaScript · TypeScript · TSX · Python · Go · Java · C# · Rust · Solidity · HTML · CSS — parsed with
-[web-tree-sitter](https://github.com/tree-sitter/tree-sitter) WASM grammars; no Python install and no
-native compilation.
-
-SQL is indexed without a grammar: `.sql` files contribute tables, views, columns, functions, indexes
-and triggers as first-class graph symbols, and SQL found in string literals of any other language
-links the enclosing function to the table it queries. That makes schema objects visible to
-`change_impact`/`get_dependents` (who touches this table?) and lets the dead-code check flag columns
-no statement references — conservatively: verdicts require literal-SQL evidence in the repo, and
-`SELECT *`-consumed tables never have their columns judged by name (ORM-generated SQL stays invisible
-and is therefore never judged either).
-
-Test surfaces are classified per file (path conventions plus `.weavatrix.json` overrides) and, for
-Rust, per symbol: `#[cfg(test)]` modules and `#[test]`/`#[bench]` items inside production `.rs` files
-carry a node-level `test_surface` flag, so dead-code, query, hot-path and hub tools treat them as
-tests rather than production code.
+The production source has no network, process-launch, or source-write path.
+MCP tools may retarget local repositories and read Git objects, but never edit
+source or create commits.
 
 ## Development
 
-```sh
-npm install
-npm test                 # unit/integration tests plus the quick golden benchmark
-npm run benchmark        # full TS/JS/Python/Go/Java/Rust + MCP lifecycle gate
-npm run benchmark:real   # locally available real repos vs source-free 0.2.1 baselines
+```powershell
+cargo fmt --all -- --check
+cargo clippy --all-targets --all-features -- -D warnings
+cargo test --all-features --locked
+cargo test --no-default-features --locked
+cargo llvm-cov --workspace --all-features --ignore-filename-regex '(main|error)\.rs$' --fail-under-lines 85
+cargo bench --bench repository_suite -- <repository>...
 ```
 
-Maintained JavaScript/TypeScript under `src`, `bin`, `scripts`, `test` has a hard 300-line physical
-ceiling enforced by the release suite; larger concerns split into owner-focused modules behind slim
-facades. The weavatrix.com landing site lives in its own repository (`weavatrix-site`).
+The release gate currently measures 87.18% line coverage. It excludes only
+the binary CLI wiring and error-enum declarations, while all engine, parser,
+MCP, integration, and tool modules remain in scope.
 
-## Release history
+Architecture and dependency boundaries are documented in
+[docs/architecture.md](docs/architecture.md) and
+[docs/dependencies.md](docs/dependencies.md).
 
-Per-version patch notes live in [docs/releases/](docs/releases/) — start with the newest entry there.
-The release process and gates are in [scripts/verify-release.mjs](scripts/verify-release.mjs).
+## Lineage and reproducibility
+
+The canonical npm package moved from JavaScript to the native Rust engine
+because the Rust implementation covers more languages and transports, exposes
+five additional native workflows, preserves lossless parser input, and is
+substantially faster at the installed MCP boundary. The JavaScript line remains
+available as [`weavatrix-js`](https://github.com/sergii-ziborov/weavatrix-js)
+for existing JS extensions and compatibility.
+
+The Rust source and crates.io release live in
+[`weavatrix-rust`](https://github.com/sergii-ziborov/weavatrix-rust). Its parser
+is [`weavatrix-parse`](https://github.com/sergii-ziborov/weavatrix-parse), and
+the stdio MCP transport is built with
+[`mcport`](https://github.com/sergii-ziborov/mcport). Exact commands, revisions,
+thresholds, and retained reports are documented in
+[docs/benchmarks.md](docs/benchmarks.md); these links describe the build
+lineage, not separate products an npm user must assemble.
 
 ## License
 
-The Weavatrix source in this repository is [MIT licensed](LICENSE) © 2026 Sergii Ziborov.
-Third-party dependencies retain their own licenses. See the public
-[license page](https://weavatrix.com/license) for the same notice.
+MIT. Third-party crates retain their own licenses.
