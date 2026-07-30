@@ -21,6 +21,9 @@ on:
 permissions:
   contents: read
 
+env:
+  CARGO_REGISTRIES_CRATES_IO_PROTOCOL: sparse
+
 concurrency:
   group: publish-crate-${{ github.repository }}
   cancel-in-progress: false
@@ -62,8 +65,7 @@ jobs:
         shell: bash
         run: |
           VERSION="$(cargo metadata --locked --no-deps --format-version 1 | jq -r '.packages[0].version')"
-          if cargo info --registry crates-io "weavatrix@$VERSION" |
-            grep -F "version: $VERSION"; then
+          if cargo info --color never --registry crates-io "weavatrix@$VERSION" >/dev/null 2>&1; then
             echo "published=true" >> "$GITHUB_OUTPUT"
           else
             echo "published=false" >> "$GITHUB_OUTPUT"
@@ -91,8 +93,8 @@ jobs:
         run: |
           VERSION="$(cargo metadata --locked --no-deps --format-version 1 | jq -r '.packages[0].version')"
           for attempt in $(seq 1 24); do
-            if cargo info --registry crates-io "weavatrix@$VERSION" |
-              grep -F "version: $VERSION"; then
+            echo "crates.io verification attempt $attempt/24"
+            if cargo info --color never --registry crates-io "weavatrix@$VERSION" >/dev/null 2>&1; then
               exit 0
             fi
             sleep 5

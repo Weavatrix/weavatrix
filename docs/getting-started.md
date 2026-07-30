@@ -67,7 +67,7 @@ npx -y weavatrix analyze .
 Version output reports both identities:
 
 ```text
-weavatrix 1.1.0 (engine 2.0.0)
+weavatrix 1.1.1 (engine 2.0.1)
 ```
 
 `analyze` is a diagnostic command. Agent integrations should use `mcp`.

@@ -136,11 +136,11 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.1
+weavatrix 1.1.1
     profile catalog · session refresh · filesystem watcher · MCP framing
     |
     v
-weavatrix-rust 2.0
+weavatrix-rust 2.0.1
     typed graph · analysis pipeline · 39 read-only operations
     |
     +-- weavatrix-scan      repository discovery and selection
@@ -183,17 +183,17 @@ started with empty HOME, XDG, AppData, and graph caches. The harness validates
 package/native/initialize identity, advertised operations, successful MCP
 results, and process cleanup.
 
-The packaged 1.1.0 release candidate, backed by `weavatrix-rust` 2.0.0, passed
-the bounded native gate on 2026-07-30:
+The packaged 1.1.1 product, backed by `weavatrix-rust` 2.0.1, passed the
+bounded native gate on 2026-07-30:
 
 | Installed boundary | Result |
 | --- | ---: |
 | Advertised read-only MCP tools | **39** |
-| Cold initialize | **343.248 ms** |
-| `tools/list` after initialize | **1.059 ms** |
-| First `graph_stats` | **46.600 ms** |
-| 1,000 sequential hot `graph_stats` calls | **0 failures · 172.97 calls/s** |
-| Hot latency | **p50 4.337 ms · p95 11.201 ms · p99 14.056 ms** |
+| Cold initialize | **500.780 ms** |
+| `tools/list` after initialize | **1.230 ms** |
+| First `graph_stats` | **55.490 ms** |
+| 1,000 sequential hot `graph_stats` calls | **0 failures · 146.70 calls/s** |
+| Hot latency | **p50 7.040 ms · p95 8.750 ms · p99 9.460 ms** |
 
 The last published baseline (`weavatrix` 1.0.0 versus `weavatrix-js` 0.3.15)
 measured:
@@ -205,7 +205,7 @@ measured:
 | Shared JavaScript call targets missing or wrong | **0 / 0** |
 | Shared imports, methods, and re-exports covered | **100%** |
 
-Those comparison numbers remain historical evidence; the bounded 1.1.0 gate
+Those comparison numbers remain historical evidence; the bounded 1.1.1 gate
 does not present them as a fresh competitor benchmark. Raw evidence and
 methodology live in
 [`benchmark-results`](benchmark-results/) and

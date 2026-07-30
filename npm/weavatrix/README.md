@@ -108,11 +108,11 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.1
+weavatrix 1.1.1
     profile catalog · refresh · watcher · MCP framing
     |
     v
-weavatrix-rust 2.0
+weavatrix-rust 2.0.1
     typed graph · analysis · 39 read-only operations
 ```
 
@@ -126,15 +126,15 @@ The installed-package benchmark packs both products, installs them into
 isolated npm roots, starts fresh MCP processes with empty caches, and validates
 identity, advertised operations, results, and cleanup.
 
-The packaged 1.1.0 release candidate (`weavatrix-rust` 2.0.0) passed the
-bounded native gate on 2026-07-30: 39 tools; cold initialize **343.248 ms**;
-`tools/list` **1.059 ms**; first `graph_stats` **46.600 ms**; and 1,000 hot
-`graph_stats` calls at **172.97 calls/s** with **0 failures**, p50 **4.337 ms**,
-p95 **11.201 ms**, and p99 **14.056 ms**.
+The packaged 1.1.1 product (`weavatrix-rust` 2.0.1) passed the bounded native
+gate on 2026-07-30: 39 tools; cold initialize **500.780 ms**; `tools/list`
+**1.230 ms**; first `graph_stats` **55.490 ms**; and 1,000 hot `graph_stats`
+calls at **146.70 calls/s** with **0 failures**, p50 **7.040 ms**, p95
+**8.750 ms**, and p99 **9.460 ms**.
 
 The last published baseline (`weavatrix` 1.0.0 versus `weavatrix-js` 0.3.15)
 measured a **30.34x** median cold-boundary ratio and **156.10x** warm-call
-ratio. Those comparison numbers remain historical; the bounded 1.1.0 gate is
+ratio. Those comparison numbers remain historical; the bounded 1.1.1 gate is
 not presented as a fresh competitor benchmark.
 
 Full evidence and methodology:

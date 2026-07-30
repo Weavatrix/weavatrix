@@ -42,13 +42,13 @@ available it replaces itself with the native process; otherwise it uses one
 
 Two versions are intentionally visible:
 
-- npm/product version: `weavatrix` 1.1.0;
-- engine version: `weavatrix-rust` 2.0.0.
+- npm/product version: `weavatrix` 1.1.1;
+- engine version: `weavatrix-rust` 2.0.1.
 
 The native binary reports both:
 
 ```text
-weavatrix 1.1.0 (engine 2.0.0)
+weavatrix 1.1.1 (engine 2.0.1)
 ```
 
 `package.json` stores the engine identity in `weavatrixEngineVersion`. Release

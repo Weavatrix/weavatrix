@@ -167,6 +167,7 @@ jobs:
           PUBLISHED_HEAD=""
           PREDICATE=""
           for attempt in $(seq 1 24); do
+            echo "npm provenance verification attempt $attempt/24"
             PUBLISHED_HEAD="$(npm view "weavatrix@$VERSION" gitHead --json 2>/dev/null | tr -d '\"\r\n' || true)"
             PREDICATE="$(npm view "weavatrix@$VERSION" dist.attestations.provenance.predicateType --json 2>/dev/null | tr -d '\"\r\n' || true)"
             if [[ "$PUBLISHED_HEAD" == "$GITHUB_SHA" && "$PREDICATE" == "https://slsa.dev/provenance/v1" ]]; then
@@ -199,3 +200,59 @@ jobs:
             ./mcp-publisher login github-oidc
             ./mcp-publisher publish
           fi
+      - name: Verify the official MCP Registry artifact
+        shell: bash
+        run: |
+          VERSION="$(node -p "require('./npm/weavatrix/package.json').version")"
+          REGISTRY_URL="https://registry.modelcontextprotocol.io/v0.1/servers/io.github.sergii-ziborov%2Fweavatrix/versions/$VERSION"
+          for attempt in $(seq 1 24); do
+            echo "MCP Registry verification attempt $attempt/24"
+            if curl --fail --silent --show-error "$REGISTRY_URL" |
+              jq --exit-status --arg version "$VERSION" \
+                '.server.name == "io.github.sergii-ziborov/weavatrix" and
+                 .server.version == $version and
+                 .server.packages[0].identifier == "weavatrix" and
+                 .server.packages[0].version == $version' >/dev/null; then
+              break
+            fi
+            sleep 5
+          done
+          curl --fail --silent --show-error "$REGISTRY_URL" |
+            jq --exit-status --arg version "$VERSION" \
+              '.server.name == "io.github.sergii-ziborov/weavatrix" and
+               .server.version == $version and
+               .server.packages[0].identifier == "weavatrix" and
+               .server.packages[0].version == $version' >/dev/null
+
+  release:
+    if: github.repository == 'sergii-ziborov/weavatrix'
+    needs: publish
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - name: Check out the verified tag
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Create and verify the immutable GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          VERSION="$(node -p "require('./npm/weavatrix/package.json').version")"
+          [[ "$GITHUB_REF_NAME" == "v$VERSION" ]]
+          [[ "$(git rev-list -n 1 "$GITHUB_REF_NAME")" == "$GITHUB_SHA" ]]
+          if ! gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            gh release create "$GITHUB_REF_NAME" \
+              --verify-tag \
+              --generate-notes \
+              --title "Weavatrix $GITHUB_REF_NAME"
+          fi
+          gh api "repos/$GITHUB_REPOSITORY/releases/tags/$GITHUB_REF_NAME" |
+            jq --exit-status --arg tag "$GITHUB_REF_NAME" \
+              '.tag_name == $tag and
+               (.draft | not) and
+               (.prerelease | not) and
+               .immutable == true' >/dev/null

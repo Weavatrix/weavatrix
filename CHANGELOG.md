@@ -1,5 +1,26 @@
 ﻿# Changelog
 
+## 1.1.1 - 2026-07-30
+
+- update the native MCP product to the `weavatrix-rust` 2.0.1 engine, whose
+  self-audit recognizes Cargo sibling-library imports and whose production
+  duplicate scan is clean at the 50-token / 92% gate;
+- keep Cargo, npm, native binary, and MCP Registry identities synchronized and
+  verify the installed package with a bounded 1,000-call load;
+- make registry checks color-independent and create the immutable GitHub
+  Release from the verified npm tag workflow.
+
+## 1.1.0 - 2026-07-30
+
+- establish `weavatrix` as the canonical native MCP product on both Cargo and
+  npm, backed by the protocol-independent `weavatrix-rust` 2.0.0 engine;
+- ship 39 read-only operations across 24 code and configuration surfaces as
+  prebuilt Windows, macOS, and Linux binaries on x64 and arm64;
+- document the product/engine boundary, architecture, full tool catalog,
+  client setup, library use, evidence model, and bounded release benchmark;
+- publish MIT-licensed packages with npm provenance and official MCP Registry
+  metadata.
+
 ## 1.0.2 - 2026-07-30
 
 - replace the minimal package copy with a product-first README covering all 39
