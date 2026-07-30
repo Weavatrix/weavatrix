@@ -207,7 +207,7 @@ jobs:
             }
           ' "$INFO"
           [[ "$("$ROOT/node_modules/.bin/weavatrix-git-mcp" --version)" == "weavatrix-git-mcp $WEAVATRIX_GIT_VERSION" ]]
-      - name: Publish the fixed source revision with provenance
+      - name: Bootstrap-publish the fixed source revision
         working-directory: source
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -217,24 +217,21 @@ jobs:
           if npm view "weavatrix-git@$WEAVATRIX_GIT_VERSION" version >/dev/null 2>&1; then
             echo "weavatrix-git@$WEAVATRIX_GIT_VERSION already exists; verifying it instead of republishing"
           else
-            npm publish --ignore-scripts --access public --provenance
+            npm publish --ignore-scripts --access public
           fi
-      - name: Verify npm registry provenance and gitHead
+      - name: Verify npm registry integrity and gitHead
         shell: bash
         run: |
           set -euo pipefail
           PUBLISHED_VERSION=""
           PUBLISHED_HEAD=""
-          PREDICATE=""
           INTEGRITY=""
           for attempt in $(seq 1 24); do
             PUBLISHED_VERSION="$(npm view "weavatrix-git@$WEAVATRIX_GIT_VERSION" version 2>/dev/null || true)"
             PUBLISHED_HEAD="$(npm view "weavatrix-git@$WEAVATRIX_GIT_VERSION" gitHead --json 2>/dev/null | tr -d '\"\r\n' || true)"
-            PREDICATE="$(npm view "weavatrix-git@$WEAVATRIX_GIT_VERSION" dist.attestations.provenance.predicateType --json 2>/dev/null | tr -d '\"\r\n' || true)"
             INTEGRITY="$(npm view "weavatrix-git@$WEAVATRIX_GIT_VERSION" dist.integrity 2>/dev/null || true)"
             if [[ "$PUBLISHED_VERSION" == "$WEAVATRIX_GIT_VERSION" &&
                   "$PUBLISHED_HEAD" == "$WEAVATRIX_GIT_BUILD_SHA" &&
-                  "$PREDICATE" == "https://slsa.dev/provenance/v1" &&
                   -n "$INTEGRITY" ]]; then
               break
             fi
@@ -243,7 +240,6 @@ jobs:
           done
           [[ "$PUBLISHED_VERSION" == "$WEAVATRIX_GIT_VERSION" ]]
           [[ "$PUBLISHED_HEAD" == "$WEAVATRIX_GIT_BUILD_SHA" ]]
-          [[ "$PREDICATE" == "https://slsa.dev/provenance/v1" ]]
           [[ -n "$INTEGRITY" ]]
       - name: Install and smoke-test the registry artifact
         shell: bash
