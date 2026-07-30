@@ -128,12 +128,12 @@ jobs:
           (( SERVER_DESCRIPTION_LENGTH > 0 && SERVER_DESCRIPTION_LENGTH <= 100 ))
           node scripts/build-npm-packages.mjs universal binaries "$VERSION"
           cmp server.json npm/dist/weavatrix/server.json
-          npm pack npm/dist/weavatrix --dry-run --json
+          npm pack ./npm/dist/weavatrix --dry-run --json
           ! find npm/dist/weavatrix -type f -path '*node_modules*' -print -quit | grep .
       - name: Smoke-test the installed package boundary
         shell: bash
         run: |
-          PACKAGE="$(npm pack npm/dist/weavatrix --json | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>process.stdout.write(JSON.parse(s)[0].filename))")"
+          PACKAGE="$(npm pack ./npm/dist/weavatrix --json | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>process.stdout.write(JSON.parse(s)[0].filename))")"
           ROOT="$(mktemp -d)"
           trap 'rm -rf "$ROOT" "$PACKAGE"' EXIT
           npm install --prefix "$ROOT" --ignore-scripts --no-audit --no-fund "./$PACKAGE"
@@ -143,7 +143,7 @@ jobs:
           "$ROOT/node_modules/.bin/weavatrix" list-tools | grep -q '"graph_stats"'
       - name: Run the installed-package basic and short-load gate
         shell: bash
-        run: node scripts/verify-installed-load.mjs npm/dist/weavatrix . target/npm-native-basic.json 1000
+        run: node scripts/verify-installed-load.mjs ./npm/dist/weavatrix . target/npm-native-basic.json 1000
       - name: Preserve the installed-package basic evidence
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -161,7 +161,7 @@ jobs:
           if npm view "weavatrix@$VERSION" version >/dev/null 2>&1; then
             echo "weavatrix@$VERSION already exists; verifying registry metadata"
           else
-            npm publish npm/dist/weavatrix --ignore-scripts --provenance --access public
+            npm publish ./npm/dist/weavatrix --ignore-scripts --provenance --access public
           fi
 
           PUBLISHED_HEAD=""

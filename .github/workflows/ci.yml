@@ -68,7 +68,7 @@ jobs:
           node-version: 24
           package-manager-cache: false
       - name: Inspect npm package contents
-        run: npm pack npm/weavatrix --dry-run --json
+        run: npm pack ./npm/weavatrix --dry-run --json
       - name: Reject lifecycle scripts and runtime dependencies
         shell: bash
         run: |
