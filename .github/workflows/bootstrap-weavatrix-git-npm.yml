@@ -1,0 +1,263 @@
+name: Bootstrap weavatrix-git npm 0.3.1
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: Type publish-weavatrix-git-0.3.1 to confirm this one-time publication
+        required: true
+        type: string
+
+concurrency:
+  group: bootstrap-weavatrix-git-npm-0.3.1
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  WEAVATRIX_GIT_REPOSITORY: sergii-ziborov/weavatrix-git
+  WEAVATRIX_GIT_BUILD_SHA: 2e3d56fd584a69383db627e9046db34b2ce3b007
+  WEAVATRIX_GIT_VERSION: 0.3.1
+
+jobs:
+  preflight:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Confirm the fixed publication boundary
+        env:
+          CONFIRMATION: ${{ inputs.confirmation }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$GITHUB_REPOSITORY" == "sergii-ziborov/weavatrix" ]]
+          [[ "$CONFIRMATION" == "publish-weavatrix-git-0.3.1" ]] || {
+            echo "The confirmation text does not authorize this one-time publication." >&2
+            exit 1
+          }
+
+  build:
+    needs: preflight
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: win32-x64
+            runner: windows-2025
+            target: x86_64-pc-windows-msvc
+            binary: target/x86_64-pc-windows-msvc/release/weavatrix-git-mcp.exe
+            expected_os: windows
+            expected_arch: x86_64
+          - platform: linux-x64
+            runner: ubuntu-24.04
+            target: x86_64-unknown-linux-gnu
+            binary: target/x86_64-unknown-linux-gnu/release/weavatrix-git-mcp
+            expected_os: linux
+            expected_arch: x86_64
+          - platform: linux-arm64
+            runner: ubuntu-24.04-arm
+            target: aarch64-unknown-linux-gnu
+            binary: target/aarch64-unknown-linux-gnu/release/weavatrix-git-mcp
+            expected_os: linux
+            expected_arch: aarch64
+          - platform: darwin-x64
+            runner: macos-15-intel
+            target: x86_64-apple-darwin
+            binary: target/x86_64-apple-darwin/release/weavatrix-git-mcp
+            expected_os: macos
+            expected_arch: x86_64
+          - platform: darwin-arm64
+            runner: macos-15
+            target: aarch64-apple-darwin
+            binary: target/aarch64-apple-darwin/release/weavatrix-git-mcp
+            expected_os: macos
+            expected_arch: aarch64
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - name: Check out the exact weavatrix-git source
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          repository: ${{ env.WEAVATRIX_GIT_REPOSITORY }}
+          ref: ${{ env.WEAVATRIX_GIT_BUILD_SHA }}
+          path: source
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Verify the immutable source identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$(git -C source rev-parse HEAD)" == "$WEAVATRIX_GIT_BUILD_SHA" ]]
+          [[ "$(node -p "require('./source/package.json').name")" == "weavatrix-git" ]]
+          [[ "$(node -p "require('./source/package.json').version")" == "$WEAVATRIX_GIT_VERSION" ]]
+      - name: Install the exact Rust toolchain and target
+        uses: dtolnay/rust-toolchain@2c7215f132e9ebf062739d9130488b56d53c060c # 2026-07-29
+        with:
+          toolchain: 1.88.0
+          targets: ${{ matrix.target }}
+      - name: Build the native MCP binary
+        working-directory: source
+        shell: bash
+        run: >-
+          cargo +1.88.0 build --locked --release --features mcp
+          --bin weavatrix-git-mcp --target "${{ matrix.target }}"
+      - name: Verify binary identity and record its checksum
+        shell: bash
+        env:
+          BINARY: source/${{ matrix.binary }}
+          EXPECTED_OS: ${{ matrix.expected_os }}
+          EXPECTED_ARCH: ${{ matrix.expected_arch }}
+        run: |
+          set -euo pipefail
+          BUILD_INFO="$("$BINARY" --build-info)"
+          node -e '
+            const info = JSON.parse(process.argv[1]);
+            const expected = {
+              name: "weavatrix-git-mcp",
+              version: process.env.WEAVATRIX_GIT_VERSION,
+              git_sha: process.env.WEAVATRIX_GIT_BUILD_SHA,
+              platform: process.env.EXPECTED_OS,
+              arch: process.env.EXPECTED_ARCH,
+            };
+            for (const [key, value] of Object.entries(expected)) {
+              if (info[key] !== value) throw new Error(`${key}: expected ${value}, got ${info[key]}`);
+            }
+          ' "$BUILD_INFO"
+          printf '%s\n' "$BUILD_INFO" > "$BINARY.build-info.json"
+          node -e '
+            const { createHash } = require("node:crypto");
+            const { basename } = require("node:path");
+            const { readFileSync } = require("node:fs");
+            const file = process.argv[1];
+            const checksum = createHash("sha256").update(readFileSync(file)).digest("hex");
+            process.stdout.write(`${checksum}  ${basename(file)}\n`);
+          ' "$BINARY" > "$BINARY.sha256"
+          mkdir -p "artifacts/${{ matrix.platform }}"
+          cp "$BINARY" "$BINARY.build-info.json" "$BINARY.sha256" "artifacts/${{ matrix.platform }}/"
+      - name: Preserve the verified native artifact
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: weavatrix-git-${{ matrix.platform }}
+          path: artifacts
+          if-no-files-found: error
+          retention-days: 7
+
+  publish:
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Check out the exact package source
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          repository: ${{ env.WEAVATRIX_GIT_REPOSITORY }}
+          ref: ${{ env.WEAVATRIX_GIT_BUILD_SHA }}
+          path: source
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Set up Node.js for npm publication
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+      - name: Download all verified native artifacts
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: weavatrix-git-*
+          path: binaries
+          merge-multiple: true
+      - name: Assemble and verify the universal npm package
+        working-directory: source
+        env:
+          WEAVATRIX_GIT_MCP_BINARY_WIN32_X64: ${{ github.workspace }}/binaries/win32-x64/weavatrix-git-mcp.exe
+          WEAVATRIX_GIT_MCP_BINARY_LINUX_X64: ${{ github.workspace }}/binaries/linux-x64/weavatrix-git-mcp
+          WEAVATRIX_GIT_MCP_BINARY_LINUX_ARM64: ${{ github.workspace }}/binaries/linux-arm64/weavatrix-git-mcp
+          WEAVATRIX_GIT_MCP_BINARY_DARWIN_X64: ${{ github.workspace }}/binaries/darwin-x64/weavatrix-git-mcp
+          WEAVATRIX_GIT_MCP_BINARY_DARWIN_ARM64: ${{ github.workspace }}/binaries/darwin-arm64/weavatrix-git-mcp
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$(git rev-parse HEAD)" == "$WEAVATRIX_GIT_BUILD_SHA" ]]
+          [[ "$(node -p "require('./package.json').version")" == "$WEAVATRIX_GIT_VERSION" ]]
+          npm test
+          npm pack --dry-run --json
+          npm run verify:package
+          PACKAGE_FILE="$(
+            npm pack --ignore-scripts --json |
+            node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>process.stdout.write(JSON.parse(s)[0].filename))"
+          )"
+          echo "WEAVATRIX_GIT_PACKAGE=$GITHUB_WORKSPACE/source/$PACKAGE_FILE" >> "$GITHUB_ENV"
+      - name: Smoke-test the locally packed installation
+        shell: bash
+        run: |
+          set -euo pipefail
+          ROOT="$(mktemp -d)"
+          trap 'rm -rf "$ROOT"' EXIT
+          npm install --prefix "$ROOT" --ignore-scripts --no-audit --no-fund "$WEAVATRIX_GIT_PACKAGE"
+          INFO="$("$ROOT/node_modules/.bin/weavatrix-git-mcp" --build-info)"
+          node -e '
+            const info = JSON.parse(process.argv[1]);
+            if (info.name !== "weavatrix-git-mcp") throw new Error("unexpected binary name");
+            if (info.version !== process.env.WEAVATRIX_GIT_VERSION) throw new Error("unexpected version");
+            if (info.git_sha !== process.env.WEAVATRIX_GIT_BUILD_SHA) throw new Error("unexpected source SHA");
+            if (info.platform !== "linux" || info.arch !== "x86_64") {
+              throw new Error(`unexpected installed target ${info.platform}-${info.arch}`);
+            }
+          ' "$INFO"
+          [[ "$("$ROOT/node_modules/.bin/weavatrix-git-mcp" --version)" == "weavatrix-git-mcp $WEAVATRIX_GIT_VERSION" ]]
+      - name: Publish the fixed source revision with provenance
+        working-directory: source
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if npm view "weavatrix-git@$WEAVATRIX_GIT_VERSION" version >/dev/null 2>&1; then
+            echo "weavatrix-git@$WEAVATRIX_GIT_VERSION already exists; verifying it instead of republishing"
+          else
+            npm publish --ignore-scripts --access public --provenance
+          fi
+      - name: Verify npm registry provenance and gitHead
+        shell: bash
+        run: |
+          set -euo pipefail
+          PUBLISHED_VERSION=""
+          PUBLISHED_HEAD=""
+          PREDICATE=""
+          INTEGRITY=""
+          for attempt in $(seq 1 24); do
+            PUBLISHED_VERSION="$(npm view "weavatrix-git@$WEAVATRIX_GIT_VERSION" version 2>/dev/null || true)"
+            PUBLISHED_HEAD="$(npm view "weavatrix-git@$WEAVATRIX_GIT_VERSION" gitHead --json 2>/dev/null | tr -d '\"\r\n' || true)"
+            PREDICATE="$(npm view "weavatrix-git@$WEAVATRIX_GIT_VERSION" dist.attestations.provenance.predicateType --json 2>/dev/null | tr -d '\"\r\n' || true)"
+            INTEGRITY="$(npm view "weavatrix-git@$WEAVATRIX_GIT_VERSION" dist.integrity 2>/dev/null || true)"
+            if [[ "$PUBLISHED_VERSION" == "$WEAVATRIX_GIT_VERSION" &&
+                  "$PUBLISHED_HEAD" == "$WEAVATRIX_GIT_BUILD_SHA" &&
+                  "$PREDICATE" == "https://slsa.dev/provenance/v1" &&
+                  -n "$INTEGRITY" ]]; then
+              break
+            fi
+            echo "Waiting for npm registry consistency (attempt $attempt/24)"
+            sleep 5
+          done
+          [[ "$PUBLISHED_VERSION" == "$WEAVATRIX_GIT_VERSION" ]]
+          [[ "$PUBLISHED_HEAD" == "$WEAVATRIX_GIT_BUILD_SHA" ]]
+          [[ "$PREDICATE" == "https://slsa.dev/provenance/v1" ]]
+          [[ -n "$INTEGRITY" ]]
+      - name: Install and smoke-test the registry artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          ROOT="$(mktemp -d)"
+          trap 'rm -rf "$ROOT"' EXIT
+          npm install --prefix "$ROOT" --no-audit --no-fund "weavatrix-git@$WEAVATRIX_GIT_VERSION"
+          INFO="$("$ROOT/node_modules/.bin/weavatrix-git-mcp" --build-info)"
+          node -e '
+            const info = JSON.parse(process.argv[1]);
+            if (info.version !== process.env.WEAVATRIX_GIT_VERSION) throw new Error("registry version mismatch");
+            if (info.git_sha !== process.env.WEAVATRIX_GIT_BUILD_SHA) throw new Error("registry source SHA mismatch");
+            if (info.platform !== "linux" || info.arch !== "x86_64") {
+              throw new Error(`unexpected registry target ${info.platform}-${info.arch}`);
+            }
+          ' "$INFO"

@@ -1,84 +1,125 @@
-# Architecture
+# Product architecture
 
-## Boundary
+Weavatrix is a thin native MCP product around the protocol-independent
+`weavatrix-rust` engine. The split is intentional: protocol, process, and
+filesystem-watcher concerns must not leak into repository analysis.
 
-Weavatrix Rust is a local, read-only application boundary:
+## Runtime boundary
 
 ```text
-weavatrix-scan manifest ----+
-language/domain adapters ---+--> normalized facts --> weavatrix-graph
-weavatrix-git objects ------+          |                    |
-coverage reports -----------+          +--> snapshot/query -+
-weavatrix-search/clone -----+                               |
-vector/semantic/memory -----+-------------------------------+
-                                                             |
-                                         CLI / one stdio MCP
-                                         all | code | seo view
+MCP client
+    |
+    | JSON-RPC over ordered stdio
+    v
+server adapter
+    mcport values, discovery, list-tools, structured/text responses
+    |
+    v
+application session
+    active repository, profile, refresh lifecycle, watcher lifecycle
+    |
+    +-----------------------+
+    |                       |
+    v                       v
+repository port         change-monitor port
+    |                       |
+    v                       v
+weavatrix-rust adapter  notify adapter
+    |
+    v
+weavatrix-rust operations
 ```
 
-The analyzer reads repository files and derived configuration. It does not edit
-source, execute repository code, start language servers, invoke command-line
-Git or ripgrep, or access the network.
+The adapter has four layers:
 
-## Independent packages
+- `mcp/server`: inbound MCP framing and result conversion;
+- `mcp/application`: the session use case and freshness policy;
+- `mcp/ports`: repository and change-monitor contracts;
+- `mcp/adapters`: `weavatrix-rust` and `notify` implementations.
 
-- `weavatrix-scan` owns walking, ignore rules, skip evidence, hashes, and
-  incremental manifests.
-- `weavatrix-graph` owns graph models, validation, canonical ordering,
-  algorithms, topology, and serialization.
-- `weavatrix-git` owns direct object-database, commit-graph, MIDX, diff, and
-  cross-repository reads.
-- `weavatrix-search` and `weavatrix-search-vector` own lexical and vector
-  retrieval.
-- `weavatrix-clone` owns Type-1/2/3 detection and stable report formats.
-- `weavatrix-semantic` owns inferred semantic edges and SEO policy.
-- `weavatrix-memory` owns append-only events, temporal projections, and bounded
-  context compilation.
+`mcport` is visible only to the inbound server. `notify` is visible only to
+its outbound adapter. The application layer receives typed port values, and
+the engine receives neither MCP frames nor watcher events.
 
-This crate composes those packages. It does not copy their algorithms into the
-MCP layer.
+## Engine boundary
 
-## Stable seam
+The engine owns:
 
-Language adapters return normalized symbols, imports, references, domains,
-diagnostics, and source spans. The analyzer owns repository identity and
-reference resolution. The graph package owns deduplication, validation, and
-canonical ordering.
+- deterministic scanning and repository identity;
+- lossless parsing and normalized source facts;
+- graph construction and reference resolution;
+- 39 read-only operations;
+- Git, search, clone, vector, semantic, and memory composition;
+- architecture and evidence semantics.
 
-The native snapshot is deterministic. A compatibility projection emits the
-JavaScript Weavatrix `{ nodes, links }` shape so existing consumers can migrate
-without contaminating the graph model.
+The product owns:
 
-## One server, bounded profiles
+- the public `weavatrix` identity;
+- profile-filtered tool discovery;
+- MCP stdio compatibility;
+- repository-session lifecycle;
+- native filesystem watching;
+- native npm packaging and platform selection.
 
-Code and SEO use the same repository identity and evidence graph. They remain
-one process to avoid duplicate scans and divergent revisions. `McpProfile`
-filters the visible tool catalog:
+The engine crate contains no MCP server, npm package, watcher, `mcport`, or
+`notify` dependency.
 
-- `all`: every compiled capability;
-- `code`: repository intelligence without SEO-specific suggestions;
-- `seo`: content, graph, search, semantic, vector, and memory tools.
+## Session lifecycle
 
-SEO links are inferred evidence supplied by `weavatrix-semantic`. They never
-become deterministic code edges merely because they share a server.
+1. The requested repository is validated and opened before the MCP handshake.
+2. `initialize`, discovery, and `tools/list` do not start a watcher.
+3. The first operation performs an incremental freshness check, then starts
+   the watcher even if the operation itself returns an error.
+4. Later calls drain pending watcher events and refresh only when evidence may
+   be stale.
+5. `open_repo` replaces both the canonical repository state and watcher.
+6. `rebuild_graph` explicitly rebuilds derived state.
 
-## Evidence model
+Watcher events invalidate derived state; they never modify source.
 
-Every relationship records extractor identity, evidence kind, confidence, and
-an optional source span. Consumers must distinguish parsed/resolved evidence,
-measured coverage, and inferred semantic links. Every tool either completes its
-declared evaluation or returns an error. Optional external evidence that is not
-present is represented as `{ "present": false, "reason": "..." }`; it is not
-reported as an incomplete capability and it never invents a clean measured
-result.
+## Profiles and catalog identity
 
-## Refresh model
+The visible catalog comes from
+`weavatrix_rust::operations::catalog_for_profile`. Discovery, list-tools, and
+execution membership all use that same vector, so a hidden or uncompiled
+capability cannot be advertised by one path and rejected by another.
 
-The active repository stores its last scan report. The first MCP call performs
-an incremental catch-up after the handshake, then starts a native recursive
-filesystem watcher in the background. Later unchanged calls are constant-time
-at the freshness boundary. After a real filesystem event, an incremental scan
-compares source identity and hashes; a changed repository gets a fresh
-immutable snapshot. The standalone library exposes explicit
-`refresh_if_stale` and `rebuild` calls and has no watcher or MCP dependency.
-Git history and cross-repository reads stay independent of worktree mutation.
+- `all`: every compiled read-only operation;
+- `code`: code, architecture, Git, graph, and quality workflows;
+- `seo`: content, search, semantic, vector, and memory workflows.
+
+## Evidence boundary
+
+Every result belongs to one analyzed revision. Parsed spans, measured
+coverage, resolved graph edges, inferred semantic links, and missing optional
+evidence remain distinct states.
+
+Dynamic dispatch that cannot be proved stays unresolved. A static reachability
+result is not labelled measured coverage. Missing runtime evidence is
+represented as absent evidence, not a fabricated clean result.
+
+## Enforced modularity
+
+The native adapter is intentionally small:
+
+```text
+src/main.rs
+src/mcp/
+  mod.rs
+  error.rs
+  ports/
+  application/
+  adapters/
+  server/
+```
+
+Release gates enforce:
+
+- no `foo.rs` plus `foo/` dual module forms;
+- no file above 300 physical lines;
+- no function above 100 physical lines;
+- strict Clippy with warnings denied;
+- protocol, refresh, profile, and identity tests.
+
+The deeper engine applies the same budgets plus a zero-runtime-cycle
+architecture contract.

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "measuredAt": "2026-07-30",
+  "scope": "installed packaged native boundary",
+  "package": {
+    "name": "weavatrix",
+    "version": "1.1.0",
+    "engine": "weavatrix-rust",
+    "engineVersion": "2.0.0",
+    "toolCount": 39
+  },
+  "basic": {
+    "coldInitializeMs": 343.248,
+    "toolsListMs": 1.059,
+    "firstGraphStatsMs": 46.6
+  },
+  "shortLoad": {
+    "operation": "graph_stats",
+    "sequentialCalls": 1000,
+    "failures": 0,
+    "totalMs": 5781.419,
+    "callsPerSecond": 172.97,
+    "meanMs": 5.78,
+    "p50Ms": 4.337,
+    "p95Ms": 11.201,
+    "p99Ms": 14.056,
+    "maxMs": 39.197
+  },
+  "notes": [
+    "The package was packed and installed in an isolated npm root.",
+    "This bounded gate does not replace the historical long competitor benchmark."
+  ]
+}

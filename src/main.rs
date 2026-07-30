@@ -1,9 +1,9 @@
+mod mcp;
+
 use std::env;
 use std::path::PathBuf;
 use std::process::ExitCode;
-#[cfg(feature = "mcp")]
-use weavatrix_rust::mcp;
-use weavatrix_rust::{Analyzer, Weavatrix, tools};
+use weavatrix_rust::{Analyzer, Weavatrix, operations};
 
 fn main() -> ExitCode {
     match run(env::args().skip(1).collect()) {
@@ -17,7 +17,11 @@ fn main() -> ExitCode {
 
 fn run(arguments: Vec<String>) -> Result<(), String> {
     if arguments.first().is_some_and(|value| value == "--version") {
-        println!("weavatrix {}", env!("CARGO_PKG_VERSION"));
+        println!(
+            "weavatrix {} (engine {})",
+            env!("CARGO_PKG_VERSION"),
+            weavatrix_rust::VERSION
+        );
         return Ok(());
     }
     if arguments
@@ -28,112 +32,105 @@ fn run(arguments: Vec<String>) -> Result<(), String> {
         return Ok(());
     }
     match arguments.first().map(String::as_str) {
-        Some("mcp") => {
-            #[cfg(not(feature = "mcp"))]
-            return Err(
-                "this build excludes the MCP transport; rebuild with --features mcp".into(),
-            );
-            #[cfg(feature = "mcp")]
-            {
-                let mut repository = ".";
-                let mut profile = mcp::McpProfile::All;
-                for argument in arguments.iter().skip(1) {
-                    if let Some(value) = argument.strip_prefix("--profile=") {
-                        profile = value.parse()?;
-                    } else if argument.starts_with('-') {
-                        return Err(format!("unknown MCP option: {argument}"));
-                    } else {
-                        repository = argument;
-                    }
-                }
-                return mcp::serve_with_profile(repository, profile)
-                    .map_err(|error| error.to_string());
-            }
-        }
-        Some("list-tools") => {
-            println!(
-                "{}",
-                blazingly_json::to_string_pretty(&tools::catalog())
-                    .map_err(|error| error.to_string())?
-            );
-            return Ok(());
-        }
-        Some("tool") => {
-            let name = arguments
-                .get(1)
-                .ok_or_else(|| "tool requires a tool name".to_owned())?;
-            let repository = arguments.get(2).map_or(".", String::as_str);
-            let input = arguments
-                .get(3)
-                .map_or_else(
-                    || Ok(blazingly_json::json!({})),
-                    |value| blazingly_json::from_str(value),
-                )
-                .map_err(|error| format!("invalid tool JSON: {error}"))?;
-            let mut engine = Weavatrix::open(repository).map_err(|error| error.to_string())?;
-            let output = tools::call(&mut engine, name, input)?;
-            println!(
-                "{}",
-                blazingly_json::to_string_pretty(&output).map_err(|error| error.to_string())?
-            );
-            return Ok(());
-        }
-        Some("analyze") => {}
+        Some("mcp") => serve_mcp(&arguments),
+        Some("list-tools") => list_operations(&arguments),
+        Some("tool") => call_operation(&arguments),
+        Some("analyze") => analyze(arguments),
         _ => {
             print_help();
-            return Err("expected the `analyze`, `mcp`, `tool`, or `list-tools` command".into());
+            Err("expected the `mcp`, `analyze`, `tool`, or `list-tools` command".into())
         }
     }
+}
 
+fn serve_mcp(arguments: &[String]) -> Result<(), String> {
+    let mut repository = ".";
+    let mut profile = mcp::McpProfile::All;
+    for argument in arguments.iter().skip(1) {
+        if let Some(value) = argument.strip_prefix("--profile=") {
+            profile = value.parse()?;
+        } else if argument.starts_with('-') {
+            return Err(format!("unknown MCP option: {argument}"));
+        } else {
+            repository = argument;
+        }
+    }
+    mcp::serve_with_profile(repository, profile).map_err(|error| error.to_string())
+}
+
+fn list_operations(arguments: &[String]) -> Result<(), String> {
+    let mut profile = mcp::McpProfile::All;
+    for argument in arguments.iter().skip(1) {
+        if let Some(value) = argument.strip_prefix("--profile=") {
+            profile = value.parse()?;
+        } else {
+            return Err(format!("unknown list-tools option: {argument}"));
+        }
+    }
+    println!(
+        "{}",
+        blazingly_json::to_string_pretty(&operations::catalog_for_profile(profile))
+            .map_err(|error| error.to_string())?
+    );
+    Ok(())
+}
+
+fn call_operation(arguments: &[String]) -> Result<(), String> {
+    let name = arguments
+        .get(1)
+        .ok_or_else(|| "tool requires an operation name".to_owned())?;
+    let repository = arguments.get(2).map_or(".", String::as_str);
+    let input = arguments
+        .get(3)
+        .map_or_else(
+            || Ok(blazingly_json::json!({})),
+            |value| blazingly_json::from_str(value),
+        )
+        .map_err(|error| format!("invalid operation JSON: {error}"))?;
+    let mut engine = Weavatrix::open(repository).map_err(|error| error.to_string())?;
+    let output = operations::call(&mut engine, name, input)?;
+    println!(
+        "{}",
+        blazingly_json::to_string_pretty(&output).map_err(|error| error.to_string())?
+    );
+    Ok(())
+}
+
+fn analyze(arguments: Vec<String>) -> Result<(), String> {
     let mut repository = PathBuf::from(".");
     let mut pretty = false;
-    let mut format = OutputFormat::Snapshot;
+    let mut legacy = false;
     for argument in arguments.into_iter().skip(1) {
         if argument == "--pretty" {
             pretty = true;
-        } else if let Some(value) = argument.strip_prefix("--format=") {
-            format = OutputFormat::parse(value)?;
+        } else if argument == "--format=legacy" {
+            legacy = true;
+        } else if argument == "--format=snapshot" {
+            legacy = false;
         } else if argument.starts_with('-') {
-            return Err(format!("unknown option: {argument}"));
+            return Err(format!("unknown analyze option: {argument}"));
         } else {
             repository = PathBuf::from(argument);
         }
     }
-
     let analyzer = Analyzer::default();
-    let json = match format {
-        OutputFormat::Snapshot => analyzer.analyze_json(repository, pretty),
-        OutputFormat::Legacy => analyzer.analyze_legacy_json(repository, pretty),
+    let json = if legacy {
+        analyzer.analyze_legacy_json(repository, pretty)
+    } else {
+        analyzer.analyze_json(repository, pretty)
     }
     .map_err(|error| error.to_string())?;
     println!("{json}");
     Ok(())
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-enum OutputFormat {
-    Snapshot,
-    Legacy,
-}
-
-impl OutputFormat {
-    fn parse(value: &str) -> Result<Self, String> {
-        match value {
-            "snapshot" => Ok(Self::Snapshot),
-            "legacy" => Ok(Self::Legacy),
-            _ => Err(format!(
-                "unknown format: {value}; expected snapshot or legacy"
-            )),
-        }
-    }
-}
-
 fn print_help() {
     println!(
-        "Weavatrix Rust repository intelligence\n\n\
-Usage:\n  weavatrix analyze [REPOSITORY] [--pretty] [--format=snapshot|legacy]\n  weavatrix --version\n\n\
-  weavatrix mcp [REPOSITORY] [--profile=all|code|seo]\n  weavatrix list-tools\n\n\
-  weavatrix tool NAME [REPOSITORY] ['{{\"argument\":\"value\"}}']\n\n\
-Formats:\n  snapshot  Canonical weavatrix-rust snapshot (default)\n  legacy    JavaScript Weavatrix-compatible {{ nodes, links }} graph"
+        "Weavatrix repository intelligence for coding agents\n\n\
+Usage:\n  weavatrix mcp [REPOSITORY] [--profile=all|code|seo]\n\
+  weavatrix analyze [REPOSITORY] [--pretty] [--format=snapshot|legacy]\n\
+  weavatrix list-tools [--profile=all|code|seo]\n\
+  weavatrix tool NAME [REPOSITORY] ['{{\"argument\":\"value\"}}']\n\
+  weavatrix --version"
     );
 }

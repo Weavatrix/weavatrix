@@ -1,9 +1,35 @@
 ﻿# Benchmark report
 
-Current release evidence was measured on 2026-07-29 on the same Windows
-workstation. Historical component and in-process graph measurements from
-2026-07-27 remain below so changes in methodology are visible rather than
-silently replacing old numbers.
+Current release evidence was measured on 2026-07-30 on the same Windows
+workstation. Historical component and in-process graph measurements remain
+below so changes in methodology are visible rather than silently replacing old
+numbers.
+
+## Installed native basic and short-load gate: npm 1.1.0 / Rust engine 2.0.0
+
+The final package layout was assembled, packed, installed into an isolated npm
+root, and exercised through its installed launcher and native binary. Identity,
+MCP initialization, the complete tool catalog, representative operations, and
+process cleanup all passed before timing began.
+
+| Installed boundary | Result |
+|---|---:|
+| Package / engine identity | `weavatrix` 1.1.0 / `weavatrix-rust` 2.0.0 |
+| Advertised read-only MCP tools | **39** |
+| Cold initialize | **343.248 ms** |
+| `tools/list` after initialize | **1.059 ms** |
+| First `graph_stats` | **46.600 ms** |
+| 1,000 sequential hot `graph_stats` calls | **0 failures** |
+| Sustained rate | **172.97 calls/s** |
+| Hot mean / p50 | **5.780 ms / 4.337 ms** |
+| Hot p95 / p99 / max | **11.201 ms / 14.056 ms / 39.197 ms** |
+| Total timed hot-call duration | **5,781.419 ms** |
+
+This is an intentionally bounded release gate, not a rerun of the long
+competitor suite. It proves the packaged native boundary and a short sustained
+load without relabeling historical JavaScript comparisons as current results.
+The machine-readable result is
+`benchmark-results/npm-weavatrix-1.1.0-basic.json`.
 
 ## Installed npm MCP boundary: npm 1.0.0 / Rust engine 1.0.1 vs JavaScript 0.3.15
 

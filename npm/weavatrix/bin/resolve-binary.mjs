@@ -30,7 +30,7 @@ export function resolveBinary() {
     if (!entry) {
         fail(`Unsupported platform: ${key}.`,
             'Prebuilt binaries cover win32/darwin/linux on x64 and arm64.',
-            'On other platforms install from source: cargo install weavatrix-rust')
+            'On other platforms build the canonical weavatrix repository from source.')
     }
     const bundled = locateBundled(key)
     if (bundled) return bundled
@@ -39,7 +39,7 @@ export function resolveBinary() {
     if (binary) return binary
     fail(`The bundled native executable for ${key} is missing.`,
         'The installed package is incomplete; reinstall weavatrix,',
-        'or: cargo install weavatrix-rust')
+        'or build the canonical weavatrix repository from source')
     return null
 }
 

@@ -33,7 +33,7 @@ const PLATFORMS = {
 }
 
 const wrapperManifest = JSON.parse(
-    readFileSync(join(WRAPPER, 'package.json'), 'utf8').replace(/^﻿/, ''))
+    readFileSync(join(WRAPPER, 'package.json'), 'utf8').replace(/^\uFEFF/, ''))
 const [, , mode, ...rest] = process.argv
 if (!mode) usage()
 
@@ -44,8 +44,7 @@ if (mode === 'main') {
     cpSync(WRAPPER, target, { recursive: true })
     const manifest = { ...wrapperManifest, version }
     writeFileSync(join(target, 'package.json'), `${JSON.stringify(manifest, null, 2)}\n`)
-    copyFileSync(join(ROOT, 'LICENSE'), join(target, 'LICENSE'))
-    cpSync(join(ROOT, 'skill'), join(target, 'skill'), { recursive: true })
+    copyWrapperAssets(target)
     console.log(`assembled ${target} @ ${version}`)
 } else if (mode === 'current') {
     const [platform, binaryPath, versionArg] = rest
@@ -58,8 +57,7 @@ if (mode === 'main') {
     const manifest = { ...wrapperManifest, version }
     delete manifest.optionalDependencies
     writeFileSync(join(target, 'package.json'), `${JSON.stringify(manifest, null, 2)}\n`)
-    copyFileSync(join(ROOT, 'LICENSE'), join(target, 'LICENSE'))
-    cpSync(join(ROOT, 'skill'), join(target, 'skill'), { recursive: true })
+    copyWrapperAssets(target)
     const destination = join(target, 'bin', 'native', platform, entry.binary)
     mkdirSync(dirname(destination), { recursive: true })
     copyFileSync(binaryPath, destination)
@@ -75,8 +73,7 @@ if (mode === 'main') {
     const manifest = { ...wrapperManifest, version }
     delete manifest.optionalDependencies
     writeFileSync(join(target, 'package.json'), `${JSON.stringify(manifest, null, 2)}\n`)
-    copyFileSync(join(ROOT, 'LICENSE'), join(target, 'LICENSE'))
-    cpSync(join(ROOT, 'skill'), join(target, 'skill'), { recursive: true })
+    copyWrapperAssets(target)
     for (const [platform, { os, binary }] of Object.entries(PLATFORMS)) {
         const source = join(artifactsRoot, platform, binary)
         const destination = join(target, 'bin', 'native', platform, binary)
@@ -116,6 +113,12 @@ if (mode === 'main') {
     console.log(`assembled ${target} @ ${version}`)
 } else {
     usage()
+}
+
+function copyWrapperAssets(target) {
+    copyFileSync(join(ROOT, 'LICENSE'), join(target, 'LICENSE'))
+    copyFileSync(join(ROOT, 'server.json'), join(target, 'server.json'))
+    cpSync(join(ROOT, 'skill'), join(target, 'skill'), { recursive: true })
 }
 
 function usage() {

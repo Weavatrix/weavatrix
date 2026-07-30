@@ -1,29 +1,53 @@
-﻿# Dependency budget
+# Dependency boundary
 
-The default package composes independent Rust libraries and launches no
-external runtime process.
+The canonical product is intentionally an adapter, not a second copy of the
+engine.
 
-| Crate | Purpose | Feature |
-|---|---|---|
-| `weavatrix-scan` | deterministic source manifests | core |
-| `weavatrix-graph` | evidence graph and algorithms | core |
-| `weavatrix-git` | direct Git object reads | `git` |
-| `weavatrix-search` | literal and regex retrieval | `search` |
-| `weavatrix-search-vector` | exact and HNSW retrieval | `vector` |
-| `weavatrix-clone` | Type-1/2/3 detection | `clone` |
-| `weavatrix-semantic` | semantic and SEO linking | `semantic` |
-| `weavatrix-memory` | temporal memory/context compile | `memory` |
-| `mcport` 0.3.0 | blocking modern/legacy MCP stdio runtime, no async executor | `mcp` |
-| `syn`, `proc-macro2` | Rust AST and source locations | `lang-rust` |
-| `serde`, `blazingly-json` | stable data boundaries | core |
+| Dependency | Layer | Purpose |
+| --- | --- | --- |
+| `weavatrix-rust` 2.x | repository adapter | protocol-independent graph, analysis, and 39 operations |
+| `mcport` 0.3.x | inbound server | blocking modern/legacy MCP stdio and JSON-RPC shapes |
+| `notify` 8.x | change-monitor adapter | recursive local filesystem invalidation |
+| `blazingly-json` | ports/application | stable JSON value boundary without a second application model |
 
-`Cargo.lock` pins the complete tree. The default build needs no native C/C++
-toolchain and contains no subprocess or network client. A minimal
-`--no-default-features` build retains scan, graph, lexical language/domain
-adapters, snapshot, core tools, and the standalone CLI, but omits the `mcport`
-dependency and stdio server. Enable the independent `mcp` feature to add that
-transport.
+The product does not depend on Tokio, Hyper, Axum, a language server, a
+network client, command-line Git, or ripgrep.
 
-Boundary tests reject source-write, network, child-process, and known native
-parser/build markers in production source. Each Weavatrix component enforces
-its own narrower dependency budget.
+## Isolation rules
+
+- only `mcp/server` uses `mcport` values;
+- only `mcp/adapters/watcher` uses `notify`;
+- only `mcp/adapters/repository` calls the engine;
+- `mcp/application` depends on ports, not concrete adapters;
+- the engine has no dependency back to this product.
+
+## npm runtime
+
+The published npm package has zero JavaScript dependencies. Its launcher uses
+Node built-ins only to select and execute the bundled native binary.
+
+There is:
+
+- no `install`, `postinstall`, or preparation script;
+- no runtime download;
+- no scoped platform dependency that can disappear independently;
+- no JavaScript relay in the MCP data path when `process.execve` is available.
+
+`npm ls --all` on an installed package must have an empty runtime dependency
+tree.
+
+## Supply-chain gates
+
+Release CI verifies:
+
+- Cargo and npm product versions agree;
+- `weavatrixEngineVersion` agrees with the resolved engine dependency;
+- each platform artifact reports the expected product and engine identities;
+- package contents contain only the launcher, skill, license, README, and six
+  native binaries;
+- `npm pack --dry-run` and installed-package checks pass;
+- publication uses npm provenance;
+- no registry token is written to the repository.
+
+All maintained first-party Weavatrix crates and this product use the MIT
+license.
