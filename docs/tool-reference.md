@@ -33,7 +33,9 @@ schemas returned by `tools/list` are the authoritative machine contract.
 
 ## Health and quality
 
-- `find_duplicates`: Type-1/2/3 clone families with boilerplate controls.
+- `find_duplicates`: Type-1/2/3 clone families with boilerplate controls;
+  filtering and `top_n` rebuild families from surviving pairs so members,
+  pair identifiers, and connected components stay mutually consistent.
 - `find_dead_code`: review candidates with entry-point, test, configuration,
   dynamic, and external-use classification.
 - `run_audit`: dependency, runtime, graph, and capability health.

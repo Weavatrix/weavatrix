@@ -74,6 +74,12 @@ not exist.
 If a bound prevents the declared evaluation from completing, the operation
 returns an explicit truncation or error according to its contract.
 
+Duplicate families obey the same invariant. Filtering tests, classified paths,
+or low-signal pairs and applying `top_n` first reduce the accepted pair set;
+families are then rebuilt from those surviving pairs. A returned family cannot
+name an excluded member or a pair outside its deterministic connected
+component.
+
 ## Reproducibility
 
 Benchmark and parity artifacts retain versions, corpus revisions, normalized

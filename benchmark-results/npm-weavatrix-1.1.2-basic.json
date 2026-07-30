@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "measuredAt": "2026-07-30",
+  "scope": "installed packaged native boundary",
+  "status": "PASS",
+  "package": {
+    "name": "weavatrix",
+    "version": "1.1.2",
+    "engine": "weavatrix-rust",
+    "engineVersion": "2.0.2",
+    "toolCount": 39
+  },
+  "basic": {
+    "coldInitializeMs": 405.77,
+    "toolsListMs": 0.79,
+    "firstGraphStatsMs": 54.88,
+    "coldBoundaryMs": 501.34
+  },
+  "shortLoad": {
+    "operation": "graph_stats",
+    "sequentialCalls": 1000,
+    "failures": 0,
+    "totalMs": 7308.39,
+    "callsPerSecond": 136.83,
+    "meanMs": 7.31,
+    "p50Ms": 7.61,
+    "p95Ms": 10.18,
+    "p99Ms": 12.23,
+    "maxMs": 48.36
+  },
+  "cleanup": {
+    "gracefulExit": true,
+    "processTreeGone": true
+  },
+  "notes": [
+    "The package was packed and installed in an isolated npm root.",
+    "All 1000 MCP graph_stats calls and the complete 39-tool identity gate passed.",
+    "This bounded gate does not replace the historical long competitor benchmark."
+  ]
+}

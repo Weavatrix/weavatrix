@@ -5,6 +5,32 @@ workstation. Historical component and in-process graph measurements remain
 below so changes in methodology are visible rather than silently replacing old
 numbers.
 
+## Installed native basic and short-load gate: npm 1.1.2 / Rust engine 2.0.2
+
+The patch package was assembled with the published 2.0.2 engine, packed,
+installed into an isolated npm root, and exercised through its installed
+launcher and native Windows x64 binary. The harness verified native/package
+identity, MCP initialization, all 39 advertised tools, all 1,000 timed
+`graph_stats` results, and final process-tree cleanup.
+
+| Installed boundary | Result |
+|---|---:|
+| Package / engine identity | `weavatrix` 1.1.2 / `weavatrix-rust` 2.0.2 |
+| Advertised read-only MCP tools | **39** |
+| Cold initialize | **405.770 ms** |
+| `tools/list` after initialize | **0.790 ms** |
+| First `graph_stats` | **54.880 ms** |
+| 1,000 sequential hot `graph_stats` calls | **0 failures** |
+| Sustained rate | **136.83 calls/s** |
+| Hot mean / p50 | **7.310 ms / 7.610 ms** |
+| Hot p95 / p99 / max | **10.180 ms / 12.230 ms / 48.360 ms** |
+| Total timed hot-call duration | **7,308.390 ms** |
+
+This is the bounded patch-release gate requested for 1.1.2, not a long soak or
+a new competitor comparison. The machine-readable summary is
+`benchmark-results/npm-weavatrix-1.1.2-basic.json`
+(SHA-256 `1D002153C67F1D0F31B6487168F2554BC5ED5885849A1D86A9586C058D8B3905`).
+
 ## Installed native basic and short-load gate: npm 1.1.1 / Rust engine 2.0.1
 
 The patch package was assembled with the published 2.0.1 engine, packed,

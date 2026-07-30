@@ -1,6 +1,6 @@
 [package]
 name = "weavatrix"
-version = "1.1.1"
+version = "1.1.2"
 edition = "2024"
 rust-version = "1.89"
 description = "Native MCP server for Weavatrix repository intelligence: 39 read-only evidence, impact, architecture, API, Git, search, semantic, and memory operations"
@@ -13,13 +13,13 @@ documentation = "https://github.com/sergii-ziborov/weavatrix/tree/main/docs"
 keywords = ["mcp", "repository", "code-graph", "static-analysis", "coding-agents"]
 categories = ["development-tools", "command-line-utilities"]
 include = [
-    "src/**",
-    ".weavatrix/architecture.json",
-    "Cargo.toml",
-    "Cargo.lock",
-    "README.md",
-    "LICENSE",
-    "docs/**",
+    "/src/**",
+    "/.weavatrix/architecture.json",
+    "/Cargo.toml",
+    "/Cargo.lock",
+    "/README.md",
+    "/LICENSE",
+    "/docs/**",
 ]
 
 [[bin]]
@@ -30,7 +30,7 @@ path = "src/main.rs"
 blazingly-json = "0.1.0"
 mcport = "0.3.0"
 notify = "8.2.0"
-weavatrix-rust = { version = "2.0.1", features = ["full", "lang-rust"] }
+weavatrix-rust = { version = "2.0.2", features = ["full", "lang-rust"] }
 
 [profile.release]
 lto = "fat"

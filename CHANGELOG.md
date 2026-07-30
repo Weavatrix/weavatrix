@@ -1,5 +1,19 @@
 ﻿# Changelog
 
+## 1.1.2 - 2026-07-30
+
+- update the native MCP product to the published `weavatrix-rust` 2.0.2
+  engine;
+- keep every `find_duplicates` family internally consistent after
+  test/classified/low-signal filtering and after `top_n` truncation: excluded
+  members and dangling pair identifiers cannot survive, and the remaining
+  pairs are rebuilt into deterministic connected components;
+- make the distribution boundary explicit: `weavatrix` is the MCP product,
+  while the separate engine diagnostic reports the unambiguous
+  `weavatrix-rust` identity and is not an MCP server;
+- pass the installed native npm identity gate and a bounded 1,000-call
+  `graph_stats` load with zero failures and complete process-tree cleanup.
+
 ## 1.1.1 - 2026-07-30
 
 - update the native MCP product to the `weavatrix-rust` 2.0.1 engine, whose

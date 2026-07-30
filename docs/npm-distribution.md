@@ -42,17 +42,21 @@ available it replaces itself with the native process; otherwise it uses one
 
 Two versions are intentionally visible:
 
-- npm/product version: `weavatrix` 1.1.1;
-- engine version: `weavatrix-rust` 2.0.1.
+- npm/product version: `weavatrix` 1.1.2;
+- engine version: `weavatrix-rust` 2.0.2.
 
 The native binary reports both:
 
 ```text
-weavatrix 1.1.1 (engine 2.0.1)
+weavatrix 1.1.2 (engine 2.0.2)
 ```
 
 `package.json` stores the engine identity in `weavatrixEngineVersion`. Release
 CI compares it with Cargo metadata and every built binary.
+
+The protocol-independent engine has its own diagnostic binary. Its
+`--version` output starts with `weavatrix-rust`, not `weavatrix`, so logs and
+support reports cannot confuse the standalone engine with this MCP product.
 
 ## Build matrix
 

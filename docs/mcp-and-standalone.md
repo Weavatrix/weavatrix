@@ -78,7 +78,11 @@ cargo install weavatrix-rust
 weavatrix-rust analyze .
 weavatrix-rust list-tools .
 weavatrix-rust tool verify_architecture .
+weavatrix-rust --version
 ```
 
 Do not configure that binary as the MCP server. Agent integrations should run
-the canonical `weavatrix` product from npm.
+the canonical `weavatrix` product from npm or Cargo. The standalone version
+command deliberately reports `weavatrix-rust <engine-version>`; only the MCP
+product owns the `weavatrix` identity and reports its product plus embedded
+engine versions.

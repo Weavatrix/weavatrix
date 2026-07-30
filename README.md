@@ -136,11 +136,11 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.1.1
+weavatrix 1.1.2
     profile catalog · session refresh · filesystem watcher · MCP framing
     |
     v
-weavatrix-rust 2.0.1
+weavatrix-rust 2.0.2
     typed graph · analysis pipeline · 39 read-only operations
     |
     +-- weavatrix-scan      repository discovery and selection
@@ -155,6 +155,15 @@ This repository owns the MCP transport, watcher, native npm packaging, and
 client-facing identity `weavatrix`. The
 [`weavatrix-rust`](https://github.com/sergii-ziborov/weavatrix-rust) crate owns
 the reusable engine and standalone diagnostic CLI; it is not an MCP server.
+Its separate binary therefore reports `weavatrix-rust <engine-version>` from
+`--version`, while this product reports both the `weavatrix` product version
+and its embedded engine version.
+
+The 2.0.2 engine also closes an integrity gap in duplicate results. After
+test/classified/low-signal filtering and after `top_n` truncation, Weavatrix
+rebuilds clone families from the pairs that remain. Every returned member and
+pair now belongs to the same deterministic connected component; filtered
+members and dangling pair identifiers cannot leak into `find_duplicates`.
 
 Rust applications that want to embed the engine should depend on the crate:
 
@@ -183,17 +192,17 @@ started with empty HOME, XDG, AppData, and graph caches. The harness validates
 package/native/initialize identity, advertised operations, successful MCP
 results, and process cleanup.
 
-The packaged 1.1.1 product, backed by `weavatrix-rust` 2.0.1, passed the
+The packaged 1.1.2 product, backed by `weavatrix-rust` 2.0.2, passed the
 bounded native gate on 2026-07-30:
 
 | Installed boundary | Result |
 | --- | ---: |
 | Advertised read-only MCP tools | **39** |
-| Cold initialize | **500.780 ms** |
-| `tools/list` after initialize | **1.230 ms** |
-| First `graph_stats` | **55.490 ms** |
-| 1,000 sequential hot `graph_stats` calls | **0 failures · 146.70 calls/s** |
-| Hot latency | **p50 7.040 ms · p95 8.750 ms · p99 9.460 ms** |
+| Cold initialize | **405.770 ms** |
+| `tools/list` after initialize | **0.790 ms** |
+| First `graph_stats` | **54.880 ms** |
+| 1,000 sequential hot `graph_stats` calls | **0 failures · 136.83 calls/s** |
+| Hot latency | **p50 7.610 ms · p95 10.180 ms · p99 12.230 ms** |
 
 The last published baseline (`weavatrix` 1.0.0 versus `weavatrix-js` 0.3.15)
 measured:
@@ -205,7 +214,7 @@ measured:
 | Shared JavaScript call targets missing or wrong | **0 / 0** |
 | Shared imports, methods, and re-exports covered | **100%** |
 
-Those comparison numbers remain historical evidence; the bounded 1.1.1 gate
+Those comparison numbers remain historical evidence; the bounded 1.1.2 gate
 does not present them as a fresh competitor benchmark. Raw evidence and
 methodology live in
 [`benchmark-results`](benchmark-results/) and
