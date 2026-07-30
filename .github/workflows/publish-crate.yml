@@ -62,9 +62,8 @@ jobs:
         shell: bash
         run: |
           VERSION="$(cargo metadata --locked --no-deps --format-version 1 | jq -r '.packages[0].version')"
-          if curl --fail --silent --show-error \
-            "https://crates.io/api/v1/crates/weavatrix/$VERSION" |
-            jq -e --arg version "$VERSION" '.version.num == $version' >/dev/null; then
+          if cargo search weavatrix --limit 20 |
+            grep -F "weavatrix = \"$VERSION\""; then
             echo "published=true" >> "$GITHUB_OUTPUT"
           else
             echo "published=false" >> "$GITHUB_OUTPUT"
@@ -92,9 +91,8 @@ jobs:
         run: |
           VERSION="$(cargo metadata --locked --no-deps --format-version 1 | jq -r '.packages[0].version')"
           for attempt in $(seq 1 24); do
-            if curl --fail --silent --show-error \
-              "https://crates.io/api/v1/crates/weavatrix/$VERSION" |
-              jq -e --arg version "$VERSION" '.version.num == $version' >/dev/null; then
+            if cargo search weavatrix --limit 20 |
+              grep -F "weavatrix = \"$VERSION\""; then
               exit 0
             fi
             sleep 5
