@@ -67,13 +67,18 @@ jobs:
         with:
           node-version: 24
           package-manager-cache: false
+      - name: Assemble npm package skeleton
+        run: node scripts/build-npm-packages.mjs main
       - name: Inspect npm package contents
-        run: npm pack ./npm/weavatrix --dry-run --json
+        shell: bash
+        run: |
+          npm pack ./npm/dist/weavatrix --dry-run --json |
+            node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{const f=new Set(JSON.parse(s)[0].files.map(x=>x.path));for(const p of ['README.md','LICENSE','server.json','skill/SKILL.md','bin/weavatrix.mjs','bin/weavatrix-mcp.mjs'])if(!f.has(p)){console.error('missing package file: '+p);process.exit(1)}})"
       - name: Reject lifecycle scripts and runtime dependencies
         shell: bash
         run: |
-          node -e "const p=require('./npm/weavatrix/package.json');if(p.scripts||p.dependencies||p.optionalDependencies)process.exit(1)"
-          ! find npm/weavatrix -type f -path '*node_modules*' -print -quit | grep .
+          node -e "const p=require('./npm/dist/weavatrix/package.json');if(p.scripts||p.dependencies||p.optionalDependencies)process.exit(1)"
+          ! find npm/dist/weavatrix -type f -path '*node_modules*' -print -quit | grep .
 
   security:
     runs-on: ubuntu-24.04

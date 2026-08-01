@@ -96,9 +96,14 @@ the immutable version becomes visible from the npm registry after publication.
 After building the native binary:
 
 ```sh
-node scripts/build-npm-packages.mjs
-npm pack --dry-run ./npm/weavatrix
+node scripts/build-npm-packages.mjs current <platform-key> <path-to-binary>
+npm pack --dry-run ./npm/dist/weavatrix
 ```
+
+Use one of the platform keys from the build matrix above. The source
+`npm/weavatrix` directory is only the launcher template; it intentionally does
+not contain copied legal/registry/skill assets or native binaries and is never
+the publish target.
 
 Publishing is performed only by the protected workflow. Do not store
 `NPM_TOKEN` in a file, manifest, log, or committed environment configuration.

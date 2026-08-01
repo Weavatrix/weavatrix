@@ -19,6 +19,8 @@ evidence kind, and confidence that produced it.
 This npm package is the convenient prebuilt distribution of the same native
 product published on crates.io as `weavatrix`. It is not a separate
 JavaScript engine; both registry packages run the same Rust adapter and engine.
+The separately versioned `weavatrix-js` package is a legacy compatibility
+implementation and is not bundled here.
 
 ## Install in 30 seconds
 

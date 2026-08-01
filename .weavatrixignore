@@ -1,2 +1,10 @@
 # Generated benchmark evidence is not repository source.
 /benchmark-results/
+
+# Build, package, and legacy hot-reload fixtures are generated artifacts.
+/target/
+/npm/dist/
+/node_modules/
+/dist-mcpb/
+/.mcp-owner-hot-reload-*/
+/*.tgz
