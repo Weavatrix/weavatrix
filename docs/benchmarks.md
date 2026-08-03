@@ -1,9 +1,37 @@
 ﻿# Benchmark report
 
-Current release evidence was measured on 2026-07-30 on the same Windows
+Current release evidence was measured on 2026-08-03 on the same Windows
 workstation. Historical component and in-process graph measurements remain
 below so changes in methodology are visible rather than silently replacing old
 numbers.
+
+## Installed npm MCP boundary: 1.2.0 / engine 2.1.1 vs JavaScript 0.3.15
+
+Both local source trees were assembled and installed into isolated npm roots
+and invoked through their installed package bins against the same real
+JavaScript service repository (emaildist, 2,165 nodes / 5,712 edges). Two
+tools ran three paired fresh processes each with alternating start order;
+warm calls sampled five requests per process after the cold call.
+
+| Measurement | Rust 1.2.0 | JavaScript 0.3.15 | Ratio |
+|---|---:|---:|---:|
+| Cold boundary median (spawn to first tool result) | 157.34 ms | 5,068.22 ms | **32.21x** |
+| Paired cold speedup, median of 6 pairs | - | - | **32.06x** (threshold 24x) |
+| Warm tools/call median | 7.94 ms | 292.55 ms | **36.85x** (threshold 30x) |
+| `graph_stats` paired cold median | 141.14 ms | 5,093.11 ms | 36.09x |
+| `find_dead_code` paired cold median | 173.54 ms | 5,043.33 ms | 28.04x |
+| Peak process-tree RSS median | sampler could not attach | 622,227,456 bytes | - |
+
+The verdict is PASS against both release thresholds, and the paired cold
+median is slightly above the 30.34x recorded for the 1.0.0 gate, so the three
+new tools, token budgets, and dependency-injection evidence did not regress
+the installed boundary. The Windows RSS sampler again could not attach before
+the short Rust processes exited; Rust RSS is unavailable, not zero.
+
+Raw evidence:
+
+- `benchmark-results/npm-mcp-boundary-1.2.0-vs-js-0.3.15.json`
+  (SHA-256 `0E0427E814446A28BF709839FCB905AB1EFF5BDBF4D002B4932829FE44676B91`).
 
 ## Installed native basic and short-load gate: npm 1.1.2 / Rust engine 2.0.2
 

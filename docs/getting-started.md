@@ -1,4 +1,4 @@
-# Getting started
+﻿# Getting started
 
 ## Requirements
 
@@ -67,7 +67,7 @@ npx -y weavatrix analyze .
 Version output reports both identities:
 
 ```text
-weavatrix 1.1.2 (engine 2.0.2)
+weavatrix 1.2.0 (engine 2.1.1)
 ```
 
 `analyze` is a diagnostic command. Agent integrations should use `mcp`.

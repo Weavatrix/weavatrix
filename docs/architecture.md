@@ -48,7 +48,7 @@ The engine owns:
 - deterministic scanning and repository identity;
 - lossless parsing and normalized source facts;
 - graph construction and reference resolution;
-- 39 read-only operations;
+- 42 read-only operations;
 - Git, search, clone, vector, semantic, and memory composition;
 - architecture and evidence semantics.
 

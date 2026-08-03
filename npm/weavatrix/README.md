@@ -8,7 +8,7 @@
 **Give your coding agent repository evidence before it starts guessing.**
 
 Weavatrix is the native MCP product for repository intelligence. It gives
-Codex, Claude Code, and other coding agents 39 read-only operations over one
+Codex, Claude Code, and other coding agents 42 read-only operations over one
 revision-bound evidence graph: impact, architecture, APIs, Git history,
 duplicates, dead code, search, semantic links, and temporal memory.
 
@@ -74,13 +74,13 @@ contract affected by this branch.
 Build the smallest source bundle needed to edit this symbol safely.
 ```
 
-## The 39 read-only operations
+## The 42 read-only operations
 
 | Workflow | Operations |
 | --- | --- |
-| Graph orientation | `graph_stats`, `get_node`, `get_neighbors`, `query_graph`, `god_nodes`, `shortest_path`, `get_community`, `list_communities`, `module_map` |
-| Change impact | `get_dependents`, `change_impact`, `verified_change`, `prepare_change`, `graph_diff` |
-| Exact source context | `search_code`, `read_source`, `inspect_symbol`, `context_bundle` |
+| Graph orientation | `graph_stats`, `get_node`, `get_neighbors`, `query_graph`, `god_nodes`, `shortest_path`, `get_community`, `list_communities`, `module_map`, `build_graph` |
+| Change impact | `get_dependents`, `change_impact`, `select_tests`, `verified_change`, `prepare_change`, `graph_diff` |
+| Exact source context | `search_code`, `read_source`, `inspect_symbol`, `context_bundle`, `map_stacktrace` |
 | Health and quality | `find_duplicates`, `find_dead_code`, `run_audit`, `coverage_map`, `hot_path_review` |
 | APIs and transports | `list_endpoints`, `trace_endpoint`, `trace_api_contract` |
 | Architecture | `get_architecture_contract`, `verify_architecture`, `explain_architecture_violation`, `propose_architecture_exception` |
@@ -110,12 +110,12 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.1.2
+weavatrix 1.2.0
     profile catalog · refresh · watcher · MCP framing
     |
     v
-weavatrix-rust 2.0.2
-    typed graph · analysis · 39 read-only operations
+weavatrix-rust 2.1.1
+    typed graph · analysis · 42 read-only operations
 ```
 
 This npm product owns MCP transport and native distribution. The
@@ -124,10 +124,10 @@ the reusable protocol-independent engine; it is not an MCP server.
 Its standalone diagnostic therefore reports `weavatrix-rust <engine-version>`,
 while this MCP product reports both its product and embedded-engine identities.
 
-Engine 2.0.2 keeps `find_duplicates` families internally consistent after
-test/classified/low-signal filters and `top_n` truncation. Families are rebuilt
-from the surviving pairs, so excluded members and dangling pair identifiers
-cannot remain in the result.
+Engine 2.1.1 adds `map_stacktrace`, `select_tests`, `build_graph`,
+`token_budget` on the source-context operations, and dependency-injection
+type evidence, and keeps `find_duplicates` families internally consistent
+after filtering and `top_n` truncation.
 
 ## Release evidence
 
@@ -135,17 +135,13 @@ The installed-package benchmark packs both products, installs them into
 isolated npm roots, starts fresh MCP processes with empty caches, and validates
 identity, advertised operations, results, and cleanup.
 
-The packaged 1.1.2 product (`weavatrix-rust` 2.0.2) passed the bounded native
-gate on 2026-07-30: 39 tools; cold initialize **405.770 ms**; `tools/list`
-**0.790 ms**; first `graph_stats` **54.880 ms**; and 1,000 hot `graph_stats`
-calls at **136.83 calls/s** with **0 failures**, p50 **7.610 ms**, p95
-**10.180 ms**, and p99 **12.230 ms**.
-
-The last published baseline (`weavatrix` 1.0.0 versus `weavatrix-js` 0.3.15)
-measured a **30.34x** median cold-boundary ratio and **156.10x** warm-call
-ratio. Those comparison numbers remain historical and are not presented as a
-fresh competitor benchmark; the current 1.1.2 gate is bounded and does not
-relabel them.
+The packaged 1.2.0 product (`weavatrix-rust` 2.1.1) was measured on 2026-08-03
+against installed `weavatrix-js` 0.3.15 on a real JavaScript service
+repository: paired cold-boundary median **32.06x** (spawn to first tool
+result: **157.34 ms** vs 5,068.22 ms) and warm tools/call median **36.85x**
+(**7.94 ms** vs 292.55 ms), passing the 24x cold and 30x warm release
+thresholds and sitting slightly above the 30.34x recorded for the 1.0.0
+baseline.
 
 Full evidence and methodology:
 [benchmarks](https://github.com/sergii-ziborov/weavatrix/blob/main/docs/benchmarks.md).

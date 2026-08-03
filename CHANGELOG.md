@@ -1,5 +1,28 @@
 ﻿# Changelog
 
+## 1.2.0 - 2026-08-03
+
+- update the native MCP product to the published `weavatrix-rust` 2.1.1
+  engine: 42 read-only operations;
+- manifests saved with a UTF-8 BOM parse correctly in `build_graph` and the
+  dependency audit, and standalone `go.mod` modules appear in `build_graph`;
+- new tools: `map_stacktrace` (stack-trace text onto repository files and
+  symbols), `select_tests` (static suite selection for a change), and
+  `build_graph` (workspace, target, and runner topology from manifests);
+- `token_budget` on `read_source`, `search_code`, `context_bundle`, and
+  `query_graph` trims answers to an approximate token ceiling and reports
+  the cut;
+- dependency-injection wiring (Spring `@Autowired`, NestJS constructor
+  injection) is graph evidence, so blast-radius and dead-code answers see
+  controller-to-provider coupling;
+- grounded health verdicts: `find_dead_code` honors `path`, tool
+  configuration is not dead code, callbacks count as references, bare Node
+  builtins and installed required peer dependencies are recognized,
+  `change_impact` populates `impacted_nodes`, and unsupported `precision`
+  is an explicit error instead of a silent downgrade;
+- a quiet or coalesced file watcher no longer leaves the graph stale: the
+  repository revision check runs on every tool call.
+
 ## 1.1.2 - 2026-07-30
 
 - update the native MCP product to the published `weavatrix-rust` 2.0.2

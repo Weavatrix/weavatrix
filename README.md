@@ -8,7 +8,7 @@
 **Give your coding agent repository evidence before it starts guessing.**
 
 Weavatrix is the native MCP product for repository intelligence. It gives
-Codex, Claude Code, and other coding agents 39 read-only operations over one
+Codex, Claude Code, and other coding agents 42 read-only operations over one
 revision-bound evidence graph: impact, architecture, APIs, Git history,
 duplicates, dead code, search, semantic links, and temporal memory.
 
@@ -90,13 +90,13 @@ The graph is built once per revision. Impact, API traces, health findings,
 architecture checks, clone families, and context bundles therefore agree about
 repository identity instead of recomputing incompatible partial views.
 
-## The 39 read-only operations
+## The 42 read-only operations
 
 | Workflow | Operations |
 | --- | --- |
-| Graph orientation | `graph_stats`, `get_node`, `get_neighbors`, `query_graph`, `god_nodes`, `shortest_path`, `get_community`, `list_communities`, `module_map` |
-| Change impact | `get_dependents`, `change_impact`, `verified_change`, `prepare_change`, `graph_diff` |
-| Exact source context | `search_code`, `read_source`, `inspect_symbol`, `context_bundle` |
+| Graph orientation | `graph_stats`, `get_node`, `get_neighbors`, `query_graph`, `god_nodes`, `shortest_path`, `get_community`, `list_communities`, `module_map`, `build_graph` |
+| Change impact | `get_dependents`, `change_impact`, `select_tests`, `verified_change`, `prepare_change`, `graph_diff` |
+| Exact source context | `search_code`, `read_source`, `inspect_symbol`, `context_bundle`, `map_stacktrace` |
 | Health and quality | `find_duplicates`, `find_dead_code`, `run_audit`, `coverage_map`, `hot_path_review` |
 | APIs and transports | `list_endpoints`, `trace_endpoint`, `trace_api_contract` |
 | Architecture | `get_architecture_contract`, `verify_architecture`, `explain_architecture_violation`, `propose_architecture_exception` |
@@ -138,12 +138,12 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.1.2
+weavatrix 1.2.0
     profile catalog · session refresh · filesystem watcher · MCP framing
     |
     v
-weavatrix-rust 2.0.2
-    typed graph · analysis pipeline · 39 read-only operations
+weavatrix-rust 2.1.1
+    typed graph · analysis pipeline · 42 read-only operations
     |
     +-- weavatrix-scan      repository discovery and selection
     +-- weavatrix-parse     lossless tokenization and structural facts
@@ -194,31 +194,21 @@ started with empty HOME, XDG, AppData, and graph caches. The harness validates
 package/native/initialize identity, advertised operations, successful MCP
 results, and process cleanup.
 
-The packaged 1.1.2 product, backed by `weavatrix-rust` 2.0.2, passed the
-bounded native gate on 2026-07-30:
+The packaged 1.2.0 product, backed by `weavatrix-rust` 2.1.1, was measured on
+2026-08-03 against installed `weavatrix-js` 0.3.15 on the same real
+JavaScript service repository (2,165 nodes / 5,712 edges), three paired fresh
+processes per tool with alternating start order:
 
-| Installed boundary | Result |
-| --- | ---: |
-| Advertised read-only MCP tools | **39** |
-| Cold initialize | **405.770 ms** |
-| `tools/list` after initialize | **0.790 ms** |
-| First `graph_stats` | **54.880 ms** |
-| 1,000 sequential hot `graph_stats` calls | **0 failures · 136.83 calls/s** |
-| Hot latency | **p50 7.610 ms · p95 10.180 ms · p99 12.230 ms** |
+| Installed boundary | Rust 1.2.0 | JavaScript 0.3.15 | Ratio |
+| --- | ---: | ---: | ---: |
+| Cold boundary median (spawn to first tool result) | **157.34 ms** | 5,068.22 ms | **32.21x** |
+| Paired cold speedup, median of 6 pairs | - | - | **32.06x** |
+| Warm tools/call median | **7.94 ms** | 292.55 ms | **36.85x** |
 
-The last published baseline (`weavatrix` 1.0.0 versus `weavatrix-js` 0.3.15)
-measured:
-
-| Boundary | Result |
-| --- | ---: |
-| Median of 12 paired cold ratios | **30.34x** |
-| Warm tool-call median ratio | **156.10x** |
-| Shared JavaScript call targets missing or wrong | **0 / 0** |
-| Shared imports, methods, and re-exports covered | **100%** |
-
-Those comparison numbers remain historical evidence; the bounded 1.1.2 gate
-does not present them as a fresh competitor benchmark. Raw evidence and
-methodology live in
+Both release thresholds (24x cold, 30x warm) passed, and the paired cold
+median sits slightly above the 30.34x recorded for the 1.0.0 baseline, so the
+three new tools, token budgets, and dependency-injection evidence did not
+regress the installed boundary. Raw evidence and methodology live in
 [`benchmark-results`](benchmark-results/) and
 [`docs/benchmarks.md`](docs/benchmarks.md).
 

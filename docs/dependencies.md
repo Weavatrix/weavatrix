@@ -5,7 +5,7 @@ engine.
 
 | Dependency | Layer | Purpose |
 | --- | --- | --- |
-| `weavatrix-rust` 2.x | repository adapter | protocol-independent graph, analysis, and 39 operations |
+| `weavatrix-rust` 2.x | repository adapter | protocol-independent graph, analysis, and 42 operations |
 | `mcport` 0.3.x | inbound server | blocking modern/legacy MCP stdio and JSON-RPC shapes |
 | `notify` 8.x | change-monitor adapter | recursive local filesystem invalidation |
 | `blazingly-json` | ports/application | stable JSON value boundary without a second application model |

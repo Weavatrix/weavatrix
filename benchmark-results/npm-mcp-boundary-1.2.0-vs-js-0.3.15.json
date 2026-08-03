@@ -1,0 +1,4360 @@
+{
+  "schema": "weavatrix.npm-mcp-boundary.v3",
+  "generatedAt": "2026-08-03T14:49:45.372Z",
+  "status": "PASS",
+  "measurementBoundary": {
+    "packagePreparation": "EXCLUDED: local directories are packed before install timing; supplied tarballs are reused",
+    "install": "npm install into a new empty root with --ignore-scripts --no-audit --no-fund --package-lock=false",
+    "invocation": "installed package manifest bin -> Node launcher -> MCP stdio; Rust wrapper may spawn a native child",
+    "startup": "spawn() call until the operating system child spawn event; excludes npm install and package preparation",
+    "initialize": "MCP initialize request write after spawn event until matching response",
+    "list": "MCP tools/list request/response after notifications/initialized",
+    "coldCall": "first tools/call for that tool in a fresh installed-package MCP process",
+    "coldBoundary": "wall time from spawning a fresh installed-package MCP process through its first successful tools/call response",
+    "warmCall": "5 subsequent tools/call request/response samples in the same process",
+    "coldSampling": "3 paired fresh-process samples per tool with alternating Rust/JavaScript order",
+    "runtimeState": "each engine session receives a distinct empty HOME, USERPROFILE, APPDATA, LOCALAPPDATA, XDG directories, and WEAVATRIX_GRAPH_HOME",
+    "memory": "peak sampled resident working set summed over the launcher process tree; sampler is outside that tree",
+    "runtimeNetwork": {
+      "requested": false,
+      "enforcement": "best-effort environment policy, not an operating-system network namespace",
+      "details": "offline flags and non-routable proxy variables are set; the harness itself performs no runtime network requests"
+    },
+    "excluded": [
+      "local package packing",
+      "temporary-root cleanup",
+      "report serialization",
+      "cross-engine output equality (this benchmark checks boundary success and invariants)"
+    ]
+  },
+  "configuration": {
+    "repository": "C:\\Users\\SergiiZiborov\\Documents\\GitHub\\emaildist",
+    "tools": [
+      "graph_stats",
+      "find_dead_code"
+    ],
+    "coldSamplesPerTool": 3,
+    "warmSamplesPerTool": 5,
+    "timeoutMs": 120000,
+    "memorySampleIntervalMs": 50,
+    "minimumColdBoundarySpeedup": 24,
+    "minimumWarmCallSpeedup": 30,
+    "installOffline": false,
+    "keepTemporaryRoot": false
+  },
+  "execution": {
+    "ordering": "paired by tool and cold sample; first engine alternates globally between Rust and JavaScript",
+    "runtimeIsolation": {
+      "policy": "fresh-empty-per-session",
+      "inheritedHomeExcluded": true,
+      "inheritedWeavatrixGraphHomeExcluded": true,
+      "environment": [
+        "HOME",
+        "USERPROFILE",
+        "APPDATA",
+        "LOCALAPPDATA",
+        "XDG_CACHE_HOME",
+        "XDG_CONFIG_HOME",
+        "XDG_DATA_HOME",
+        "XDG_STATE_HOME",
+        "XDG_RUNTIME_DIR",
+        "WEAVATRIX_GRAPH_HOME"
+      ]
+    },
+    "pairs": [
+      {
+        "id": "graph_stats#1",
+        "tool": "graph_stats",
+        "coldSample": 1,
+        "order": [
+          "rust",
+          "javascript"
+        ],
+        "sessions": {
+          "rust": {
+            "status": "PASS",
+            "coldBoundaryMs": 125.39
+          },
+          "javascript": {
+            "status": "PASS",
+            "coldBoundaryMs": 6704.58
+          }
+        }
+      },
+      {
+        "id": "graph_stats#2",
+        "tool": "graph_stats",
+        "coldSample": 2,
+        "order": [
+          "javascript",
+          "rust"
+        ],
+        "sessions": {
+          "javascript": {
+            "status": "PASS",
+            "coldBoundaryMs": 5093.11
+          },
+          "rust": {
+            "status": "PASS",
+            "coldBoundaryMs": 141.14
+          }
+        }
+      },
+      {
+        "id": "graph_stats#3",
+        "tool": "graph_stats",
+        "coldSample": 3,
+        "order": [
+          "rust",
+          "javascript"
+        ],
+        "sessions": {
+          "rust": {
+            "status": "PASS",
+            "coldBoundaryMs": 174.3
+          },
+          "javascript": {
+            "status": "PASS",
+            "coldBoundaryMs": 4293.45
+          }
+        }
+      },
+      {
+        "id": "find_dead_code#1",
+        "tool": "find_dead_code",
+        "coldSample": 1,
+        "order": [
+          "javascript",
+          "rust"
+        ],
+        "sessions": {
+          "javascript": {
+            "status": "PASS",
+            "coldBoundaryMs": 5043.33
+          },
+          "rust": {
+            "status": "PASS",
+            "coldBoundaryMs": 225.8
+          }
+        }
+      },
+      {
+        "id": "find_dead_code#2",
+        "tool": "find_dead_code",
+        "coldSample": 2,
+        "order": [
+          "rust",
+          "javascript"
+        ],
+        "sessions": {
+          "rust": {
+            "status": "PASS",
+            "coldBoundaryMs": 173.54
+          },
+          "javascript": {
+            "status": "PASS",
+            "coldBoundaryMs": 4866.53
+          }
+        }
+      },
+      {
+        "id": "find_dead_code#3",
+        "tool": "find_dead_code",
+        "coldSample": 3,
+        "order": [
+          "javascript",
+          "rust"
+        ],
+        "sessions": {
+          "javascript": {
+            "status": "PASS",
+            "coldBoundaryMs": 6638.17
+          },
+          "rust": {
+            "status": "PASS",
+            "coldBoundaryMs": 130.52
+          }
+        }
+      }
+    ]
+  },
+  "engines": {
+    "rust": {
+      "package": {
+        "name": "weavatrix",
+        "version": "1.2.0",
+        "mainInput": "C:\\Users\\SergiiZiborov\\Documents\\GitHub\\MyProjects\\weavatrix\\npm\\dist\\weavatrix",
+        "preparedMain": {
+          "method": "npm-pack-local-directory",
+          "sha256": "397c9e942956c62e0ab891c281441e217fd46e282016ebb7e797385c9a99979f",
+          "bytes": 3241222
+        },
+        "platformInput": null,
+        "preparedPlatform": null,
+        "installedBinName": "weavatrix-mcp",
+        "installedBinEntry": "node_modules/weavatrix/bin/weavatrix-mcp.mjs",
+        "installedManifestSha256": "4c1ea6643ebb5c3a07ebcb6cf9721ce1e49e5d9584bcf0e6c088de2c361432c5",
+        "installedLauncherSha256": "5d3cf8ba5a2476a1c027ea7ca1be1351e9d59f9256ed5f458d5e78cf45f9185e"
+      },
+      "identity": {
+        "package": {
+          "name": "weavatrix",
+          "version": "1.2.0",
+          "engineVersion": "2.1.1",
+          "manifest": "node_modules/weavatrix/package.json",
+          "manifestSha256": "4c1ea6643ebb5c3a07ebcb6cf9721ce1e49e5d9584bcf0e6c088de2c361432c5"
+        },
+        "launcher": {
+          "path": "node_modules/weavatrix/bin/weavatrix-mcp.mjs",
+          "sha256": "5d3cf8ba5a2476a1c027ea7ca1be1351e9d59f9256ed5f458d5e78cf45f9185e",
+          "bytes": 386
+        },
+        "nativeBinary": {
+          "availability": "AVAILABLE",
+          "path": "node_modules/weavatrix/bin/native/win32-x64/weavatrix.exe",
+          "sha256": "4e7ef3489178ae8634b1a87f56b2b32c18aafdfab24ee38b86d6f0f46154d179",
+          "bytes": 7054848,
+          "expectedVersionOutput": "weavatrix 1.2.0 (engine 2.1.1)",
+          "actualVersionOutput": "weavatrix 1.2.0 (engine 2.1.1)",
+          "exitCode": 0,
+          "identityMatchesPackage": true
+        },
+        "invariants": [
+          {
+            "name": "installed package has a non-empty version",
+            "pass": true
+          },
+          {
+            "name": "installed launcher is a regular file",
+            "pass": true,
+            "detail": "C:\\Users\\SERGII~1\\AppData\\Local\\Temp\\weavatrix-npm-mcp-zNTd31\\install-rust\\node_modules\\weavatrix\\bin\\weavatrix-mcp.mjs"
+          },
+          {
+            "name": "installed Rust package contains the current-platform native executable",
+            "pass": true
+          },
+          {
+            "name": "native executable reports the package and engine versions",
+            "pass": true,
+            "detail": "expected=\"weavatrix 1.2.0 (engine 2.1.1)\"; actual=\"weavatrix 1.2.0 (engine 2.1.1)\"; exit=0"
+          }
+        ]
+      },
+      "install": {
+        "wallMs": 1048.36,
+        "flags": [
+          "--ignore-scripts",
+          "--no-audit",
+          "--no-fund",
+          "--package-lock=false",
+          "--prefer-offline"
+        ],
+        "exitCode": 0,
+        "stdoutTail": "\nadded 1 package in 929ms\n",
+        "stderrTail": ""
+      },
+      "sessions": [
+        {
+          "tool": "graph_stats",
+          "toolArguments": {
+            "output_format": "json"
+          },
+          "pairId": "graph_stats#1",
+          "coldSample": 1,
+          "orderPosition": 1,
+          "isolation": {
+            "policy": "fresh-empty-per-session",
+            "root": "C:\\Users\\SERGII~1\\AppData\\Local\\Temp\\weavatrix-npm-mcp-zNTd31\\runtime-state\\graph_stats-1108c92f\\cold-1\\rust",
+            "graphHome": "C:\\Users\\SERGII~1\\AppData\\Local\\Temp\\weavatrix-npm-mcp-zNTd31\\runtime-state\\graph_stats-1108c92f\\cold-1\\rust\\.weavatrix\\graphs",
+            "graphHomeExistedBeforeSession": false,
+            "inheritedHomeExcluded": true,
+            "inheritedWeavatrixGraphHomeExcluded": true,
+            "environment": [
+              "HOME",
+              "USERPROFILE",
+              "APPDATA",
+              "LOCALAPPDATA",
+              "XDG_CACHE_HOME",
+              "XDG_CONFIG_HOME",
+              "XDG_DATA_HOME",
+              "XDG_STATE_HOME",
+              "XDG_RUNTIME_DIR",
+              "WEAVATRIX_GRAPH_HOME"
+            ]
+          },
+          "timings": {
+            "warmCallMs": [
+              6.58,
+              6.43,
+              6.95,
+              7.67,
+              6.45
+            ],
+            "startMs": 33.25,
+            "initializeMs": 82.92,
+            "listMs": 0.75,
+            "coldCallMs": 7.46,
+            "coldBoundaryMs": 125.39,
+            "warmCallSummaryMs": {
+              "samples": 5,
+              "min": 6.43,
+              "median": 6.58,
+              "p95": 7.53,
+              "max": 7.67
+            }
+          },
+          "protocol": {
+            "initialize": {
+              "ok": true,
+              "protocolVersion": "2025-06-18",
+              "serverInfo": {
+                "name": "weavatrix",
+                "version": "1.2.0"
+              },
+              "capabilities": {
+                "tools": {
+                  "listChanged": false
+                }
+              },
+              "error": null,
+              "installedPackageVersion": "1.2.0",
+              "expectedRuntimeVersion": "1.2.0",
+              "packageVersionMatch": true
+            },
+            "tools": {
+              "count": 42,
+              "requestedAdvertised": true,
+              "catalogSha256": "b928636bef865ba366bd7bff556bd4bfa4859fdf4d84d7c906cf0bbab6a4a584"
+            }
+          },
+          "coldCall": {
+            "ok": true,
+            "isError": false,
+            "jsonRpcError": null,
+            "responseBytes": 11855,
+            "responseSha256": "f7278b603b812f671072df5ba811a7bc162d8259b9e68442e163fc6c647330c5",
+            "contentTypes": [
+              "text"
+            ],
+            "structuredContent": true,
+            "parseableTextJson": true
+          },
+          "warmCalls": [
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 11855,
+              "responseSha256": "c6e3f27578a600eee20c17839f7b370900dc923e6d66000ce3fb21c54c7c1503",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 11855,
+              "responseSha256": "984ebd08caa13b9496a433612722d98c78efff96570bfb895bf071639e3d9bd8",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 11855,
+              "responseSha256": "64e0cc6f4c5b0baf694271389a17e1bdf4ee9add50c11c80ff5f3a61e3b1ff57",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 11855,
+              "responseSha256": "d0cb4738b0e2074139b25054104400e8a532b8e561f5894b5f24b21293030c69",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 11855,
+              "responseSha256": "4760a12a427eacc03ed1a785200fd87f48f72fc121d174a1eaf9f04f4671eb92",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            }
+          ],
+          "invariants": [
+            {
+              "name": "initialize returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "initialize server version matches the package engine version",
+              "pass": true,
+              "detail": "package=1.2.0; engine=1.2.0; initialize=1.2.0"
+            },
+            {
+              "name": "tools/list returns a non-empty catalog",
+              "pass": true
+            },
+            {
+              "name": "tools/list advertises graph_stats",
+              "pass": true
+            },
+            {
+              "name": "cold graph_stats returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "cold graph_stats does not return isError",
+              "pass": true
+            },
+            {
+              "name": "cold graph_stats returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "cold graph_stats exposes non-negative graph counts",
+              "pass": true
+            },
+            {
+              "name": "warm[0] graph_stats returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[0] graph_stats does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[0] graph_stats returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[0] graph_stats exposes non-negative graph counts",
+              "pass": true
+            },
+            {
+              "name": "warm[1] graph_stats returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[1] graph_stats does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[1] graph_stats returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[1] graph_stats exposes non-negative graph counts",
+              "pass": true
+            },
+            {
+              "name": "warm[2] graph_stats returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[2] graph_stats does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[2] graph_stats returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[2] graph_stats exposes non-negative graph counts",
+              "pass": true
+            },
+            {
+              "name": "warm[3] graph_stats returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[3] graph_stats does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[3] graph_stats returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[3] graph_stats exposes non-negative graph counts",
+              "pass": true
+            },
+            {
+              "name": "warm[4] graph_stats returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[4] graph_stats does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[4] graph_stats returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[4] graph_stats exposes non-negative graph counts",
+              "pass": true
+            },
+            {
+              "name": "MCP launcher process tree cleaned up",
+              "pass": true
+            }
+          ],
+          "memory": {
+            "samples": 1,
+            "method": "windows-cim-process-tree-working-set-sampling",
+            "sampledProcessIdentities": [],
+            "liveSampledProcessIdentities": [],
+            "sampledPids": [],
+            "peakProcessTreeRssBytes": null,
+            "availability": "UNAVAILABLE",
+            "sampleIntervalMs": 50,
+            "reason": "process exited before the Windows sampler captured a non-zero working set"
+          },
+          "cleanup": {
+            "stdinClosed": true,
+            "gracefulExit": true,
+            "forced": false,
+            "exitCode": 0,
+            "signal": null,
+            "processTreeGone": true,
+            "liveSampledPids": [],
+            "liveSampledProcessIdentities": [],
+            "wallMs": 1180.22,
+            "error": null
+          },
+          "stderrTail": "",
+          "status": "PASS",
+          "engine": "rust"
+        },
+        {
+          "tool": "graph_stats",
+          "toolArguments": {
+            "output_format": "json"
+          },
+          "pairId": "graph_stats#2",
+          "coldSample": 2,
+          "orderPosition": 2,
+          "isolation": {
+            "policy": "fresh-empty-per-session",
+            "root": "C:\\Users\\SERGII~1\\AppData\\Local\\Temp\\weavatrix-npm-mcp-zNTd31\\runtime-state\\graph_stats-1108c92f\\cold-2\\rust",
+            "graphHome": "C:\\Users\\SERGII~1\\AppData\\Local\\Temp\\weavatrix-npm-mcp-zNTd31\\runtime-state\\graph_stats-1108c92f\\cold-2\\rust\\.weavatrix\\graphs",
+            "graphHomeExistedBeforeSession": false,
+            "inheritedHomeExcluded": true,
+            "inheritedWeavatrixGraphHomeExcluded": true,
+            "environment": [
+              "HOME",
+              "USERPROFILE",
+              "APPDATA",
+              "LOCALAPPDATA",
+              "XDG_CACHE_HOME",
+              "XDG_CONFIG_HOME",
+              "XDG_DATA_HOME",
+              "XDG_STATE_HOME",
+              "XDG_RUNTIME_DIR",
+              "WEAVATRIX_GRAPH_HOME"
+            ]
+          },
+          "timings": {
+            "warmCallMs": [
+              6.45,
+              7.2,
+              7.59,
+              6.81,
+              7.8
+            ],
+            "startMs": 22.51,
+            "initializeMs": 110.07,
+            "listMs": 0.47,
+            "coldCallMs": 7.25,
+            "coldBoundaryMs": 141.14,
+            "warmCallSummaryMs": {
+              "samples": 5,
+              "min": 6.45,
+              "median": 7.2,
+              "p95": 7.76,
+              "max": 7.8
+            }
+          },
+          "protocol": {
+            "initialize": {
+              "ok": true,
+              "protocolVersion": "2025-06-18",
+              "serverInfo": {
+                "name": "weavatrix",
+                "version": "1.2.0"
+              },
+              "capabilities": {
+                "tools": {
+                  "listChanged": false
+                }
+              },
+              "error": null,
+              "installedPackageVersion": "1.2.0",
+              "expectedRuntimeVersion": "1.2.0",
+              "packageVersionMatch": true
+            },
+            "tools": {
+              "count": 42,
+              "requestedAdvertised": true,
+              "catalogSha256": "b928636bef865ba366bd7bff556bd4bfa4859fdf4d84d7c906cf0bbab6a4a584"
+            }
+          },
+          "coldCall": {
+            "ok": true,
+            "isError": false,
+            "jsonRpcError": null,
+            "responseBytes": 11855,
+            "responseSha256": "a020872dd201cbb109b86976e54c0d50bf57fbcd24fe057f1521b1814bed824d",
+            "contentTypes": [
+              "text"
+            ],
+            "structuredContent": true,
+            "parseableTextJson": true
+          },
+          "warmCalls": [
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 11855,
+              "responseSha256": "267a3f90806f9cdeeb1c74c2269e4a00cccb03400458962426cff2f333fe0499",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 11855,
+              "responseSha256": "14c7b20347876dfa3e41a8620adc1dc1a240552fb1742e9566cb7c8567340810",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 11855,
+              "responseSha256": "b7a918f4c8bb5555bcfd64c16940fe03638c009efd1e15654f06b1ba45a0768d",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 11855,
+              "responseSha256": "0fc5a1319ee35b9deaf69dd6c620281b575c1d595bbdb785f4b33ce7634b0d8d",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 11855,
+              "responseSha256": "3dea07b96c99bb2865e96c419f53d240a655d1bd689a0dce953337d3d4485f6b",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            }
+          ],
+          "invariants": [
+            {
+              "name": "initialize returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "initialize server version matches the package engine version",
+              "pass": true,
+              "detail": "package=1.2.0; engine=1.2.0; initialize=1.2.0"
+            },
+            {
+              "name": "tools/list returns a non-empty catalog",
+              "pass": true
+            },
+            {
+              "name": "tools/list advertises graph_stats",
+              "pass": true
+            },
+            {
+              "name": "cold graph_stats returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "cold graph_stats does not return isError",
+              "pass": true
+            },
+            {
+              "name": "cold graph_stats returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "cold graph_stats exposes non-negative graph counts",
+              "pass": true
+            },
+            {
+              "name": "warm[0] graph_stats returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[0] graph_stats does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[0] graph_stats returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[0] graph_stats exposes non-negative graph counts",
+              "pass": true
+            },
+            {
+              "name": "warm[1] graph_stats returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[1] graph_stats does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[1] graph_stats returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[1] graph_stats exposes non-negative graph counts",
+              "pass": true
+            },
+            {
+              "name": "warm[2] graph_stats returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[2] graph_stats does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[2] graph_stats returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[2] graph_stats exposes non-negative graph counts",
+              "pass": true
+            },
+            {
+              "name": "warm[3] graph_stats returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[3] graph_stats does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[3] graph_stats returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[3] graph_stats exposes non-negative graph counts",
+              "pass": true
+            },
+            {
+              "name": "warm[4] graph_stats returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[4] graph_stats does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[4] graph_stats returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[4] graph_stats exposes non-negative graph counts",
+              "pass": true
+            },
+            {
+              "name": "MCP launcher process tree cleaned up",
+              "pass": true
+            }
+          ],
+          "memory": {
+            "samples": 1,
+            "method": "windows-cim-process-tree-working-set-sampling",
+            "sampledProcessIdentities": [],
+            "liveSampledProcessIdentities": [],
+            "sampledPids": [],
+            "peakProcessTreeRssBytes": null,
+            "availability": "UNAVAILABLE",
+            "sampleIntervalMs": 50,
+            "reason": "process exited before the Windows sampler captured a non-zero working set"
+          },
+          "cleanup": {
+            "stdinClosed": true,
+            "gracefulExit": true,
+            "forced": false,
+            "exitCode": 0,
+            "signal": null,
+            "processTreeGone": true,
+            "liveSampledPids": [],
+            "liveSampledProcessIdentities": [],
+            "wallMs": 1104.25,
+            "error": null
+          },
+          "stderrTail": "",
+          "status": "PASS",
+          "engine": "rust"
+        },
+        {
+          "tool": "graph_stats",
+          "toolArguments": {
+            "output_format": "json"
+          },
+          "pairId": "graph_stats#3",
+          "coldSample": 3,
+          "orderPosition": 1,
+          "isolation": {
+            "policy": "fresh-empty-per-session",
+            "root": "C:\\Users\\SERGII~1\\AppData\\Local\\Temp\\weavatrix-npm-mcp-zNTd31\\runtime-state\\graph_stats-1108c92f\\cold-3\\rust",
+            "graphHome": "C:\\Users\\SERGII~1\\AppData\\Local\\Temp\\weavatrix-npm-mcp-zNTd31\\runtime-state\\graph_stats-1108c92f\\cold-3\\rust\\.weavatrix\\graphs",
+            "graphHomeExistedBeforeSession": false,
+            "inheritedHomeExcluded": true,
+            "inheritedWeavatrixGraphHomeExcluded": true,
+            "environment": [
+              "HOME",
+              "USERPROFILE",
+              "APPDATA",
+              "LOCALAPPDATA",
+              "XDG_CACHE_HOME",
+              "XDG_CONFIG_HOME",
+              "XDG_DATA_HOME",
+              "XDG_STATE_HOME",
+              "XDG_RUNTIME_DIR",
+              "WEAVATRIX_GRAPH_HOME"
+            ]
+          },
+          "timings": {
+            "warmCallMs": [
+              7.97,
+              7.47,
+              7,
+              7.37,
+              7.56
+            ],
+            "startMs": 24.78,
+            "initializeMs": 139.45,
+            "listMs": 0.84,
+            "coldCallMs": 8.63,
+            "coldBoundaryMs": 174.3,
+            "warmCallSummaryMs": {
+              "samples": 5,
+              "min": 7,
+              "median": 7.47,
+              "p95": 7.89,
+              "max": 7.97
+            }
+          },
+          "protocol": {
+            "initialize": {
+              "ok": true,
+              "protocolVersion": "2025-06-18",
+              "serverInfo": {
+                "name": "weavatrix",
+                "version": "1.2.0"
+              },
+              "capabilities": {
+                "tools": {
+                  "listChanged": false
+                }
+              },
+              "error": null,
+              "installedPackageVersion": "1.2.0",
+              "expectedRuntimeVersion": "1.2.0",
+              "packageVersionMatch": true
+            },
+            "tools": {
+              "count": 42,
+              "requestedAdvertised": true,
+              "catalogSha256": "b928636bef865ba366bd7bff556bd4bfa4859fdf4d84d7c906cf0bbab6a4a584"
+            }
+          },
+          "coldCall": {
+            "ok": true,
+            "isError": false,
+            "jsonRpcError": null,
+            "responseBytes": 11855,
+            "responseSha256": "e9ac29e7fd6d0c26af3e2df2e1e9cd15d90905be2240d4393298e4195f485536",
+            "contentTypes": [
+              "text"
+            ],
+            "structuredContent": true,
+            "parseableTextJson": true
+          },
+          "warmCalls": [
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 11855,
+              "responseSha256": "12cbea53e4c12d15cfb620347426099ab427144cd4d95a5eb56930fb64fdf417",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 11855,
+              "responseSha256": "4fa20688c3f65a4fa1225245acf900f9f951e1fef2475ec4d30c3668361d2856",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 11855,
+              "responseSha256": "269bd1f11c4df4c3104e5836beb417ed2a2bbfba1eacf5232fa8b8c2b128797f",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 11855,
+              "responseSha256": "910b3cb074bd3c5fffe67650ff2796887c730e28cb97a903ca34eba072645a38",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 11855,
+              "responseSha256": "9cf37a8ca22746f4f83bbe329c8ce87d404ad34103233f3aeee5d031fcdf2a28",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            }
+          ],
+          "invariants": [
+            {
+              "name": "initialize returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "initialize server version matches the package engine version",
+              "pass": true,
+              "detail": "package=1.2.0; engine=1.2.0; initialize=1.2.0"
+            },
+            {
+              "name": "tools/list returns a non-empty catalog",
+              "pass": true
+            },
+            {
+              "name": "tools/list advertises graph_stats",
+              "pass": true
+            },
+            {
+              "name": "cold graph_stats returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "cold graph_stats does not return isError",
+              "pass": true
+            },
+            {
+              "name": "cold graph_stats returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "cold graph_stats exposes non-negative graph counts",
+              "pass": true
+            },
+            {
+              "name": "warm[0] graph_stats returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[0] graph_stats does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[0] graph_stats returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[0] graph_stats exposes non-negative graph counts",
+              "pass": true
+            },
+            {
+              "name": "warm[1] graph_stats returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[1] graph_stats does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[1] graph_stats returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[1] graph_stats exposes non-negative graph counts",
+              "pass": true
+            },
+            {
+              "name": "warm[2] graph_stats returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[2] graph_stats does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[2] graph_stats returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[2] graph_stats exposes non-negative graph counts",
+              "pass": true
+            },
+            {
+              "name": "warm[3] graph_stats returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[3] graph_stats does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[3] graph_stats returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[3] graph_stats exposes non-negative graph counts",
+              "pass": true
+            },
+            {
+              "name": "warm[4] graph_stats returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[4] graph_stats does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[4] graph_stats returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[4] graph_stats exposes non-negative graph counts",
+              "pass": true
+            },
+            {
+              "name": "MCP launcher process tree cleaned up",
+              "pass": true
+            }
+          ],
+          "memory": {
+            "samples": 1,
+            "method": "windows-cim-process-tree-working-set-sampling",
+            "sampledProcessIdentities": [],
+            "liveSampledProcessIdentities": [],
+            "sampledPids": [],
+            "peakProcessTreeRssBytes": null,
+            "availability": "UNAVAILABLE",
+            "sampleIntervalMs": 50,
+            "reason": "process exited before the Windows sampler captured a non-zero working set"
+          },
+          "cleanup": {
+            "stdinClosed": true,
+            "gracefulExit": true,
+            "forced": false,
+            "exitCode": 0,
+            "signal": null,
+            "processTreeGone": true,
+            "liveSampledPids": [],
+            "liveSampledProcessIdentities": [],
+            "wallMs": 1039.94,
+            "error": null
+          },
+          "stderrTail": "",
+          "status": "PASS",
+          "engine": "rust"
+        },
+        {
+          "tool": "find_dead_code",
+          "toolArguments": {},
+          "pairId": "find_dead_code#1",
+          "coldSample": 1,
+          "orderPosition": 2,
+          "isolation": {
+            "policy": "fresh-empty-per-session",
+            "root": "C:\\Users\\SERGII~1\\AppData\\Local\\Temp\\weavatrix-npm-mcp-zNTd31\\runtime-state\\find_dead_code-87f0ccc2\\cold-1\\rust",
+            "graphHome": "C:\\Users\\SERGII~1\\AppData\\Local\\Temp\\weavatrix-npm-mcp-zNTd31\\runtime-state\\find_dead_code-87f0ccc2\\cold-1\\rust\\.weavatrix\\graphs",
+            "graphHomeExistedBeforeSession": false,
+            "inheritedHomeExcluded": true,
+            "inheritedWeavatrixGraphHomeExcluded": true,
+            "environment": [
+              "HOME",
+              "USERPROFILE",
+              "APPDATA",
+              "LOCALAPPDATA",
+              "XDG_CACHE_HOME",
+              "XDG_CONFIG_HOME",
+              "XDG_DATA_HOME",
+              "XDG_STATE_HOME",
+              "XDG_RUNTIME_DIR",
+              "WEAVATRIX_GRAPH_HOME"
+            ]
+          },
+          "timings": {
+            "warmCallMs": [
+              12.88,
+              13.75,
+              15.57,
+              11.04,
+              12.36
+            ],
+            "startMs": 15.52,
+            "initializeMs": 192.97,
+            "listMs": 0.75,
+            "coldCallMs": 15.9,
+            "coldBoundaryMs": 225.8,
+            "warmCallSummaryMs": {
+              "samples": 5,
+              "min": 11.04,
+              "median": 12.88,
+              "p95": 15.21,
+              "max": 15.57
+            }
+          },
+          "protocol": {
+            "initialize": {
+              "ok": true,
+              "protocolVersion": "2025-06-18",
+              "serverInfo": {
+                "name": "weavatrix",
+                "version": "1.2.0"
+              },
+              "capabilities": {
+                "tools": {
+                  "listChanged": false
+                }
+              },
+              "error": null,
+              "installedPackageVersion": "1.2.0",
+              "expectedRuntimeVersion": "1.2.0",
+              "packageVersionMatch": true
+            },
+            "tools": {
+              "count": 42,
+              "requestedAdvertised": true,
+              "catalogSha256": "b928636bef865ba366bd7bff556bd4bfa4859fdf4d84d7c906cf0bbab6a4a584"
+            }
+          },
+          "coldCall": {
+            "ok": true,
+            "isError": false,
+            "jsonRpcError": null,
+            "responseBytes": 344,
+            "responseSha256": "1ca3c1e95ac5c3d4927363a878e7809b0bd9f84b154e289827b6fb2844e751f1",
+            "contentTypes": [
+              "text"
+            ],
+            "structuredContent": true,
+            "parseableTextJson": true
+          },
+          "warmCalls": [
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 344,
+              "responseSha256": "8b9f01bc22327baa108b194858fdb7bfb63ea7d217382c0d70b886fa2f6e1483",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 344,
+              "responseSha256": "d3b9a8f97423fab9e54dba2cdfeddf4075b79682481db922e0f5c89c35c1e508",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 344,
+              "responseSha256": "9ae65f9b8cc020568ccfdf38da80c954c185849a4890dc4a3fcb1088afc56f9e",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 344,
+              "responseSha256": "f2cc42fe78b61f4feb3d06d3ad54471d52801623f9949822449761e39fac6f48",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 344,
+              "responseSha256": "48f92fd7eeaf295eb2c2508e28c1170557a775151b9b9e21939bdab6c0fca2f3",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            }
+          ],
+          "invariants": [
+            {
+              "name": "initialize returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "initialize server version matches the package engine version",
+              "pass": true,
+              "detail": "package=1.2.0; engine=1.2.0; initialize=1.2.0"
+            },
+            {
+              "name": "tools/list returns a non-empty catalog",
+              "pass": true
+            },
+            {
+              "name": "tools/list advertises find_dead_code",
+              "pass": true
+            },
+            {
+              "name": "cold find_dead_code returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "cold find_dead_code does not return isError",
+              "pass": true
+            },
+            {
+              "name": "cold find_dead_code returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[0] find_dead_code returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[0] find_dead_code does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[0] find_dead_code returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[1] find_dead_code returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[1] find_dead_code does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[1] find_dead_code returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[2] find_dead_code returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[2] find_dead_code does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[2] find_dead_code returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[3] find_dead_code returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[3] find_dead_code does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[3] find_dead_code returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[4] find_dead_code returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[4] find_dead_code does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[4] find_dead_code returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "MCP launcher process tree cleaned up",
+              "pass": true
+            }
+          ],
+          "memory": {
+            "samples": 1,
+            "method": "windows-cim-process-tree-working-set-sampling",
+            "sampledProcessIdentities": [],
+            "liveSampledProcessIdentities": [],
+            "sampledPids": [],
+            "peakProcessTreeRssBytes": null,
+            "availability": "UNAVAILABLE",
+            "sampleIntervalMs": 50,
+            "reason": "process exited before the Windows sampler captured a non-zero working set"
+          },
+          "cleanup": {
+            "stdinClosed": true,
+            "gracefulExit": true,
+            "forced": false,
+            "exitCode": 0,
+            "signal": null,
+            "processTreeGone": true,
+            "liveSampledPids": [],
+            "liveSampledProcessIdentities": [],
+            "wallMs": 1185.95,
+            "error": null
+          },
+          "stderrTail": "",
+          "status": "PASS",
+          "engine": "rust"
+        },
+        {
+          "tool": "find_dead_code",
+          "toolArguments": {},
+          "pairId": "find_dead_code#2",
+          "coldSample": 2,
+          "orderPosition": 1,
+          "isolation": {
+            "policy": "fresh-empty-per-session",
+            "root": "C:\\Users\\SERGII~1\\AppData\\Local\\Temp\\weavatrix-npm-mcp-zNTd31\\runtime-state\\find_dead_code-87f0ccc2\\cold-2\\rust",
+            "graphHome": "C:\\Users\\SERGII~1\\AppData\\Local\\Temp\\weavatrix-npm-mcp-zNTd31\\runtime-state\\find_dead_code-87f0ccc2\\cold-2\\rust\\.weavatrix\\graphs",
+            "graphHomeExistedBeforeSession": false,
+            "inheritedHomeExcluded": true,
+            "inheritedWeavatrixGraphHomeExcluded": true,
+            "environment": [
+              "HOME",
+              "USERPROFILE",
+              "APPDATA",
+              "LOCALAPPDATA",
+              "XDG_CACHE_HOME",
+              "XDG_CONFIG_HOME",
+              "XDG_DATA_HOME",
+              "XDG_STATE_HOME",
+              "XDG_RUNTIME_DIR",
+              "WEAVATRIX_GRAPH_HOME"
+            ]
+          },
+          "timings": {
+            "warmCallMs": [
+              9.36,
+              9.58,
+              9.94,
+              9.81,
+              9.92
+            ],
+            "startMs": 12.7,
+            "initializeMs": 148.23,
+            "listMs": 0.65,
+            "coldCallMs": 11.3,
+            "coldBoundaryMs": 173.54,
+            "warmCallSummaryMs": {
+              "samples": 5,
+              "min": 9.36,
+              "median": 9.81,
+              "p95": 9.94,
+              "max": 9.94
+            }
+          },
+          "protocol": {
+            "initialize": {
+              "ok": true,
+              "protocolVersion": "2025-06-18",
+              "serverInfo": {
+                "name": "weavatrix",
+                "version": "1.2.0"
+              },
+              "capabilities": {
+                "tools": {
+                  "listChanged": false
+                }
+              },
+              "error": null,
+              "installedPackageVersion": "1.2.0",
+              "expectedRuntimeVersion": "1.2.0",
+              "packageVersionMatch": true
+            },
+            "tools": {
+              "count": 42,
+              "requestedAdvertised": true,
+              "catalogSha256": "b928636bef865ba366bd7bff556bd4bfa4859fdf4d84d7c906cf0bbab6a4a584"
+            }
+          },
+          "coldCall": {
+            "ok": true,
+            "isError": false,
+            "jsonRpcError": null,
+            "responseBytes": 344,
+            "responseSha256": "1ca3c1e95ac5c3d4927363a878e7809b0bd9f84b154e289827b6fb2844e751f1",
+            "contentTypes": [
+              "text"
+            ],
+            "structuredContent": true,
+            "parseableTextJson": true
+          },
+          "warmCalls": [
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 344,
+              "responseSha256": "8b9f01bc22327baa108b194858fdb7bfb63ea7d217382c0d70b886fa2f6e1483",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 344,
+              "responseSha256": "d3b9a8f97423fab9e54dba2cdfeddf4075b79682481db922e0f5c89c35c1e508",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 344,
+              "responseSha256": "9ae65f9b8cc020568ccfdf38da80c954c185849a4890dc4a3fcb1088afc56f9e",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 344,
+              "responseSha256": "f2cc42fe78b61f4feb3d06d3ad54471d52801623f9949822449761e39fac6f48",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 344,
+              "responseSha256": "48f92fd7eeaf295eb2c2508e28c1170557a775151b9b9e21939bdab6c0fca2f3",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            }
+          ],
+          "invariants": [
+            {
+              "name": "initialize returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "initialize server version matches the package engine version",
+              "pass": true,
+              "detail": "package=1.2.0; engine=1.2.0; initialize=1.2.0"
+            },
+            {
+              "name": "tools/list returns a non-empty catalog",
+              "pass": true
+            },
+            {
+              "name": "tools/list advertises find_dead_code",
+              "pass": true
+            },
+            {
+              "name": "cold find_dead_code returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "cold find_dead_code does not return isError",
+              "pass": true
+            },
+            {
+              "name": "cold find_dead_code returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[0] find_dead_code returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[0] find_dead_code does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[0] find_dead_code returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[1] find_dead_code returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[1] find_dead_code does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[1] find_dead_code returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[2] find_dead_code returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[2] find_dead_code does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[2] find_dead_code returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[3] find_dead_code returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[3] find_dead_code does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[3] find_dead_code returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[4] find_dead_code returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[4] find_dead_code does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[4] find_dead_code returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "MCP launcher process tree cleaned up",
+              "pass": true
+            }
+          ],
+          "memory": {
+            "samples": 1,
+            "method": "windows-cim-process-tree-working-set-sampling",
+            "sampledProcessIdentities": [],
+            "liveSampledProcessIdentities": [],
+            "sampledPids": [],
+            "peakProcessTreeRssBytes": null,
+            "availability": "UNAVAILABLE",
+            "sampleIntervalMs": 50,
+            "reason": "process exited before the Windows sampler captured a non-zero working set"
+          },
+          "cleanup": {
+            "stdinClosed": true,
+            "gracefulExit": true,
+            "forced": false,
+            "exitCode": 0,
+            "signal": null,
+            "processTreeGone": true,
+            "liveSampledPids": [],
+            "liveSampledProcessIdentities": [],
+            "wallMs": 1085.66,
+            "error": null
+          },
+          "stderrTail": "",
+          "status": "PASS",
+          "engine": "rust"
+        },
+        {
+          "tool": "find_dead_code",
+          "toolArguments": {},
+          "pairId": "find_dead_code#3",
+          "coldSample": 3,
+          "orderPosition": 2,
+          "isolation": {
+            "policy": "fresh-empty-per-session",
+            "root": "C:\\Users\\SERGII~1\\AppData\\Local\\Temp\\weavatrix-npm-mcp-zNTd31\\runtime-state\\find_dead_code-87f0ccc2\\cold-3\\rust",
+            "graphHome": "C:\\Users\\SERGII~1\\AppData\\Local\\Temp\\weavatrix-npm-mcp-zNTd31\\runtime-state\\find_dead_code-87f0ccc2\\cold-3\\rust\\.weavatrix\\graphs",
+            "graphHomeExistedBeforeSession": false,
+            "inheritedHomeExcluded": true,
+            "inheritedWeavatrixGraphHomeExcluded": true,
+            "environment": [
+              "HOME",
+              "USERPROFILE",
+              "APPDATA",
+              "LOCALAPPDATA",
+              "XDG_CACHE_HOME",
+              "XDG_CONFIG_HOME",
+              "XDG_DATA_HOME",
+              "XDG_STATE_HOME",
+              "XDG_RUNTIME_DIR",
+              "WEAVATRIX_GRAPH_HOME"
+            ]
+          },
+          "timings": {
+            "warmCallMs": [
+              8.29,
+              8.39,
+              7.9,
+              11.74,
+              11.65
+            ],
+            "startMs": 9.69,
+            "initializeMs": 111.11,
+            "listMs": 0.69,
+            "coldCallMs": 8.55,
+            "coldBoundaryMs": 130.52,
+            "warmCallSummaryMs": {
+              "samples": 5,
+              "min": 7.9,
+              "median": 8.39,
+              "p95": 11.72,
+              "max": 11.74
+            }
+          },
+          "protocol": {
+            "initialize": {
+              "ok": true,
+              "protocolVersion": "2025-06-18",
+              "serverInfo": {
+                "name": "weavatrix",
+                "version": "1.2.0"
+              },
+              "capabilities": {
+                "tools": {
+                  "listChanged": false
+                }
+              },
+              "error": null,
+              "installedPackageVersion": "1.2.0",
+              "expectedRuntimeVersion": "1.2.0",
+              "packageVersionMatch": true
+            },
+            "tools": {
+              "count": 42,
+              "requestedAdvertised": true,
+              "catalogSha256": "b928636bef865ba366bd7bff556bd4bfa4859fdf4d84d7c906cf0bbab6a4a584"
+            }
+          },
+          "coldCall": {
+            "ok": true,
+            "isError": false,
+            "jsonRpcError": null,
+            "responseBytes": 344,
+            "responseSha256": "1ca3c1e95ac5c3d4927363a878e7809b0bd9f84b154e289827b6fb2844e751f1",
+            "contentTypes": [
+              "text"
+            ],
+            "structuredContent": true,
+            "parseableTextJson": true
+          },
+          "warmCalls": [
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 344,
+              "responseSha256": "8b9f01bc22327baa108b194858fdb7bfb63ea7d217382c0d70b886fa2f6e1483",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 344,
+              "responseSha256": "d3b9a8f97423fab9e54dba2cdfeddf4075b79682481db922e0f5c89c35c1e508",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 344,
+              "responseSha256": "9ae65f9b8cc020568ccfdf38da80c954c185849a4890dc4a3fcb1088afc56f9e",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 344,
+              "responseSha256": "f2cc42fe78b61f4feb3d06d3ad54471d52801623f9949822449761e39fac6f48",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 344,
+              "responseSha256": "48f92fd7eeaf295eb2c2508e28c1170557a775151b9b9e21939bdab6c0fca2f3",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            }
+          ],
+          "invariants": [
+            {
+              "name": "initialize returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "initialize server version matches the package engine version",
+              "pass": true,
+              "detail": "package=1.2.0; engine=1.2.0; initialize=1.2.0"
+            },
+            {
+              "name": "tools/list returns a non-empty catalog",
+              "pass": true
+            },
+            {
+              "name": "tools/list advertises find_dead_code",
+              "pass": true
+            },
+            {
+              "name": "cold find_dead_code returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "cold find_dead_code does not return isError",
+              "pass": true
+            },
+            {
+              "name": "cold find_dead_code returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[0] find_dead_code returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[0] find_dead_code does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[0] find_dead_code returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[1] find_dead_code returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[1] find_dead_code does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[1] find_dead_code returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[2] find_dead_code returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[2] find_dead_code does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[2] find_dead_code returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[3] find_dead_code returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[3] find_dead_code does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[3] find_dead_code returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[4] find_dead_code returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[4] find_dead_code does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[4] find_dead_code returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "MCP launcher process tree cleaned up",
+              "pass": true
+            }
+          ],
+          "memory": {
+            "samples": 1,
+            "method": "windows-cim-process-tree-working-set-sampling",
+            "sampledProcessIdentities": [],
+            "liveSampledProcessIdentities": [],
+            "sampledPids": [],
+            "peakProcessTreeRssBytes": null,
+            "availability": "UNAVAILABLE",
+            "sampleIntervalMs": 50,
+            "reason": "process exited before the Windows sampler captured a non-zero working set"
+          },
+          "cleanup": {
+            "stdinClosed": true,
+            "gracefulExit": true,
+            "forced": false,
+            "exitCode": 0,
+            "signal": null,
+            "processTreeGone": true,
+            "liveSampledPids": [],
+            "liveSampledProcessIdentities": [],
+            "wallMs": 1044.89,
+            "error": null
+          },
+          "stderrTail": "",
+          "status": "PASS",
+          "engine": "rust"
+        }
+      ],
+      "summary": {
+        "status": "PASS",
+        "identityPass": true,
+        "tools": 2,
+        "passingTools": 2,
+        "coldSessions": 6,
+        "passingColdSessions": 6,
+        "startMs": {
+          "samples": 6,
+          "min": 9.69,
+          "median": 19.02,
+          "p95": 31.13,
+          "max": 33.25
+        },
+        "initializeMs": {
+          "samples": 6,
+          "min": 82.92,
+          "median": 125.28,
+          "p95": 181.79,
+          "max": 192.97
+        },
+        "listMs": {
+          "samples": 6,
+          "min": 0.47,
+          "median": 0.72,
+          "p95": 0.82,
+          "max": 0.84
+        },
+        "coldCallMs": {
+          "samples": 6,
+          "min": 7.25,
+          "median": 8.59,
+          "p95": 14.75,
+          "max": 15.9
+        },
+        "coldBoundaryMs": {
+          "samples": 6,
+          "min": 125.39,
+          "median": 157.34,
+          "p95": 212.93,
+          "max": 225.8
+        },
+        "warmCallMs": {
+          "samples": 30,
+          "min": 6.43,
+          "median": 7.94,
+          "p95": 13.36,
+          "max": 15.57
+        },
+        "peakProcessTreeRssBytes": {
+          "samples": 0,
+          "min": null,
+          "median": null,
+          "p95": null,
+          "max": null
+        }
+      }
+    },
+    "javascript": {
+      "package": {
+        "name": "weavatrix-js",
+        "version": "0.3.15",
+        "mainInput": "C:\\Users\\SergiiZiborov\\Documents\\GitHub\\MyProjects\\weavatrix-js",
+        "preparedMain": {
+          "method": "npm-pack-local-directory",
+          "sha256": "a48b82c15344709e76a862f43c1b70dc1adc2af971c2d5a96b6db32f17b0a20c",
+          "bytes": 453102
+        },
+        "platformInput": null,
+        "preparedPlatform": null,
+        "installedBinName": "weavatrix-js",
+        "installedBinEntry": "node_modules/weavatrix-js/bin/weavatrix-mcp.mjs",
+        "installedManifestSha256": "2ca09b5873cc618859bd2fabe52c9247e917bacb4b1b9804c5199bb3ca7d743b",
+        "installedLauncherSha256": "be4a904cb8b7b0e8b3e1b0259bed1f8f0c2e5c07478eca9a15c2eb65d5ddfd9f"
+      },
+      "identity": {
+        "package": {
+          "name": "weavatrix-js",
+          "version": "0.3.15",
+          "engineVersion": "0.3.15",
+          "manifest": "node_modules/weavatrix-js/package.json",
+          "manifestSha256": "2ca09b5873cc618859bd2fabe52c9247e917bacb4b1b9804c5199bb3ca7d743b"
+        },
+        "launcher": {
+          "path": "node_modules/weavatrix-js/bin/weavatrix-mcp.mjs",
+          "sha256": "be4a904cb8b7b0e8b3e1b0259bed1f8f0c2e5c07478eca9a15c2eb65d5ddfd9f",
+          "bytes": 432
+        },
+        "nativeBinary": {
+          "availability": "NOT_APPLICABLE",
+          "reason": "the JavaScript engine has no native executable"
+        },
+        "invariants": [
+          {
+            "name": "installed package has a non-empty version",
+            "pass": true
+          },
+          {
+            "name": "installed launcher is a regular file",
+            "pass": true,
+            "detail": "C:\\Users\\SERGII~1\\AppData\\Local\\Temp\\weavatrix-npm-mcp-zNTd31\\install-javascript\\node_modules\\weavatrix-js\\bin\\weavatrix-mcp.mjs"
+          }
+        ]
+      },
+      "install": {
+        "wallMs": 2031.18,
+        "flags": [
+          "--ignore-scripts",
+          "--no-audit",
+          "--no-fund",
+          "--package-lock=false",
+          "--prefer-offline"
+        ],
+        "exitCode": 0,
+        "stdoutTail": "\nadded 5 packages in 2s\n",
+        "stderrTail": ""
+      },
+      "sessions": [
+        {
+          "tool": "graph_stats",
+          "toolArguments": {
+            "output_format": "json"
+          },
+          "pairId": "graph_stats#1",
+          "coldSample": 1,
+          "orderPosition": 2,
+          "isolation": {
+            "policy": "fresh-empty-per-session",
+            "root": "C:\\Users\\SERGII~1\\AppData\\Local\\Temp\\weavatrix-npm-mcp-zNTd31\\runtime-state\\graph_stats-1108c92f\\cold-1\\javascript",
+            "graphHome": "C:\\Users\\SERGII~1\\AppData\\Local\\Temp\\weavatrix-npm-mcp-zNTd31\\runtime-state\\graph_stats-1108c92f\\cold-1\\javascript\\.weavatrix\\graphs",
+            "graphHomeExistedBeforeSession": false,
+            "inheritedHomeExcluded": true,
+            "inheritedWeavatrixGraphHomeExcluded": true,
+            "environment": [
+              "HOME",
+              "USERPROFILE",
+              "APPDATA",
+              "LOCALAPPDATA",
+              "XDG_CACHE_HOME",
+              "XDG_CONFIG_HOME",
+              "XDG_DATA_HOME",
+              "XDG_STATE_HOME",
+              "XDG_RUNTIME_DIR",
+              "WEAVATRIX_GRAPH_HOME"
+            ]
+          },
+          "timings": {
+            "warmCallMs": [
+              78.34,
+              100.97,
+              84.46,
+              98.83,
+              100.15
+            ],
+            "startMs": 11.23,
+            "initializeMs": 2297.06,
+            "listMs": 3.71,
+            "coldCallMs": 4392,
+            "coldBoundaryMs": 6704.58,
+            "warmCallSummaryMs": {
+              "samples": 5,
+              "min": 78.34,
+              "median": 98.83,
+              "p95": 100.81,
+              "max": 100.97
+            }
+          },
+          "protocol": {
+            "initialize": {
+              "ok": true,
+              "protocolVersion": "2025-06-18",
+              "serverInfo": {
+                "name": "weavatrix",
+                "version": "0.3.15"
+              },
+              "capabilities": {
+                "tools": {
+                  "listChanged": true
+                }
+              },
+              "error": null,
+              "installedPackageVersion": "0.3.15",
+              "expectedRuntimeVersion": "0.3.15",
+              "packageVersionMatch": true
+            },
+            "tools": {
+              "count": 34,
+              "requestedAdvertised": true,
+              "catalogSha256": "e0c6fd96e21715829f66840f142192bc8625f70fdc52b477b12574157c360d1d"
+            }
+          },
+          "coldCall": {
+            "ok": true,
+            "isError": false,
+            "jsonRpcError": null,
+            "responseBytes": 4288,
+            "responseSha256": "96bf0cfda0032930d086c9a848beeae2d330c37973f345b146fa2320f7376669",
+            "contentTypes": [
+              "text"
+            ],
+            "structuredContent": true,
+            "parseableTextJson": true
+          },
+          "warmCalls": [
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 4038,
+              "responseSha256": "d8c89cd7d92f6a63d65f1dac0d3faab3ca08b26352579f02b83511c4c366a168",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 4038,
+              "responseSha256": "b090a713cb4ec677faf17e56b4926175e7475e5be3a8892d7373699fef62915d",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 4038,
+              "responseSha256": "f0f5bdfd589a3740c76dc31c1b1e48ffe99b99358f15385ae085080897abb20e",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 4038,
+              "responseSha256": "ae0d311bb67895bb9cdf835a81406c99ea6601b2947703cc56d4158aaadfce0d",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 4038,
+              "responseSha256": "efb823a5986670cb4f1e9842910e48552659f8b7bbb919dcf7a36b354d00f590",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            }
+          ],
+          "invariants": [
+            {
+              "name": "initialize returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "initialize server version matches the package engine version",
+              "pass": true,
+              "detail": "package=0.3.15; engine=0.3.15; initialize=0.3.15"
+            },
+            {
+              "name": "tools/list returns a non-empty catalog",
+              "pass": true
+            },
+            {
+              "name": "tools/list advertises graph_stats",
+              "pass": true
+            },
+            {
+              "name": "cold graph_stats returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "cold graph_stats does not return isError",
+              "pass": true
+            },
+            {
+              "name": "cold graph_stats returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "cold graph_stats exposes non-negative graph counts",
+              "pass": true
+            },
+            {
+              "name": "warm[0] graph_stats returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[0] graph_stats does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[0] graph_stats returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[0] graph_stats exposes non-negative graph counts",
+              "pass": true
+            },
+            {
+              "name": "warm[1] graph_stats returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[1] graph_stats does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[1] graph_stats returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[1] graph_stats exposes non-negative graph counts",
+              "pass": true
+            },
+            {
+              "name": "warm[2] graph_stats returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[2] graph_stats does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[2] graph_stats returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[2] graph_stats exposes non-negative graph counts",
+              "pass": true
+            },
+            {
+              "name": "warm[3] graph_stats returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[3] graph_stats does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[3] graph_stats returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[3] graph_stats exposes non-negative graph counts",
+              "pass": true
+            },
+            {
+              "name": "warm[4] graph_stats returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[4] graph_stats does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[4] graph_stats returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[4] graph_stats exposes non-negative graph counts",
+              "pass": true
+            },
+            {
+              "name": "MCP launcher process tree cleaned up",
+              "pass": true
+            },
+            {
+              "name": "process-tree memory sample is non-zero",
+              "pass": true
+            }
+          ],
+          "memory": {
+            "samples": 18,
+            "method": "windows-cim-process-tree-working-set-sampling",
+            "sampledProcessIdentities": [
+              "7120|639213654045301480",
+              "47204|639213654045360970",
+              "29520|639213654070549620",
+              "49132|639213654073936250",
+              "49884|639213654073995570",
+              "47684|639213654074193610",
+              "52904|639213654074328770",
+              "30524|639213654087212240",
+              "26740|639213654087301520",
+              "53260|639213654088357840",
+              "29928|639213654088453520",
+              "9132|639213654092807820"
+            ],
+            "liveSampledProcessIdentities": [],
+            "sampledPids": [
+              7120,
+              47204,
+              29520,
+              49132,
+              49884,
+              47684,
+              52904,
+              30524,
+              26740,
+              53260,
+              29928,
+              9132
+            ],
+            "peakProcessTreeRssBytes": 524959744,
+            "availability": "AVAILABLE",
+            "sampleIntervalMs": 50,
+            "reason": null
+          },
+          "cleanup": {
+            "stdinClosed": true,
+            "gracefulExit": true,
+            "forced": false,
+            "exitCode": 0,
+            "signal": null,
+            "processTreeGone": true,
+            "liveSampledPids": [],
+            "liveSampledProcessIdentities": [],
+            "wallMs": 561.38,
+            "error": null
+          },
+          "stderrTail": "[weavatrix] no graph built yet for C:\\Users\\SergiiZiborov\\Documents\\GitHub\\emaildist — ask the agent to call rebuild_graph; it builds into the standard weavatrix-graphs layout\n[weavatrix] failed to load graph: ENOENT: no such file or directory, open 'C:\\Users\\SERGII~1\\AppData\\Local\\Temp\\weavatrix-npm-mcp-zNTd31\\runtime-state\\graph_stats-1108c92f\\cold-1\\javascript\\.weavatrix\\graphs\\emaildist-9b6147037415\\graph.json'\n[weavatrix] repo root: C:\\Users\\SergiiZiborov\\Documents\\GitHub\\emaildist\n[weavatrix] capabilities: graph,search,source,health,build,retarget,crossrepo (34 tools)\n[weavatrix] ready\n[weavatrix] shutdown requested (stdin EOF); draining graph work and 0 semantic provider(s)\n[weavatrix] shutdown cleanup: graph=drained, semantic=0 requested/0 remaining\n",
+          "status": "PASS",
+          "engine": "javascript"
+        },
+        {
+          "tool": "graph_stats",
+          "toolArguments": {
+            "output_format": "json"
+          },
+          "pairId": "graph_stats#2",
+          "coldSample": 2,
+          "orderPosition": 1,
+          "isolation": {
+            "policy": "fresh-empty-per-session",
+            "root": "C:\\Users\\SERGII~1\\AppData\\Local\\Temp\\weavatrix-npm-mcp-zNTd31\\runtime-state\\graph_stats-1108c92f\\cold-2\\javascript",
+            "graphHome": "C:\\Users\\SERGII~1\\AppData\\Local\\Temp\\weavatrix-npm-mcp-zNTd31\\runtime-state\\graph_stats-1108c92f\\cold-2\\javascript\\.weavatrix\\graphs",
+            "graphHomeExistedBeforeSession": false,
+            "inheritedHomeExcluded": true,
+            "inheritedWeavatrixGraphHomeExcluded": true,
+            "environment": [
+              "HOME",
+              "USERPROFILE",
+              "APPDATA",
+              "LOCALAPPDATA",
+              "XDG_CACHE_HOME",
+              "XDG_CONFIG_HOME",
+              "XDG_DATA_HOME",
+              "XDG_STATE_HOME",
+              "XDG_RUNTIME_DIR",
+              "WEAVATRIX_GRAPH_HOME"
+            ]
+          },
+          "timings": {
+            "warmCallMs": [
+              136.3,
+              139.1,
+              131.02,
+              77.78,
+              102.28
+            ],
+            "startMs": 21.93,
+            "initializeMs": 589.91,
+            "listMs": 8.87,
+            "coldCallMs": 4471.79,
+            "coldBoundaryMs": 5093.11,
+            "warmCallSummaryMs": {
+              "samples": 5,
+              "min": 77.78,
+              "median": 131.02,
+              "p95": 138.54,
+              "max": 139.1
+            }
+          },
+          "protocol": {
+            "initialize": {
+              "ok": true,
+              "protocolVersion": "2025-06-18",
+              "serverInfo": {
+                "name": "weavatrix",
+                "version": "0.3.15"
+              },
+              "capabilities": {
+                "tools": {
+                  "listChanged": true
+                }
+              },
+              "error": null,
+              "installedPackageVersion": "0.3.15",
+              "expectedRuntimeVersion": "0.3.15",
+              "packageVersionMatch": true
+            },
+            "tools": {
+              "count": 34,
+              "requestedAdvertised": true,
+              "catalogSha256": "e0c6fd96e21715829f66840f142192bc8625f70fdc52b477b12574157c360d1d"
+            }
+          },
+          "coldCall": {
+            "ok": true,
+            "isError": false,
+            "jsonRpcError": null,
+            "responseBytes": 4288,
+            "responseSha256": "89d3b96b70ea771e79b190b313dcb6499fcbda0588ef41b3cdd49569408b9485",
+            "contentTypes": [
+              "text"
+            ],
+            "structuredContent": true,
+            "parseableTextJson": true
+          },
+          "warmCalls": [
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 4039,
+              "responseSha256": "6f74657429b9f5d9be747324928413e70e074672da3060d509eb070f299ba2d6",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 4037,
+              "responseSha256": "5a64a6622c6e666494b6dc1cacd20c9ce556d62e50b29728e8c2e933c1d57ae7",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 4039,
+              "responseSha256": "b903b79a4a1736e67f3f9d28499aa4406bc6fd7772be58c3f9ef9aad09c5814a",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 4038,
+              "responseSha256": "79a34c4b5b5a85365f1eb48e8ad65b5f728836dd42952a0adfa7d28f741defd5",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 4038,
+              "responseSha256": "ce32c96864b2163c7746ff6a41f578a3d431ddcdc52c32acfe943a2378771c3b",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            }
+          ],
+          "invariants": [
+            {
+              "name": "initialize returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "initialize server version matches the package engine version",
+              "pass": true,
+              "detail": "package=0.3.15; engine=0.3.15; initialize=0.3.15"
+            },
+            {
+              "name": "tools/list returns a non-empty catalog",
+              "pass": true
+            },
+            {
+              "name": "tools/list advertises graph_stats",
+              "pass": true
+            },
+            {
+              "name": "cold graph_stats returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "cold graph_stats does not return isError",
+              "pass": true
+            },
+            {
+              "name": "cold graph_stats returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "cold graph_stats exposes non-negative graph counts",
+              "pass": true
+            },
+            {
+              "name": "warm[0] graph_stats returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[0] graph_stats does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[0] graph_stats returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[0] graph_stats exposes non-negative graph counts",
+              "pass": true
+            },
+            {
+              "name": "warm[1] graph_stats returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[1] graph_stats does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[1] graph_stats returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[1] graph_stats exposes non-negative graph counts",
+              "pass": true
+            },
+            {
+              "name": "warm[2] graph_stats returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[2] graph_stats does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[2] graph_stats returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[2] graph_stats exposes non-negative graph counts",
+              "pass": true
+            },
+            {
+              "name": "warm[3] graph_stats returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[3] graph_stats does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[3] graph_stats returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[3] graph_stats exposes non-negative graph counts",
+              "pass": true
+            },
+            {
+              "name": "warm[4] graph_stats returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[4] graph_stats does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[4] graph_stats returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[4] graph_stats exposes non-negative graph counts",
+              "pass": true
+            },
+            {
+              "name": "MCP launcher process tree cleaned up",
+              "pass": true
+            },
+            {
+              "name": "process-tree memory sample is non-zero",
+              "pass": true
+            }
+          ],
+          "memory": {
+            "samples": 13,
+            "method": "windows-cim-process-tree-working-set-sampling",
+            "sampledProcessIdentities": [
+              "4648|639213654122678930",
+              "50152|639213654122849800",
+              "42152|639213654130663990",
+              "6312|639213654130740830",
+              "37464|639213654146953480",
+              "45792|639213654147032300",
+              "23692|639213654148068610",
+              "36504|639213654148291410",
+              "24896|639213654162330050",
+              "8432|639213654162415500",
+              "23888|639213654172727250",
+              "18440|639213654172786000"
+            ],
+            "liveSampledProcessIdentities": [],
+            "sampledPids": [
+              4648,
+              50152,
+              42152,
+              6312,
+              37464,
+              45792,
+              23692,
+              36504,
+              24896,
+              8432,
+              23888,
+              18440
+            ],
+            "peakProcessTreeRssBytes": 677629952,
+            "availability": "AVAILABLE",
+            "sampleIntervalMs": 50,
+            "reason": null
+          },
+          "cleanup": {
+            "stdinClosed": true,
+            "gracefulExit": true,
+            "forced": false,
+            "exitCode": 0,
+            "signal": null,
+            "processTreeGone": true,
+            "liveSampledPids": [],
+            "liveSampledProcessIdentities": [],
+            "wallMs": 540.64,
+            "error": null
+          },
+          "stderrTail": "[weavatrix] no graph built yet for C:\\Users\\SergiiZiborov\\Documents\\GitHub\\emaildist — ask the agent to call rebuild_graph; it builds into the standard weavatrix-graphs layout\n[weavatrix] failed to load graph: ENOENT: no such file or directory, open 'C:\\Users\\SERGII~1\\AppData\\Local\\Temp\\weavatrix-npm-mcp-zNTd31\\runtime-state\\graph_stats-1108c92f\\cold-2\\javascript\\.weavatrix\\graphs\\emaildist-9b6147037415\\graph.json'\n[weavatrix] repo root: C:\\Users\\SergiiZiborov\\Documents\\GitHub\\emaildist\n[weavatrix] capabilities: graph,search,source,health,build,retarget,crossrepo (34 tools)\n[weavatrix] ready\n[weavatrix] shutdown requested (stdin EOF); draining graph work and 0 semantic provider(s)\n[weavatrix] shutdown cleanup: graph=drained, semantic=0 requested/0 remaining\n",
+          "status": "PASS",
+          "engine": "javascript"
+        },
+        {
+          "tool": "graph_stats",
+          "toolArguments": {
+            "output_format": "json"
+          },
+          "pairId": "graph_stats#3",
+          "coldSample": 3,
+          "orderPosition": 2,
+          "isolation": {
+            "policy": "fresh-empty-per-session",
+            "root": "C:\\Users\\SERGII~1\\AppData\\Local\\Temp\\weavatrix-npm-mcp-zNTd31\\runtime-state\\graph_stats-1108c92f\\cold-3\\javascript",
+            "graphHome": "C:\\Users\\SERGII~1\\AppData\\Local\\Temp\\weavatrix-npm-mcp-zNTd31\\runtime-state\\graph_stats-1108c92f\\cold-3\\javascript\\.weavatrix\\graphs",
+            "graphHomeExistedBeforeSession": false,
+            "inheritedHomeExcluded": true,
+            "inheritedWeavatrixGraphHomeExcluded": true,
+            "environment": [
+              "HOME",
+              "USERPROFILE",
+              "APPDATA",
+              "LOCALAPPDATA",
+              "XDG_CACHE_HOME",
+              "XDG_CONFIG_HOME",
+              "XDG_DATA_HOME",
+              "XDG_STATE_HOME",
+              "XDG_RUNTIME_DIR",
+              "WEAVATRIX_GRAPH_HOME"
+            ]
+          },
+          "timings": {
+            "warmCallMs": [
+              104.14,
+              132.95,
+              93.65,
+              107.18,
+              111.82
+            ],
+            "startMs": 23.08,
+            "initializeMs": 458.33,
+            "listMs": 3.27,
+            "coldCallMs": 3808.32,
+            "coldBoundaryMs": 4293.45,
+            "warmCallSummaryMs": {
+              "samples": 5,
+              "min": 93.65,
+              "median": 107.18,
+              "p95": 128.72,
+              "max": 132.95
+            }
+          },
+          "protocol": {
+            "initialize": {
+              "ok": true,
+              "protocolVersion": "2025-06-18",
+              "serverInfo": {
+                "name": "weavatrix",
+                "version": "0.3.15"
+              },
+              "capabilities": {
+                "tools": {
+                  "listChanged": true
+                }
+              },
+              "error": null,
+              "installedPackageVersion": "0.3.15",
+              "expectedRuntimeVersion": "0.3.15",
+              "packageVersionMatch": true
+            },
+            "tools": {
+              "count": 34,
+              "requestedAdvertised": true,
+              "catalogSha256": "e0c6fd96e21715829f66840f142192bc8625f70fdc52b477b12574157c360d1d"
+            }
+          },
+          "coldCall": {
+            "ok": true,
+            "isError": false,
+            "jsonRpcError": null,
+            "responseBytes": 4288,
+            "responseSha256": "c2fd44dad41d37c5f30f3cb85f2a8eb6be66ba666d290dcdf893a68e736647a7",
+            "contentTypes": [
+              "text"
+            ],
+            "structuredContent": true,
+            "parseableTextJson": true
+          },
+          "warmCalls": [
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 4037,
+              "responseSha256": "899f01a87bc827a844869042d45a91c35669374034ae61cd22f54f05357d9ea5",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 4039,
+              "responseSha256": "59d971a17e72bdff37ead122c7a7c1fdedc8715ad2e47f9ed00e93662ceee682",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 4038,
+              "responseSha256": "71e2ac6ea82cbbbb96ce308738049b4aebe48e6374ea0c537ad714be85c85bd1",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 4039,
+              "responseSha256": "d70d30c50a2d0cf2229cc71927805c9d95202192609056d34c55ece2fc65b23e",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 4039,
+              "responseSha256": "08cbac00d2d921bcccdd5ec78c4f3cc57c9779a79237605ed3b2501e86b97492",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": true,
+              "parseableTextJson": true
+            }
+          ],
+          "invariants": [
+            {
+              "name": "initialize returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "initialize server version matches the package engine version",
+              "pass": true,
+              "detail": "package=0.3.15; engine=0.3.15; initialize=0.3.15"
+            },
+            {
+              "name": "tools/list returns a non-empty catalog",
+              "pass": true
+            },
+            {
+              "name": "tools/list advertises graph_stats",
+              "pass": true
+            },
+            {
+              "name": "cold graph_stats returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "cold graph_stats does not return isError",
+              "pass": true
+            },
+            {
+              "name": "cold graph_stats returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "cold graph_stats exposes non-negative graph counts",
+              "pass": true
+            },
+            {
+              "name": "warm[0] graph_stats returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[0] graph_stats does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[0] graph_stats returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[0] graph_stats exposes non-negative graph counts",
+              "pass": true
+            },
+            {
+              "name": "warm[1] graph_stats returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[1] graph_stats does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[1] graph_stats returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[1] graph_stats exposes non-negative graph counts",
+              "pass": true
+            },
+            {
+              "name": "warm[2] graph_stats returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[2] graph_stats does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[2] graph_stats returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[2] graph_stats exposes non-negative graph counts",
+              "pass": true
+            },
+            {
+              "name": "warm[3] graph_stats returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[3] graph_stats does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[3] graph_stats returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[3] graph_stats exposes non-negative graph counts",
+              "pass": true
+            },
+            {
+              "name": "warm[4] graph_stats returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[4] graph_stats does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[4] graph_stats returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[4] graph_stats exposes non-negative graph counts",
+              "pass": true
+            },
+            {
+              "name": "MCP launcher process tree cleaned up",
+              "pass": true
+            },
+            {
+              "name": "process-tree memory sample is non-zero",
+              "pass": true
+            }
+          ],
+          "memory": {
+            "samples": 12,
+            "method": "windows-cim-process-tree-working-set-sampling",
+            "sampledProcessIdentities": [
+              "49348|639213654210628950",
+              "51832|639213654210698480",
+              "47812|639213654218057310",
+              "46396|639213654218108640",
+              "41124|639213654230255730",
+              "41152|639213654230325370",
+              "8640|639213654231227880",
+              "44268|639213654231342970",
+              "45284|639213654234251240",
+              "52428|639213654250996170",
+              "47916|639213654251058230"
+            ],
+            "liveSampledProcessIdentities": [],
+            "sampledPids": [
+              49348,
+              51832,
+              47812,
+              46396,
+              41124,
+              41152,
+              8640,
+              44268,
+              45284,
+              52428,
+              47916
+            ],
+            "peakProcessTreeRssBytes": 583766016,
+            "availability": "AVAILABLE",
+            "sampleIntervalMs": 50,
+            "reason": null
+          },
+          "cleanup": {
+            "stdinClosed": true,
+            "gracefulExit": true,
+            "forced": false,
+            "exitCode": 0,
+            "signal": null,
+            "processTreeGone": true,
+            "liveSampledPids": [],
+            "liveSampledProcessIdentities": [],
+            "wallMs": 737.21,
+            "error": null
+          },
+          "stderrTail": "[weavatrix] no graph built yet for C:\\Users\\SergiiZiborov\\Documents\\GitHub\\emaildist — ask the agent to call rebuild_graph; it builds into the standard weavatrix-graphs layout\n[weavatrix] failed to load graph: ENOENT: no such file or directory, open 'C:\\Users\\SERGII~1\\AppData\\Local\\Temp\\weavatrix-npm-mcp-zNTd31\\runtime-state\\graph_stats-1108c92f\\cold-3\\javascript\\.weavatrix\\graphs\\emaildist-9b6147037415\\graph.json'\n[weavatrix] repo root: C:\\Users\\SergiiZiborov\\Documents\\GitHub\\emaildist\n[weavatrix] capabilities: graph,search,source,health,build,retarget,crossrepo (34 tools)\n[weavatrix] ready\n[weavatrix] shutdown requested (stdin EOF); draining graph work and 0 semantic provider(s)\n[weavatrix] shutdown cleanup: graph=drained, semantic=0 requested/0 remaining\n",
+          "status": "PASS",
+          "engine": "javascript"
+        },
+        {
+          "tool": "find_dead_code",
+          "toolArguments": {},
+          "pairId": "find_dead_code#1",
+          "coldSample": 1,
+          "orderPosition": 1,
+          "isolation": {
+            "policy": "fresh-empty-per-session",
+            "root": "C:\\Users\\SERGII~1\\AppData\\Local\\Temp\\weavatrix-npm-mcp-zNTd31\\runtime-state\\find_dead_code-87f0ccc2\\cold-1\\javascript",
+            "graphHome": "C:\\Users\\SERGII~1\\AppData\\Local\\Temp\\weavatrix-npm-mcp-zNTd31\\runtime-state\\find_dead_code-87f0ccc2\\cold-1\\javascript\\.weavatrix\\graphs",
+            "graphHomeExistedBeforeSession": false,
+            "inheritedHomeExcluded": true,
+            "inheritedWeavatrixGraphHomeExcluded": true,
+            "environment": [
+              "HOME",
+              "USERPROFILE",
+              "APPDATA",
+              "LOCALAPPDATA",
+              "XDG_CACHE_HOME",
+              "XDG_CONFIG_HOME",
+              "XDG_DATA_HOME",
+              "XDG_STATE_HOME",
+              "XDG_RUNTIME_DIR",
+              "WEAVATRIX_GRAPH_HOME"
+            ]
+          },
+          "timings": {
+            "warmCallMs": [
+              562.31,
+              505.04,
+              522.61,
+              714.79,
+              685.11
+            ],
+            "startMs": 21.8,
+            "initializeMs": 442.57,
+            "listMs": 3.08,
+            "coldCallMs": 4575.47,
+            "coldBoundaryMs": 5043.33,
+            "warmCallSummaryMs": {
+              "samples": 5,
+              "min": 505.04,
+              "median": 562.31,
+              "p95": 708.85,
+              "max": 714.79
+            }
+          },
+          "protocol": {
+            "initialize": {
+              "ok": true,
+              "protocolVersion": "2025-06-18",
+              "serverInfo": {
+                "name": "weavatrix",
+                "version": "0.3.15"
+              },
+              "capabilities": {
+                "tools": {
+                  "listChanged": true
+                }
+              },
+              "error": null,
+              "installedPackageVersion": "0.3.15",
+              "expectedRuntimeVersion": "0.3.15",
+              "packageVersionMatch": true
+            },
+            "tools": {
+              "count": 34,
+              "requestedAdvertised": true,
+              "catalogSha256": "e0c6fd96e21715829f66840f142192bc8625f70fdc52b477b12574157c360d1d"
+            }
+          },
+          "coldCall": {
+            "ok": true,
+            "isError": false,
+            "jsonRpcError": null,
+            "responseBytes": 1001,
+            "responseSha256": "7d1d1592d4db117a25aedd2c596695e46bb4ede9766090c694ecf7686c305303",
+            "contentTypes": [
+              "text"
+            ],
+            "structuredContent": false,
+            "parseableTextJson": false
+          },
+          "warmCalls": [
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 992,
+              "responseSha256": "46c561deee4b7c838004c3426ce55c63322b11fdae36f9fb46cab84d70db7f5e",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": false,
+              "parseableTextJson": false
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 994,
+              "responseSha256": "e2813ef073d5f9b597e0cca4f3305dc3b20857304c1c589bf241a707c915cc23",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": false,
+              "parseableTextJson": false
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 994,
+              "responseSha256": "a53d6c465ad99e4138e815e8f91af81af4b2cdae18018f49c33bf41289910e80",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": false,
+              "parseableTextJson": false
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 994,
+              "responseSha256": "7662679849249a9e1fcb0c316db5dd2572bf4d7b4f0932660f70697068a5b51c",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": false,
+              "parseableTextJson": false
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 994,
+              "responseSha256": "03b23570d9ac8906839634393ae953d6296a735792f218e6c022c27ce04276dc",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": false,
+              "parseableTextJson": false
+            }
+          ],
+          "invariants": [
+            {
+              "name": "initialize returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "initialize server version matches the package engine version",
+              "pass": true,
+              "detail": "package=0.3.15; engine=0.3.15; initialize=0.3.15"
+            },
+            {
+              "name": "tools/list returns a non-empty catalog",
+              "pass": true
+            },
+            {
+              "name": "tools/list advertises find_dead_code",
+              "pass": true
+            },
+            {
+              "name": "cold find_dead_code returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "cold find_dead_code does not return isError",
+              "pass": true
+            },
+            {
+              "name": "cold find_dead_code returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[0] find_dead_code returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[0] find_dead_code does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[0] find_dead_code returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[1] find_dead_code returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[1] find_dead_code does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[1] find_dead_code returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[2] find_dead_code returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[2] find_dead_code does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[2] find_dead_code returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[3] find_dead_code returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[3] find_dead_code does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[3] find_dead_code returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[4] find_dead_code returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[4] find_dead_code does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[4] find_dead_code returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "MCP launcher process tree cleaned up",
+              "pass": true
+            },
+            {
+              "name": "process-tree memory sample is non-zero",
+              "pass": true
+            }
+          ],
+          "memory": {
+            "samples": 19,
+            "method": "windows-cim-process-tree-working-set-sampling",
+            "sampledProcessIdentities": [
+              "34488|639213654266424350",
+              "10832|639213654266597600",
+              "31088|639213654273770450",
+              "45208|639213654285798530",
+              "40280|639213654285839860",
+              "41960|639213654288417080",
+              "38572|639213654288513310",
+              "20632|639213654289586100",
+              "49140|639213654289716770",
+              "22688|639213654304066430",
+              "44392|639213654307601390",
+              "43404|639213654307784050",
+              "22764|639213654307993640",
+              "24076|639213654315629540",
+              "30584|639213654315668310",
+              "8672|639213654320021830",
+              "33592|639213654330909270",
+              "2880|639213654330955310",
+              "50600|639213654331159750",
+              "36988|639213654331288750"
+            ],
+            "liveSampledProcessIdentities": [],
+            "sampledPids": [
+              34488,
+              10832,
+              31088,
+              45208,
+              40280,
+              41960,
+              38572,
+              20632,
+              49140,
+              22688,
+              44392,
+              43404,
+              22764,
+              24076,
+              30584,
+              8672,
+              33592,
+              2880,
+              50600,
+              36988
+            ],
+            "peakProcessTreeRssBytes": 616525824,
+            "availability": "AVAILABLE",
+            "sampleIntervalMs": 50,
+            "reason": null
+          },
+          "cleanup": {
+            "stdinClosed": true,
+            "gracefulExit": true,
+            "forced": false,
+            "exitCode": 0,
+            "signal": null,
+            "processTreeGone": true,
+            "liveSampledPids": [],
+            "liveSampledProcessIdentities": [],
+            "wallMs": 575.52,
+            "error": null
+          },
+          "stderrTail": "[weavatrix] no graph built yet for C:\\Users\\SergiiZiborov\\Documents\\GitHub\\emaildist — ask the agent to call rebuild_graph; it builds into the standard weavatrix-graphs layout\n[weavatrix] failed to load graph: ENOENT: no such file or directory, open 'C:\\Users\\SERGII~1\\AppData\\Local\\Temp\\weavatrix-npm-mcp-zNTd31\\runtime-state\\find_dead_code-87f0ccc2\\cold-1\\javascript\\.weavatrix\\graphs\\emaildist-9b6147037415\\graph.json'\n[weavatrix] repo root: C:\\Users\\SergiiZiborov\\Documents\\GitHub\\emaildist\n[weavatrix] capabilities: graph,search,source,health,build,retarget,crossrepo (34 tools)\n[weavatrix] ready\n[weavatrix] shutdown requested (stdin EOF); draining graph work and 0 semantic provider(s)\n[weavatrix] shutdown cleanup: graph=drained, semantic=0 requested/0 remaining\n",
+          "status": "PASS",
+          "engine": "javascript"
+        },
+        {
+          "tool": "find_dead_code",
+          "toolArguments": {},
+          "pairId": "find_dead_code#2",
+          "coldSample": 2,
+          "orderPosition": 2,
+          "isolation": {
+            "policy": "fresh-empty-per-session",
+            "root": "C:\\Users\\SERGII~1\\AppData\\Local\\Temp\\weavatrix-npm-mcp-zNTd31\\runtime-state\\find_dead_code-87f0ccc2\\cold-2\\javascript",
+            "graphHome": "C:\\Users\\SERGII~1\\AppData\\Local\\Temp\\weavatrix-npm-mcp-zNTd31\\runtime-state\\find_dead_code-87f0ccc2\\cold-2\\javascript\\.weavatrix\\graphs",
+            "graphHomeExistedBeforeSession": false,
+            "inheritedHomeExcluded": true,
+            "inheritedWeavatrixGraphHomeExcluded": true,
+            "environment": [
+              "HOME",
+              "USERPROFILE",
+              "APPDATA",
+              "LOCALAPPDATA",
+              "XDG_CACHE_HOME",
+              "XDG_CONFIG_HOME",
+              "XDG_DATA_HOME",
+              "XDG_STATE_HOME",
+              "XDG_RUNTIME_DIR",
+              "WEAVATRIX_GRAPH_HOME"
+            ]
+          },
+          "timings": {
+            "warmCallMs": [
+              474.83,
+              447.44,
+              450.43,
+              446,
+              696.52
+            ],
+            "startMs": 14.46,
+            "initializeMs": 617.3,
+            "listMs": 5.61,
+            "coldCallMs": 4228.57,
+            "coldBoundaryMs": 4866.53,
+            "warmCallSummaryMs": {
+              "samples": 5,
+              "min": 446,
+              "median": 450.43,
+              "p95": 652.18,
+              "max": 696.52
+            }
+          },
+          "protocol": {
+            "initialize": {
+              "ok": true,
+              "protocolVersion": "2025-06-18",
+              "serverInfo": {
+                "name": "weavatrix",
+                "version": "0.3.15"
+              },
+              "capabilities": {
+                "tools": {
+                  "listChanged": true
+                }
+              },
+              "error": null,
+              "installedPackageVersion": "0.3.15",
+              "expectedRuntimeVersion": "0.3.15",
+              "packageVersionMatch": true
+            },
+            "tools": {
+              "count": 34,
+              "requestedAdvertised": true,
+              "catalogSha256": "e0c6fd96e21715829f66840f142192bc8625f70fdc52b477b12574157c360d1d"
+            }
+          },
+          "coldCall": {
+            "ok": true,
+            "isError": false,
+            "jsonRpcError": null,
+            "responseBytes": 1001,
+            "responseSha256": "3c8ce01c5bb0c27fc9f7daae4b166a702aee744cc50b57adedff2b7d9b717e52",
+            "contentTypes": [
+              "text"
+            ],
+            "structuredContent": false,
+            "parseableTextJson": false
+          },
+          "warmCalls": [
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 994,
+              "responseSha256": "50eb59a55764fc12f44bbbc16b94c9bb3773ea83399c17b654c9b21c9d81e007",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": false,
+              "parseableTextJson": false
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 994,
+              "responseSha256": "7a6c8e57062fcc182450efd376bafd391ace49b3e78509adf09061a47271d2cb",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": false,
+              "parseableTextJson": false
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 994,
+              "responseSha256": "89270139e9cb8f83fedb8a14eab0a5cd1ca3e7b8bdb4934968da3aaed6dade7c",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": false,
+              "parseableTextJson": false
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 994,
+              "responseSha256": "b3ab4f21b0495754eec15ec73a8a0ef129f1b537c8b9781c9d7f265c2ec77e73",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": false,
+              "parseableTextJson": false
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 994,
+              "responseSha256": "b031d2248d9c83d3855ddbafc69678e2a452344890034640ef886ee205f19b8e",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": false,
+              "parseableTextJson": false
+            }
+          ],
+          "invariants": [
+            {
+              "name": "initialize returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "initialize server version matches the package engine version",
+              "pass": true,
+              "detail": "package=0.3.15; engine=0.3.15; initialize=0.3.15"
+            },
+            {
+              "name": "tools/list returns a non-empty catalog",
+              "pass": true
+            },
+            {
+              "name": "tools/list advertises find_dead_code",
+              "pass": true
+            },
+            {
+              "name": "cold find_dead_code returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "cold find_dead_code does not return isError",
+              "pass": true
+            },
+            {
+              "name": "cold find_dead_code returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[0] find_dead_code returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[0] find_dead_code does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[0] find_dead_code returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[1] find_dead_code returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[1] find_dead_code does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[1] find_dead_code returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[2] find_dead_code returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[2] find_dead_code does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[2] find_dead_code returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[3] find_dead_code returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[3] find_dead_code does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[3] find_dead_code returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[4] find_dead_code returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[4] find_dead_code does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[4] find_dead_code returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "MCP launcher process tree cleaned up",
+              "pass": true
+            },
+            {
+              "name": "process-tree memory sample is non-zero",
+              "pass": true
+            }
+          ],
+          "memory": {
+            "samples": 18,
+            "method": "windows-cim-process-tree-working-set-sampling",
+            "sampledProcessIdentities": [
+              "23368|639213654380725100",
+              "26292|639213654380806970",
+              "53640|639213654389327880",
+              "38916|639213654389374330",
+              "32884|639213654403119940",
+              "36956|639213654403185910",
+              "34972|639213654404161800",
+              "40388|639213654404269020",
+              "26944|639213654417704080",
+              "22652|639213654417917010",
+              "41552|639213654436989190",
+              "36464|639213654437033990",
+              "25532|639213654437210830",
+              "35660|639213654437322640"
+            ],
+            "liveSampledProcessIdentities": [],
+            "sampledPids": [
+              23368,
+              26292,
+              53640,
+              38916,
+              32884,
+              36956,
+              34972,
+              40388,
+              26944,
+              22652,
+              41552,
+              36464,
+              25532,
+              35660
+            ],
+            "peakProcessTreeRssBytes": 634433536,
+            "availability": "AVAILABLE",
+            "sampleIntervalMs": 50,
+            "reason": null
+          },
+          "cleanup": {
+            "stdinClosed": true,
+            "gracefulExit": true,
+            "forced": false,
+            "exitCode": 0,
+            "signal": null,
+            "processTreeGone": true,
+            "liveSampledPids": [],
+            "liveSampledProcessIdentities": [],
+            "wallMs": 545.21,
+            "error": null
+          },
+          "stderrTail": "[weavatrix] no graph built yet for C:\\Users\\SergiiZiborov\\Documents\\GitHub\\emaildist — ask the agent to call rebuild_graph; it builds into the standard weavatrix-graphs layout\n[weavatrix] failed to load graph: ENOENT: no such file or directory, open 'C:\\Users\\SERGII~1\\AppData\\Local\\Temp\\weavatrix-npm-mcp-zNTd31\\runtime-state\\find_dead_code-87f0ccc2\\cold-2\\javascript\\.weavatrix\\graphs\\emaildist-9b6147037415\\graph.json'\n[weavatrix] repo root: C:\\Users\\SergiiZiborov\\Documents\\GitHub\\emaildist\n[weavatrix] capabilities: graph,search,source,health,build,retarget,crossrepo (34 tools)\n[weavatrix] ready\n[weavatrix] shutdown requested (stdin EOF); draining graph work and 0 semantic provider(s)\n[weavatrix] shutdown cleanup: graph=drained, semantic=0 requested/0 remaining\n",
+          "status": "PASS",
+          "engine": "javascript"
+        },
+        {
+          "tool": "find_dead_code",
+          "toolArguments": {},
+          "pairId": "find_dead_code#3",
+          "coldSample": 3,
+          "orderPosition": 1,
+          "isolation": {
+            "policy": "fresh-empty-per-session",
+            "root": "C:\\Users\\SERGII~1\\AppData\\Local\\Temp\\weavatrix-npm-mcp-zNTd31\\runtime-state\\find_dead_code-87f0ccc2\\cold-3\\javascript",
+            "graphHome": "C:\\Users\\SERGII~1\\AppData\\Local\\Temp\\weavatrix-npm-mcp-zNTd31\\runtime-state\\find_dead_code-87f0ccc2\\cold-3\\javascript\\.weavatrix\\graphs",
+            "graphHomeExistedBeforeSession": false,
+            "inheritedHomeExcluded": true,
+            "inheritedWeavatrixGraphHomeExcluded": true,
+            "environment": [
+              "HOME",
+              "USERPROFILE",
+              "APPDATA",
+              "LOCALAPPDATA",
+              "XDG_CACHE_HOME",
+              "XDG_CONFIG_HOME",
+              "XDG_DATA_HOME",
+              "XDG_STATE_HOME",
+              "XDG_RUNTIME_DIR",
+              "WEAVATRIX_GRAPH_HOME"
+            ]
+          },
+          "timings": {
+            "warmCallMs": [
+              1285.62,
+              799.32,
+              639.97,
+              1101.3,
+              821.66
+            ],
+            "startMs": 26.5,
+            "initializeMs": 552.08,
+            "listMs": 4.35,
+            "coldCallMs": 6054.72,
+            "coldBoundaryMs": 6638.17,
+            "warmCallSummaryMs": {
+              "samples": 5,
+              "min": 639.97,
+              "median": 821.66,
+              "p95": 1248.76,
+              "max": 1285.62
+            }
+          },
+          "protocol": {
+            "initialize": {
+              "ok": true,
+              "protocolVersion": "2025-06-18",
+              "serverInfo": {
+                "name": "weavatrix",
+                "version": "0.3.15"
+              },
+              "capabilities": {
+                "tools": {
+                  "listChanged": true
+                }
+              },
+              "error": null,
+              "installedPackageVersion": "0.3.15",
+              "expectedRuntimeVersion": "0.3.15",
+              "packageVersionMatch": true
+            },
+            "tools": {
+              "count": 34,
+              "requestedAdvertised": true,
+              "catalogSha256": "e0c6fd96e21715829f66840f142192bc8625f70fdc52b477b12574157c360d1d"
+            }
+          },
+          "coldCall": {
+            "ok": true,
+            "isError": false,
+            "jsonRpcError": null,
+            "responseBytes": 1001,
+            "responseSha256": "0b0270cc39309dd2b9b6f1dbb96ae637eb8c4426e4d9692f84a8041d1abfcb43",
+            "contentTypes": [
+              "text"
+            ],
+            "structuredContent": false,
+            "parseableTextJson": false
+          },
+          "warmCalls": [
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 995,
+              "responseSha256": "af7cfa95cfc8f26aff039a9267e18dab0b25e63d822690bfebf7fb7c6fe305a4",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": false,
+              "parseableTextJson": false
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 994,
+              "responseSha256": "7c56002dc34e0a34755ef469a87ab02e7a2bd862cf7979cde0649ff1d9848d59",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": false,
+              "parseableTextJson": false
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 994,
+              "responseSha256": "5e4d7e3eeb5249040e8452a4da21afe7ed61fafa9275af44c483f9f09092ed5f",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": false,
+              "parseableTextJson": false
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 995,
+              "responseSha256": "cf49a2d562ed5785f7c29190809324c249bb106d69267a96ba69d819af36da9e",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": false,
+              "parseableTextJson": false
+            },
+            {
+              "ok": true,
+              "isError": false,
+              "jsonRpcError": null,
+              "responseBytes": 994,
+              "responseSha256": "33ac61accb5a3a7a856d978301e0f3372adc1e9a66b5e996408f10afa457d757",
+              "contentTypes": [
+                "text"
+              ],
+              "structuredContent": false,
+              "parseableTextJson": false
+            }
+          ],
+          "invariants": [
+            {
+              "name": "initialize returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "initialize server version matches the package engine version",
+              "pass": true,
+              "detail": "package=0.3.15; engine=0.3.15; initialize=0.3.15"
+            },
+            {
+              "name": "tools/list returns a non-empty catalog",
+              "pass": true
+            },
+            {
+              "name": "tools/list advertises find_dead_code",
+              "pass": true
+            },
+            {
+              "name": "cold find_dead_code returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "cold find_dead_code does not return isError",
+              "pass": true
+            },
+            {
+              "name": "cold find_dead_code returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[0] find_dead_code returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[0] find_dead_code does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[0] find_dead_code returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[1] find_dead_code returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[1] find_dead_code does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[1] find_dead_code returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[2] find_dead_code returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[2] find_dead_code does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[2] find_dead_code returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[3] find_dead_code returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[3] find_dead_code does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[3] find_dead_code returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "warm[4] find_dead_code returns a JSON-RPC result",
+              "pass": true
+            },
+            {
+              "name": "warm[4] find_dead_code does not return isError",
+              "pass": true
+            },
+            {
+              "name": "warm[4] find_dead_code returns content or structuredContent",
+              "pass": true
+            },
+            {
+              "name": "MCP launcher process tree cleaned up",
+              "pass": true
+            },
+            {
+              "name": "process-tree memory sample is non-zero",
+              "pass": true
+            }
+          ],
+          "memory": {
+            "samples": 24,
+            "method": "windows-cim-process-tree-working-set-sampling",
+            "sampledProcessIdentities": [
+              "16448|639213654460078980",
+              "43444|639213654460285750",
+              "15296|639213654468387580",
+              "42344|639213654468431590",
+              "25236|639213654468640250",
+              "26780|639213654468767100",
+              "43268|639213654480822470",
+              "16460|639213654480866640",
+              "45044|639213654481077430",
+              "46308|639213654481220330",
+              "26040|639213654483359480",
+              "12784|639213654483431670",
+              "10316|639213654484533200",
+              "37464|639213654484642410",
+              "30536|639213654500670570",
+              "14284|639213654500749000",
+              "36060|639213654515884280",
+              "23924|639213654515960050",
+              "18276|639213654516326310",
+              "40244|639213654516531950",
+              "48376|639213654519961790",
+              "49136|639213654520022910",
+              "25040|639213654520274270",
+              "42884|639213654520412020",
+              "35544|639213654537645380",
+              "10304|639213654537725850",
+              "47336|639213654541725020",
+              "52948|639213654541776820",
+              "27608|639213654545921190",
+              "41628|639213654545968920",
+              "47436|639213654559220380"
+            ],
+            "liveSampledProcessIdentities": [],
+            "sampledPids": [
+              16448,
+              43444,
+              15296,
+              42344,
+              25236,
+              26780,
+              43268,
+              16460,
+              45044,
+              46308,
+              26040,
+              12784,
+              10316,
+              37464,
+              30536,
+              14284,
+              36060,
+              23924,
+              18276,
+              40244,
+              48376,
+              49136,
+              25040,
+              42884,
+              35544,
+              10304,
+              47336,
+              52948,
+              27608,
+              41628,
+              47436
+            ],
+            "peakProcessTreeRssBytes": 627929088,
+            "availability": "AVAILABLE",
+            "sampleIntervalMs": 50,
+            "reason": null
+          },
+          "cleanup": {
+            "stdinClosed": true,
+            "gracefulExit": true,
+            "forced": false,
+            "exitCode": 0,
+            "signal": null,
+            "processTreeGone": true,
+            "liveSampledPids": [],
+            "liveSampledProcessIdentities": [],
+            "wallMs": 779.68,
+            "error": null
+          },
+          "stderrTail": "[weavatrix] no graph built yet for C:\\Users\\SergiiZiborov\\Documents\\GitHub\\emaildist — ask the agent to call rebuild_graph; it builds into the standard weavatrix-graphs layout\n[weavatrix] failed to load graph: ENOENT: no such file or directory, open 'C:\\Users\\SERGII~1\\AppData\\Local\\Temp\\weavatrix-npm-mcp-zNTd31\\runtime-state\\find_dead_code-87f0ccc2\\cold-3\\javascript\\.weavatrix\\graphs\\emaildist-9b6147037415\\graph.json'\n[weavatrix] repo root: C:\\Users\\SergiiZiborov\\Documents\\GitHub\\emaildist\n[weavatrix] capabilities: graph,search,source,health,build,retarget,crossrepo (34 tools)\n[weavatrix] ready\n[weavatrix] shutdown requested (stdin EOF); draining graph work and 0 semantic provider(s)\n[weavatrix] shutdown cleanup: graph=drained, semantic=0 requested/0 remaining\n",
+          "status": "PASS",
+          "engine": "javascript"
+        }
+      ],
+      "summary": {
+        "status": "PASS",
+        "identityPass": true,
+        "tools": 2,
+        "passingTools": 2,
+        "coldSessions": 6,
+        "passingColdSessions": 6,
+        "startMs": {
+          "samples": 6,
+          "min": 11.23,
+          "median": 21.87,
+          "p95": 25.65,
+          "max": 26.5
+        },
+        "initializeMs": {
+          "samples": 6,
+          "min": 442.57,
+          "median": 571,
+          "p95": 1877.12,
+          "max": 2297.06
+        },
+        "listMs": {
+          "samples": 6,
+          "min": 3.08,
+          "median": 4.03,
+          "p95": 8.06,
+          "max": 8.87
+        },
+        "coldCallMs": {
+          "samples": 6,
+          "min": 3808.32,
+          "median": 4431.9,
+          "p95": 5684.91,
+          "max": 6054.72
+        },
+        "coldBoundaryMs": {
+          "samples": 6,
+          "min": 4293.45,
+          "median": 5068.22,
+          "p95": 6687.98,
+          "max": 6704.58
+        },
+        "warmCallMs": {
+          "samples": 30,
+          "min": 77.78,
+          "median": 292.55,
+          "p95": 975.46,
+          "max": 1285.62
+        },
+        "peakProcessTreeRssBytes": {
+          "samples": 6,
+          "min": 524959744,
+          "median": 622227456,
+          "p95": 666830848,
+          "max": 677629952
+        }
+      }
+    }
+  },
+  "errors": [],
+  "summary": {
+    "status": "PASS",
+    "rust": {
+      "status": "PASS",
+      "identityPass": true,
+      "tools": 2,
+      "passingTools": 2,
+      "coldSessions": 6,
+      "passingColdSessions": 6,
+      "startMs": {
+        "samples": 6,
+        "min": 9.69,
+        "median": 19.02,
+        "p95": 31.13,
+        "max": 33.25
+      },
+      "initializeMs": {
+        "samples": 6,
+        "min": 82.92,
+        "median": 125.28,
+        "p95": 181.79,
+        "max": 192.97
+      },
+      "listMs": {
+        "samples": 6,
+        "min": 0.47,
+        "median": 0.72,
+        "p95": 0.82,
+        "max": 0.84
+      },
+      "coldCallMs": {
+        "samples": 6,
+        "min": 7.25,
+        "median": 8.59,
+        "p95": 14.75,
+        "max": 15.9
+      },
+      "coldBoundaryMs": {
+        "samples": 6,
+        "min": 125.39,
+        "median": 157.34,
+        "p95": 212.93,
+        "max": 225.8
+      },
+      "warmCallMs": {
+        "samples": 30,
+        "min": 6.43,
+        "median": 7.94,
+        "p95": 13.36,
+        "max": 15.57
+      },
+      "peakProcessTreeRssBytes": {
+        "samples": 0,
+        "min": null,
+        "median": null,
+        "p95": null,
+        "max": null
+      }
+    },
+    "javascript": {
+      "status": "PASS",
+      "identityPass": true,
+      "tools": 2,
+      "passingTools": 2,
+      "coldSessions": 6,
+      "passingColdSessions": 6,
+      "startMs": {
+        "samples": 6,
+        "min": 11.23,
+        "median": 21.87,
+        "p95": 25.65,
+        "max": 26.5
+      },
+      "initializeMs": {
+        "samples": 6,
+        "min": 442.57,
+        "median": 571,
+        "p95": 1877.12,
+        "max": 2297.06
+      },
+      "listMs": {
+        "samples": 6,
+        "min": 3.08,
+        "median": 4.03,
+        "p95": 8.06,
+        "max": 8.87
+      },
+      "coldCallMs": {
+        "samples": 6,
+        "min": 3808.32,
+        "median": 4431.9,
+        "p95": 5684.91,
+        "max": 6054.72
+      },
+      "coldBoundaryMs": {
+        "samples": 6,
+        "min": 4293.45,
+        "median": 5068.22,
+        "p95": 6687.98,
+        "max": 6704.58
+      },
+      "warmCallMs": {
+        "samples": 30,
+        "min": 77.78,
+        "median": 292.55,
+        "p95": 975.46,
+        "max": 1285.62
+      },
+      "peakProcessTreeRssBytes": {
+        "samples": 6,
+        "min": 524959744,
+        "median": 622227456,
+        "p95": 666830848,
+        "max": 677629952
+      }
+    },
+    "pairedColdBoundary": {
+      "pairs": 6,
+      "speedup": {
+        "samples": 6,
+        "min": 22.34,
+        "median": 32.06,
+        "p95": 52.82,
+        "max": 53.47
+      },
+      "byTool": {
+        "graph_stats": {
+          "pairs": 3,
+          "rustMs": {
+            "samples": 3,
+            "min": 125.39,
+            "median": 141.14,
+            "p95": 170.98,
+            "max": 174.3
+          },
+          "javascriptMs": {
+            "samples": 3,
+            "min": 4293.45,
+            "median": 5093.11,
+            "p95": 6543.43,
+            "max": 6704.58
+          },
+          "speedup": {
+            "samples": 3,
+            "min": 24.63,
+            "median": 36.09,
+            "p95": 51.73,
+            "max": 53.47
+          }
+        },
+        "find_dead_code": {
+          "pairs": 3,
+          "rustMs": {
+            "samples": 3,
+            "min": 130.52,
+            "median": 173.54,
+            "p95": 220.57,
+            "max": 225.8
+          },
+          "javascriptMs": {
+            "samples": 3,
+            "min": 4866.53,
+            "median": 5043.33,
+            "p95": 6478.69,
+            "max": 6638.17
+          },
+          "speedup": {
+            "samples": 3,
+            "min": 22.34,
+            "median": 28.04,
+            "p95": 48.58,
+            "max": 50.86
+          }
+        }
+      },
+      "measurements": [
+        {
+          "pairId": "graph_stats#1",
+          "tool": "graph_stats",
+          "coldSample": 1,
+          "order": [
+            "rust",
+            "javascript"
+          ],
+          "rustMs": 125.39,
+          "javascriptMs": 6704.58,
+          "speedup": 53.47
+        },
+        {
+          "pairId": "graph_stats#2",
+          "tool": "graph_stats",
+          "coldSample": 2,
+          "order": [
+            "javascript",
+            "rust"
+          ],
+          "rustMs": 141.14,
+          "javascriptMs": 5093.11,
+          "speedup": 36.09
+        },
+        {
+          "pairId": "graph_stats#3",
+          "tool": "graph_stats",
+          "coldSample": 3,
+          "order": [
+            "rust",
+            "javascript"
+          ],
+          "rustMs": 174.3,
+          "javascriptMs": 4293.45,
+          "speedup": 24.63
+        },
+        {
+          "pairId": "find_dead_code#1",
+          "tool": "find_dead_code",
+          "coldSample": 1,
+          "order": [
+            "javascript",
+            "rust"
+          ],
+          "rustMs": 225.8,
+          "javascriptMs": 5043.33,
+          "speedup": 22.34
+        },
+        {
+          "pairId": "find_dead_code#2",
+          "tool": "find_dead_code",
+          "coldSample": 2,
+          "order": [
+            "rust",
+            "javascript"
+          ],
+          "rustMs": 173.54,
+          "javascriptMs": 4866.53,
+          "speedup": 28.04
+        },
+        {
+          "pairId": "find_dead_code#3",
+          "tool": "find_dead_code",
+          "coldSample": 3,
+          "order": [
+            "javascript",
+            "rust"
+          ],
+          "rustMs": 130.52,
+          "javascriptMs": 6638.17,
+          "speedup": 50.86
+        }
+      ]
+    },
+    "ratios": {
+      "installJavascriptOverRust": 1.94,
+      "coldCallJavascriptOverRust": 515.94,
+      "coldBoundaryJavascriptOverRust": 32.21,
+      "warmCallJavascriptOverRust": 36.85,
+      "peakRssJavascriptOverRust": null
+    }
+  },
+  "performanceGate": {
+    "metric": "median paired fresh-process coldBoundaryMs speedup (JavaScript / Rust)",
+    "boundary": "installed package bin spawn through first successful tools/call response",
+    "ordering": "alternating Rust-first and JavaScript-first within matched tool/sample pairs",
+    "pairs": 6,
+    "byTool": {
+      "graph_stats": {
+        "pairs": 3,
+        "rustMs": {
+          "samples": 3,
+          "min": 125.39,
+          "median": 141.14,
+          "p95": 170.98,
+          "max": 174.3
+        },
+        "javascriptMs": {
+          "samples": 3,
+          "min": 4293.45,
+          "median": 5093.11,
+          "p95": 6543.43,
+          "max": 6704.58
+        },
+        "speedup": {
+          "samples": 3,
+          "min": 24.63,
+          "median": 36.09,
+          "p95": 51.73,
+          "max": 53.47
+        }
+      },
+      "find_dead_code": {
+        "pairs": 3,
+        "rustMs": {
+          "samples": 3,
+          "min": 130.52,
+          "median": 173.54,
+          "p95": 220.57,
+          "max": 225.8
+        },
+        "javascriptMs": {
+          "samples": 3,
+          "min": 4866.53,
+          "median": 5043.33,
+          "p95": 6478.69,
+          "max": 6638.17
+        },
+        "speedup": {
+          "samples": 3,
+          "min": 22.34,
+          "median": 28.04,
+          "p95": 48.58,
+          "max": 50.86
+        }
+      }
+    },
+    "minimumSpeedup": 24,
+    "measuredSpeedup": 32.06,
+    "warmMetric": "median warm tools/call latency speedup (JavaScript / Rust)",
+    "minimumWarmSpeedup": 30,
+    "measuredWarmSpeedup": 36.85,
+    "everySelectedToolFasterThanJavaScript": true,
+    "slowerOrEqualTools": [],
+    "pass": true
+  },
+  "completedAt": "2026-08-03T14:50:59.305Z",
+  "temporaryRootCleanup": {
+    "removed": true,
+    "wallMs": 189.77
+  }
+}
