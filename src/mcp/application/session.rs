@@ -85,12 +85,12 @@ impl RepositorySession {
     }
 
     fn refresh_from_monitor(&mut self) -> Result<(), String> {
-        let (monitor, catch_up) = self.take_ready_monitor()?;
+        let (monitor, _catch_up) = self.take_ready_monitor()?;
         self.monitor = MonitorState::Ready(monitor);
-        let queued_change = self.monitor_changed()?;
-        if !catch_up && !queued_change {
-            return Ok(());
-        }
+        let _queued_change = self.monitor_changed()?;
+        // Watcher events are only a latency hint: filesystem backends may coalesce or
+        // miss them.  The repository revision check is the source of truth for every
+        // tool call, so a quiet watcher must never leave the graph stale.
         self.refresh_repository()?;
         if self.monitor_changed()? {
             self.refresh_repository()?;

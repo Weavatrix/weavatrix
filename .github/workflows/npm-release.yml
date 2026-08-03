@@ -133,7 +133,7 @@ jobs:
       - name: Smoke-test the installed package boundary
         shell: bash
         run: |
-          PACKAGE="$(npm pack ./npm/dist/weavatrix --json | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>process.stdout.write(JSON.parse(s)[0].filename))")"
+          PACKAGE="$(npm pack ./npm/dist/weavatrix --json | node scripts/npm-pack-json.mjs filename)"
           ROOT="$(mktemp -d)"
           trap 'rm -rf "$ROOT" "$PACKAGE"' EXIT
           npm install --prefix "$ROOT" --ignore-scripts --no-audit --no-fund "./$PACKAGE"

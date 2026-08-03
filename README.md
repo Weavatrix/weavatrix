@@ -25,7 +25,9 @@ The same source is distributed in two forms:
 
 The npm package exists for convenience; it does not contain a different
 JavaScript engine. Both distributions run the same native adapter and the same
-`weavatrix-rust` analysis engine.
+`weavatrix-rust` analysis engine. The separately versioned `weavatrix-js`
+package is the legacy JavaScript implementation used for compatibility and
+historical baselines; it is not bundled into `weavatrix`.
 
 ## Install in 30 seconds
 

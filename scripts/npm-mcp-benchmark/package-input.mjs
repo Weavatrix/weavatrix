@@ -7,6 +7,7 @@ import {
     sha256File,
     tail,
 } from './utils.mjs'
+import {packRecord} from '../npm-pack-json.mjs'
 
 const NPM = npmInvocation()
 
@@ -55,7 +56,7 @@ function preparePackage(inputPath, destination) {
     } catch (error) {
         throw new Error(`npm pack returned invalid JSON for ${absolute}: ${error.message}`)
     }
-    const filename = metadata.at(-1)?.filename
+    const filename = packRecord(metadata).filename
     if (!filename) throw new Error(`npm pack did not report a tarball for ${absolute}`)
     const tarball = resolve(destination, filename)
     return packageArtifact(absolute, tarball, 'npm-pack-local-directory')
