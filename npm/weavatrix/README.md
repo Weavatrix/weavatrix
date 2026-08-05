@@ -1,4 +1,4 @@
-# Weavatrix — native MCP repository intelligence
+﻿# Weavatrix â€” native MCP repository intelligence
 
 [![CI](https://github.com/sergii-ziborov/weavatrix/actions/workflows/ci.yml/badge.svg)](https://github.com/sergii-ziborov/weavatrix/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/weavatrix.svg)](https://www.npmjs.com/package/weavatrix)
@@ -110,12 +110,12 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.2.0
-    profile catalog · refresh · watcher · MCP framing
+weavatrix 1.3.0
+    profile catalog Â· refresh Â· watcher Â· MCP framing
     |
     v
-weavatrix-rust 2.1.1
-    typed graph · analysis · 42 read-only operations
+weavatrix-rust 2.2.0
+    typed graph Â· analysis Â· 42 read-only operations
 ```
 
 This npm product owns MCP transport and native distribution. The
@@ -124,10 +124,13 @@ the reusable protocol-independent engine; it is not an MCP server.
 Its standalone diagnostic therefore reports `weavatrix-rust <engine-version>`,
 while this MCP product reports both its product and embedded-engine identities.
 
-Engine 2.1.1 adds `map_stacktrace`, `select_tests`, `build_graph`,
-`token_budget` on the source-context operations, and dependency-injection
-type evidence, and keeps `find_duplicates` families internally consistent
-after filtering and `top_n` truncation.
+Engine 2.2.0 makes three reports carry only what their evidence supports:
+`find_duplicates` reports the lines a clone covers completely and the byte
+range to check them by, `run_audit` runtime findings land on the line they
+matched, and `token_budget` is refused by the operations that cannot apply it
+rather than accepted and ignored. `find_duplicates` also gains
+`include_strings`, which compares the payloads of multi-line literals - inline
+SQL, embedded templates - that the code pass sees as a single token.
 
 ## Release evidence
 

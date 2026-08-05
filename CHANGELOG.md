@@ -1,5 +1,30 @@
 ﻿# Changelog
 
+## 1.3.0 - 2026-08-05
+
+Engine `weavatrix-rust` 2.2.0: three reports that claimed more than their
+evidence supported now hold up to a hand check, and `find_duplicates` gains
+the string-payload pass its schema already advertised.
+
+- `find_duplicates` reports only the lines a clone covers completely, and
+  carries the matching `start_byte`/`end_byte`. A token window starts and ends
+  mid-line, so the reported first and last line used to include text the
+  matcher never compared: a `strict_equal` pair could be diffed line by line
+  and come out different - the reading that collapses two distinct cases into
+  one;
+- `find_duplicates` implements `include_strings`. A string literal is one
+  token to the code pass however much it carries, so a duplicated inline SQL
+  statement, embedded template, or provisioning script never reached
+  `min_tokens` and stayed invisible; the opt-in compares the payloads
+  themselves;
+- `run_audit` runtime findings land on the line they matched. Blanking string
+  literals and comments consumed their line breaks too, so every finding after
+  a multi-line literal shifted onto an earlier line;
+- `token_budget` is refused by the operations that cannot apply it. Four
+  operations trim their answer and account for what they dropped; every other
+  operation used to accept the argument in silence and answer unbounded,
+  spending the context window the caller set it to protect.
+
 ## 1.2.0 - 2026-08-03
 
 - update the native MCP product to the published `weavatrix-rust` 2.1.1

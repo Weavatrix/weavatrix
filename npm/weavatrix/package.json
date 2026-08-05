@@ -1,7 +1,7 @@
 ﻿{
   "name": "weavatrix",
-  "version": "1.2.0",
-  "weavatrixEngineVersion": "2.1.1",
+  "version": "1.3.0",
+  "weavatrixEngineVersion": "2.2.0",
   "description": "Native repository intelligence for coding agents: 42 read-only MCP operations backed by typed evidence graphs, impact, architecture, APIs, Git, search, semantics, and memory.",
   "author": "Sergii Ziborov <sergii.ziborov@gmail.com>",
   "license": "MIT",
