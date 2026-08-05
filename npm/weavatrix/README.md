@@ -1,4 +1,4 @@
-﻿# Weavatrix â€” native MCP repository intelligence
+# Weavatrix â€” native MCP repository intelligence
 
 [![CI](https://github.com/sergii-ziborov/weavatrix/actions/workflows/ci.yml/badge.svg)](https://github.com/sergii-ziborov/weavatrix/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/weavatrix.svg)](https://www.npmjs.com/package/weavatrix)
@@ -110,11 +110,11 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.3.0
+weavatrix 1.3.1
     profile catalog Â· refresh Â· watcher Â· MCP framing
     |
     v
-weavatrix-rust 2.2.0
+weavatrix-rust 2.2.1
     typed graph Â· analysis Â· 42 read-only operations
 ```
 
@@ -124,7 +124,7 @@ the reusable protocol-independent engine; it is not an MCP server.
 Its standalone diagnostic therefore reports `weavatrix-rust <engine-version>`,
 while this MCP product reports both its product and embedded-engine identities.
 
-Engine 2.2.0 makes three reports carry only what their evidence supports:
+Engine 2.2.1 makes three reports carry only what their evidence supports:
 `find_duplicates` reports the lines a clone covers completely and the byte
 range to check them by, `run_audit` runtime findings land on the line they
 matched, and `token_budget` is refused by the operations that cannot apply it

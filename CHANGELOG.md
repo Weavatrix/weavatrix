@@ -1,4 +1,19 @@
-﻿# Changelog
+# Changelog
+
+## 1.3.1 - 2026-08-05
+
+Engine `weavatrix-rust` 2.2.1.
+
+- an operation that cannot apply `token_budget` answers and records that in
+  the response instead of refusing the call. 1.3.0 shipped the argument as an
+  error, which withheld evidence a read-only operation had already produced
+  and broke every caller that passes the budget uniformly. The budget block
+  now appears on every operation that was given one, carrying `applied: false`,
+  `dropped_items: 0`, and the estimated cost beside the same `fit` field the
+  applying operations report, so a caller reads one shape everywhere and no
+  evidence is lost;
+- `server.json` ships without a byte-order mark again, so the MCP Registry
+  publisher reads it: the 1.3.0 tag published to npm and then failed there.
 
 ## 1.3.0 - 2026-08-05
 
