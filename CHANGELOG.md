@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.4.0 - 2026-08-09
+
+Engine `weavatrix-rust` 2.3.0.
+
+- `run_audit` and `graph_stats` return the capability matrix only when asked
+  for it with `include_capabilities`. The matrix is static: the same list for
+  every repository and every call, and the largest single block of both
+  answers — 56% of `run_audit` and 87% of `graph_stats` on a 66-file
+  repository. Callers paid for it on every call to learn nothing about the
+  repository they had asked about. Measured on that repository the default
+  answers drop from 2872 to 1379 and from 1748 to 252 estimated tokens; a
+  caller that passes the argument gets exactly what it got before.
+  `rebuild_graph` and `open_repo` forward their arguments, so the graph blocks
+  they nest shed the matrix too.
+
 ## 1.3.1 - 2026-08-05
 
 Engine `weavatrix-rust` 2.2.1.
