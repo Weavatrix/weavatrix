@@ -1,4 +1,4 @@
-# Weavatrix â€” native MCP repository intelligence
+# Weavatrix — native MCP repository intelligence
 
 [![CI](https://github.com/sergii-ziborov/weavatrix/actions/workflows/ci.yml/badge.svg)](https://github.com/sergii-ziborov/weavatrix/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/weavatrix.svg)](https://www.npmjs.com/package/weavatrix)
@@ -138,12 +138,12 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.3.1
-    profile catalog Â· session refresh Â· filesystem watcher Â· MCP framing
+weavatrix 1.4.0
+    profile catalog · session refresh · filesystem watcher · MCP framing
     |
     v
-weavatrix-rust 2.2.1
-    typed graph Â· analysis pipeline Â· 42 read-only operations
+weavatrix-rust 2.3.0
+    typed graph · analysis pipeline · 42 read-only operations
     |
     +-- weavatrix-scan      repository discovery and selection
     +-- weavatrix-parse     lossless tokenization and structural facts
@@ -240,7 +240,7 @@ application session
         |
 repository + change-monitor ports
         |
-weavatrix-rust adapter Â· notify adapter
+weavatrix-rust adapter · notify adapter
 ```
 
 `mcport` is isolated to the inbound server. The application layer sees neither
