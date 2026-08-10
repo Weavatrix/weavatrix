@@ -61,6 +61,25 @@ The package contains native binaries for Windows x64/arm64, macOS x64/arm64,
 and glibc Linux x64/arm64. It has no install script and performs no runtime
 download.
 
+### Halve every answer on a client that reads structured output
+
+An MCP result carries the payload twice: once as `structuredContent`, and once
+mirrored into a text block for clients that read only `content`. The mirror is
+the pretty-printed copy, so it is the larger of the two.
+
+```sh
+npx -y weavatrix mcp . --output-format=structured
+```
+
+Measured on `run_audit` over a real repository, the response falls from 8931 to
+3589 bytes, **59.8% smaller**. Whether a client reads structured output does
+not change between calls, so it is chosen once at startup rather than restated
+as an argument on every call; `WEAVATRIX_OUTPUT_FORMAT=structured` does the
+same, and a call that names its own `output_format` still wins.
+
+`json` is the default and keeps the mirror, because a client that ignores
+`structuredContent` would otherwise see an empty result.
+
 ## What an agent can ask
 
 ```text
@@ -110,7 +129,7 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.5.0
+weavatrix 1.6.0
     profile catalog · refresh · watcher · MCP framing
     |
     v

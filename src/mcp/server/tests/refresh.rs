@@ -1,12 +1,11 @@
-use super::super::WeavatrixServer;
-use crate::mcp::McpProfile;
+use super::super::{ServeOptions, WeavatrixServer};
 use mcport::{dispatch, json};
 
 #[test]
 fn mcp_refreshes_after_a_real_source_change() {
     let root = temporary_repository();
     std::fs::write(root.join("source.rs"), "fn first() {}\n").unwrap();
-    let mut server = WeavatrixServer::new(&root, McpProfile::All).unwrap();
+    let mut server = WeavatrixServer::new(&root, ServeOptions::default()).unwrap();
     std::fs::write(root.join("source.rs"), "fn first() {}\nfn second() {}\n").unwrap();
 
     let first = graph_stats(&mut server, 1);

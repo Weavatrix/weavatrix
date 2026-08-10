@@ -1,4 +1,4 @@
-use super::server;
+use super::{served, server};
 use crate::mcp::McpProfile;
 use mcport::{MODERN_PROTOCOL_VERSION, dispatch, json};
 use weavatrix_rust::operations;
@@ -156,6 +156,61 @@ fn structured_output_drops_the_text_mirror_and_halves_the_answer() {
             < blazingly_json::to_string(&mirrored).unwrap().len(),
         "structured output must not cost more than the mirrored answer"
     );
+}
+
+/// A client's ability to read structured output does not change between
+/// calls, so the operator sets it once and no call spends argument tokens
+/// restating it.
+#[test]
+fn the_startup_default_decides_the_answer_shape_and_a_call_still_overrides_it() {
+    let mut server = served(super::super::ServeOptions {
+        profile: McpProfile::All,
+        default_payload: mcport::ToolPayload::Structured,
+    });
+    let call = |server: &mut _, arguments| {
+        dispatch(
+            server,
+            &json!({
+                "jsonrpc": "2.0",
+                "id": 7,
+                "method": "tools/call",
+                "params": {"name": "graph_stats", "arguments": arguments}
+            }),
+        )
+        .expect("tools/call is answered")
+    };
+
+    let defaulted = call(&mut server, json!({}));
+    assert!(
+        defaulted["result"]["content"]
+            .as_array()
+            .is_some_and(Vec::is_empty),
+        "a call that names no format takes the startup default"
+    );
+    assert!(defaulted["result"]["structuredContent"]["nodes"].is_number());
+
+    let overridden = call(&mut server, json!({"output_format": "json"}));
+    assert!(
+        !overridden["result"]["content"]
+            .as_array()
+            .is_some_and(Vec::is_empty),
+        "an explicit format on the call still wins over the startup default"
+    );
+
+    let mirrored = served(super::super::ServeOptions::default());
+    assert_eq!(
+        mirrored.default_payload,
+        mcport::ToolPayload::Mirrored,
+        "the shipped default keeps the mirror"
+    );
+}
+
+#[test]
+fn an_output_format_the_server_cannot_serve_is_named_in_the_error() {
+    let error = crate::mcp::parse_output_format("compact")
+        .expect_err("an unknown format must not silently become the default");
+    assert!(error.contains("compact"), "got {error}");
+    assert!(error.contains("text, json, or structured"), "got {error}");
 }
 
 #[test]
