@@ -1,5 +1,31 @@
 # Changelog
 
+## 1.5.0 - 2026-08-10
+
+Engine `weavatrix-rust` 2.4.0 on `mcport` 0.5.0.
+
+- `output_format: "structured"` answers with `structuredContent` and no text
+  mirror. An MCP result carries the payload twice, and the mirror is the
+  pretty-printed copy, so it is the larger of the two. Measured through this
+  server on `run_audit` over a real repository the response fell from 8931 to
+  3589 bytes, 59.8% smaller. The default is unchanged: a client that ignores
+  `structuredContent` would see an empty result, so dropping the mirror stays
+  the caller's decision.
+
+- Rust route attributes are read past their first argument, so a repository
+  that records operation identity beside the path no longer reports zero
+  endpoints. `blazingly` at 873db4a went from 0 endpoint nodes to 78. An axum
+  `MethodRouter` chain also exposes every verb it serves.
+
+- `verify_capabilities` resolves a declared served surface against the
+  endpoints a revision exposes, and reports both directions: a claim with no
+  evidence behind it, and an exposed endpoint no claim covers.
+
+- the README title and the product-boundary diagram no longer carry
+  double-encoded characters. The published 1.4.0 page rendered its em dash as
+  a three-character mojibake sequence; npm serves the README from the
+  published tarball, so only a new version could replace it.
+
 ## 1.4.0 - 2026-08-09
 
 Engine `weavatrix-rust` 2.3.0.

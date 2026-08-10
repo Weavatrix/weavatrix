@@ -8,7 +8,7 @@
 **Give your coding agent repository evidence before it starts guessing.**
 
 Weavatrix is the native MCP product for repository intelligence. It gives
-Codex, Claude Code, and other coding agents 42 read-only operations over one
+Codex, Claude Code, and other coding agents 43 read-only operations over one
 revision-bound evidence graph: impact, architecture, APIs, Git history,
 duplicates, dead code, search, semantic links, and temporal memory.
 
@@ -74,7 +74,7 @@ contract affected by this branch.
 Build the smallest source bundle needed to edit this symbol safely.
 ```
 
-## The 42 read-only operations
+## The 43 read-only operations
 
 | Workflow | Operations |
 | --- | --- |
@@ -83,7 +83,7 @@ Build the smallest source bundle needed to edit this symbol safely.
 | Exact source context | `search_code`, `read_source`, `inspect_symbol`, `context_bundle`, `map_stacktrace` |
 | Health and quality | `find_duplicates`, `find_dead_code`, `run_audit`, `coverage_map`, `hot_path_review` |
 | APIs and transports | `list_endpoints`, `trace_endpoint`, `trace_api_contract` |
-| Architecture | `get_architecture_contract`, `verify_architecture`, `explain_architecture_violation`, `propose_architecture_exception` |
+| Architecture | `get_architecture_contract`, `verify_architecture`, `verify_capabilities`, `explain_architecture_violation`, `propose_architecture_exception` |
 | Git and repositories | `git_history`, `cross_repo_git`, `open_repo`, `list_known_repos`, `rebuild_graph` |
 | Native extensions | `vector_search`, `semantic_link`, `seo_link_suggestions`, `memory_context` |
 
@@ -110,12 +110,12 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.4.0
+weavatrix 1.5.0
     profile catalog · refresh · watcher · MCP framing
     |
     v
-weavatrix-rust 2.3.0
-    typed graph · analysis · 42 read-only operations
+weavatrix-rust 2.4.0
+    typed graph · analysis · 43 read-only operations
 ```
 
 This npm product owns MCP transport and native distribution. The
