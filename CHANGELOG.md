@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.6.0 - 2026-08-10
+
+- `--output-format=json|text|structured` and `WEAVATRIX_OUTPUT_FORMAT` choose
+  the answer shape once at startup. 1.5.0 could drop the text mirror, but only
+  per call, so an agent had to restate the choice on every one of the 43
+  operations and pay argument tokens to save payload tokens. Whether a client
+  reads `structuredContent` does not change between calls, so the operator
+  decides it once and no call carries the argument. A call that names its own
+  `output_format` still wins, the flag wins over the environment, and `json`
+  remains the default because a client that ignores `structuredContent` would
+  otherwise see an empty result. Measured on `run_audit` over a real
+  repository with no call arguments at all: 8931 bytes by default, 3589 with
+  the flag.
+
+- a server started with a non-default answer shape says so once on stderr.
+  stdout carries the protocol, so that is the only channel where an operator
+  can be told which shape the process produces without corrupting the stream.
+
 ## 1.5.0 - 2026-08-10
 
 Engine `weavatrix-rust` 2.4.0 on `mcport` 0.5.0.
