@@ -1,7 +1,7 @@
 use crate::mcp::adapters::{CoreRepository, NotifyMonitorFactory, ToolCatalog};
 use crate::mcp::application::RepositorySession;
 use crate::mcp::{McpError, McpProfile};
-use mcport::{ServerIdentity, ToolReply, ToolServer, Value};
+use mcport::{ServerIdentity, ToolPayload, ToolReply, ToolServer, Value};
 use std::path::Path;
 use std::sync::Arc;
 
@@ -43,12 +43,16 @@ impl WeavatrixServer {
                 self.profile
             ));
         }
-        let structured = arguments
-            .get("output_format")
-            .and_then(Value::as_str)
-            .is_none_or(|format| format == "json");
+        // `json` mirrors the payload into a text block for clients that read
+        // only `content`; that mirror is pretty-printed, so it is the larger of
+        // the two copies. `structured` drops it and roughly halves the answer.
+        let payload = match arguments.get("output_format").and_then(Value::as_str) {
+            Some("text") => ToolPayload::Text,
+            Some("structured") => ToolPayload::Structured,
+            _ => ToolPayload::Mirrored,
+        };
         match self.session.call(name, arguments) {
-            Ok(value) => ToolReply::Success { value, structured },
+            Ok(value) => ToolReply::Success { value, payload },
             Err(error) => ToolReply::error(error),
         }
     }

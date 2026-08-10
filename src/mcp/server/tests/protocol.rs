@@ -111,6 +111,53 @@ fn calls_tools_with_structured_and_text_output() {
     assert!(text["result"].get("structuredContent").is_none());
 }
 
+/// The text block repeats the whole payload, pretty-printed, so it is the
+/// larger of the two copies a mirrored answer carries.
+#[test]
+fn structured_output_drops_the_text_mirror_and_halves_the_answer() {
+    let mut server = server(McpProfile::All);
+    let call = |server: &mut _, format: &str| {
+        dispatch(
+            server,
+            &json!({
+                "jsonrpc": "2.0",
+                "id": 6,
+                "method": "tools/call",
+                "params": {
+                    "name": "list_endpoints",
+                    "arguments": {"output_format": format}
+                }
+            }),
+        )
+        .expect("tools/call is answered")
+    };
+
+    let mirrored = call(&mut server, "json");
+    let structured = call(&mut server, "structured");
+
+    assert_eq!(
+        mirrored["result"]["structuredContent"], structured["result"]["structuredContent"],
+        "the machine-readable half is unchanged"
+    );
+    assert!(
+        structured["result"]["content"]
+            .as_array()
+            .is_some_and(Vec::is_empty),
+        "the mirror is gone and the field it lived in is still present"
+    );
+    assert!(
+        !mirrored["result"]["content"]
+            .as_array()
+            .is_some_and(Vec::is_empty),
+        "the default answer still carries the mirror"
+    );
+    assert!(
+        blazingly_json::to_string(&structured).unwrap().len()
+            < blazingly_json::to_string(&mirrored).unwrap().len(),
+        "structured output must not cost more than the mirrored answer"
+    );
+}
+
 #[test]
 fn excludes_tools_outside_the_selected_profile() {
     let mut code = server(McpProfile::Code);
