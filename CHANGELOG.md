@@ -1,5 +1,27 @@
 # Changelog
 
+## 1.7.0 - 2026-08-11
+
+Engine `weavatrix-rust` 2.5.0.
+
+- `git_history` returns the requested commits without paying for hotspot and
+  co-change analysis by default. `include_analytics: true` keeps the richer
+  report available when a caller needs it.
+
+- `graph_diff` rolls edge churn up to file-pair and relation counts by default,
+  so a localized revision does not expand into thousands of near-identical
+  symbol-edge records. `detail: "edges"` preserves the raw evidence opt-in,
+  and both modes honor `token_budget`.
+
+- Rust symbol reads now keep the full named definition for structs, enums,
+  traits, impls, and functions instead of stopping at the declaration name.
+  Context packages therefore include the fields and bodies needed to perform
+  an implementation task.
+
+- Rust types used in signatures and fields create reference evidence for
+  unqualified repository types. Qualified paths remain fail-closed so a path
+  such as `std::io::Result` cannot bind to an unrelated local `Result`.
+
 ## 1.6.0 - 2026-08-10
 
 - `--output-format=json|text|structured` and `WEAVATRIX_OUTPUT_FORMAT` choose
