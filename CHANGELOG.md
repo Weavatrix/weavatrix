@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.7.1 - 2026-08-12
+
+Engine `weavatrix-rust` 2.5.1.
+
+- Rust calls written inside the standard formatting macros are call evidence
+  again. The engine did not look into macro token streams, so a helper invoked
+  only as `println!("{}", helper(value))` reported no callers and could
+  surface as dead code. The argument lists of `format!`, `print!`, `println!`,
+  `eprint!`, `eprintln!`, `write!`, `writeln!`, `dbg!`, and the `format_args!`
+  pair are now traversed as ordinary expressions. Other macros stay untouched:
+  their tokens may be declarations, patterns, or prose, and guessing would
+  turn speculation into graph evidence.
+
+- Python calls inside f-strings keep their call edges through the published
+  `weavatrix-parse` 0.3.1, so `f"{load(path)}"` is incoming evidence for
+  `load` the same way an ordinary call is.
+
 ## 1.7.0 - 2026-08-11
 
 Engine `weavatrix-rust` 2.5.0.

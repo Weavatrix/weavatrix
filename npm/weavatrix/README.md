@@ -129,11 +129,11 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.7.0
+weavatrix 1.7.1
     profile catalog · refresh · watcher · MCP framing
     |
     v
-weavatrix-rust 2.5.0
+weavatrix-rust 2.5.1
     typed graph · analysis · 43 read-only operations
 ```
 
