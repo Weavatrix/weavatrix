@@ -166,10 +166,7 @@ mod tests {
         let error = repo
             .refresh_if_stale()
             .expect_err("refresh must require a loaded engine");
-        assert!(
-            error.contains("not initialized"),
-            "got {error}"
-        );
+        assert!(error.contains("not initialized"), "got {error}");
     }
 
     #[test]
@@ -190,9 +187,6 @@ mod tests {
         let error = repo
             .call("definitely_not_a_weavatrix_tool", json!({}))
             .expect_err("unknown tool");
-        assert!(
-            !error.is_empty(),
-            "operations layer must name the failure"
-        );
+        assert!(!error.is_empty(), "operations layer must name the failure");
     }
 }
