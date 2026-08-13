@@ -16,6 +16,29 @@ It does not answer from a larger grep or an invented confidence score. Every
 bounded result can carry the repository revision, file, line, extractor,
 evidence kind, and confidence that produced it.
 
+### Ecosystem place (UNDERSTAND)
+
+```text
+Weavatrix (this) — code facts
+        │
+        ▼
+Weavatrix Loom — semantic composition (capabilities, registry, compile → Rust)
+        │
+        ▼
+Realforge — artifact construction (scaffold / package / deploy)
+```
+
+| Product | Owns | Does **not** own |
+| --- | --- | --- |
+| **Weavatrix** (this) | Repository / code graph, symbols, deps, search, impact | Capability interchange **Registry**, WVX project graph |
+| **[Weavatrix Loom](https://github.com/sergii-ziborov/weavatrix-loom)** | Capability · Implementation · evidence · GraphPatch · semantic compiler | Deep repo indexing (that stays here) |
+| **[FerroSift](https://github.com/sergii-ziborov/ferrosift)** | Deterministic transform recipes/ops | Capability Registry; code intelligence |
+| **[Cortex Loom](https://github.com/sergii-ziborov/cortex-loom)** | Agent workflow / context budgets | Code index; Loom admit policy |
+
+Loom **consumes** Weavatrix facts for semantic classification (e.g. “this `fn`
+is a candidate for `data.json.parse@1`”). Loom must not grow a second product
+code indexer. Normative Loom side: [ADR-0012](https://github.com/sergii-ziborov/weavatrix-loom/blob/main/docs/adr/0012-ecosystem-boundaries.md).
+
 The same source is distributed in two forms:
 
 | Distribution | Install | Best for |
@@ -159,11 +182,11 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.7.1
+weavatrix 1.8.0
     profile catalog · session refresh · filesystem watcher · MCP framing
     |
     v
-weavatrix-rust 2.5.1
+weavatrix-rust 2.6.0
     typed graph · analysis pipeline · 43 read-only operations
     |
     +-- weavatrix-scan      repository discovery and selection
