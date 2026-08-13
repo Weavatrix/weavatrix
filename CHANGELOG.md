@@ -4,6 +4,16 @@
 
 Engine `weavatrix-rust` 2.6.0.
 
+- The filesystem watcher no longer grows without bound while the server is
+  idle. Events were queued raw on an unbounded channel and only classified
+  when a tool call drained it, so a build writing into `target/` charged
+  roughly a kilobyte per event to a server nobody was calling - measured at
+  13.7 GB per process before the change. Events are now classified in the
+  notify callback and collapse into a single pending-change flag, which is
+  all `changed()` ever reported; watching is constant-memory regardless of
+  event volume. Derived-directory churn was already ignored, but only after
+  it had been paid for.
+
 - MCP package surface is gated at >=95% line coverage via
   `scripts/check-mcp-coverage.ps1` (`cargo llvm-cov` on `src/mcp`, excluding
   the stdio entrypoint and the engine crate).

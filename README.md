@@ -271,7 +271,10 @@ regress the installed boundary. Raw evidence and methodology live in
 - MIT license for the product, engine, and maintained first-party components.
 
 Filesystem watching only invalidates derived state. The next operation performs
-a bounded refresh; it never edits the repository.
+a bounded refresh; it never edits the repository. Watching costs constant
+memory: every event is classified as it arrives and collapses into one pending
+change flag, so build output churning under `target/` or `node_modules/` never
+accumulates in a server that is sitting idle between tool calls.
 
 ## Architecture and development
 
