@@ -4,7 +4,7 @@
 
 Engine `weavatrix-rust` 2.6.0.
 
-- MCP package surface is gated at =95% line coverage via
+- MCP package surface is gated at >=95% line coverage via
   `scripts/check-mcp-coverage.ps1` (`cargo llvm-cov` on `src/mcp`, excluding
   the stdio entrypoint and the engine crate).
 
