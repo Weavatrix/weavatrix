@@ -7,7 +7,7 @@ use weavatrix_rust::{Analyzer, Weavatrix, operations};
 
 fn main() -> ExitCode {
     match run(env::args().skip(1).collect()) {
-        Ok(()) => ExitCode::SUCCESS,
+        Ok(code) => code,
         Err(message) => {
             eprintln!("weavatrix: {message}");
             ExitCode::FAILURE
@@ -15,21 +15,21 @@ fn main() -> ExitCode {
     }
 }
 
-fn run(arguments: Vec<String>) -> Result<(), String> {
+fn run(arguments: Vec<String>) -> Result<ExitCode, String> {
     if arguments.first().is_some_and(|value| value == "--version") {
         println!(
             "weavatrix {} (engine {})",
             env!("CARGO_PKG_VERSION"),
             weavatrix_rust::VERSION
         );
-        return Ok(());
+        return Ok(ExitCode::SUCCESS);
     }
     if arguments
         .first()
         .is_some_and(|value| value == "--help" || value == "-h")
     {
         print_help();
-        return Ok(());
+        return Ok(ExitCode::SUCCESS);
     }
     match arguments.first().map(String::as_str) {
         Some("mcp") => serve_mcp(&arguments),
@@ -43,7 +43,7 @@ fn run(arguments: Vec<String>) -> Result<(), String> {
     }
 }
 
-fn serve_mcp(arguments: &[String]) -> Result<(), String> {
+fn serve_mcp(arguments: &[String]) -> Result<ExitCode, String> {
     let mut repository = ".";
     let mut profile = mcp::McpProfile::All;
     let mut output_format = None;
@@ -62,7 +62,11 @@ fn serve_mcp(arguments: &[String]) -> Result<(), String> {
         profile,
         default_payload: mcp::parse_output_format(&default_output_format(output_format))?,
     };
-    mcp::serve_with_options(repository, options).map_err(|error| error.to_string())
+    // Stdio serve is the product entrypoint; unit coverage lives under `mcp::build_server`.
+    let mut server = mcp::build_server(repository, options).map_err(|error| error.to_string())?;
+    mcport::serve(&mut server)
+        .map(|()| ExitCode::SUCCESS)
+        .map_err(|error| error.to_string())
 }
 
 /// Whether a client reads `structuredContent` does not change between calls,
@@ -77,7 +81,7 @@ fn default_output_format(flag: Option<String>) -> String {
     .unwrap_or_else(|| "json".to_owned())
 }
 
-fn list_operations(arguments: &[String]) -> Result<(), String> {
+fn list_operations(arguments: &[String]) -> Result<ExitCode, String> {
     let mut profile = mcp::McpProfile::All;
     for argument in arguments.iter().skip(1) {
         if let Some(value) = argument.strip_prefix("--profile=") {
@@ -91,10 +95,10 @@ fn list_operations(arguments: &[String]) -> Result<(), String> {
         blazingly_json::to_string_pretty(&operations::catalog_for_profile(profile))
             .map_err(|error| error.to_string())?
     );
-    Ok(())
+    Ok(ExitCode::SUCCESS)
 }
 
-fn call_operation(arguments: &[String]) -> Result<(), String> {
+fn call_operation(arguments: &[String]) -> Result<ExitCode, String> {
     let name = arguments
         .get(1)
         .ok_or_else(|| "tool requires an operation name".to_owned())?;
@@ -112,10 +116,17 @@ fn call_operation(arguments: &[String]) -> Result<(), String> {
         "{}",
         blazingly_json::to_string_pretty(&output).map_err(|error| error.to_string())?
     );
-    Ok(())
+    // A blocked verification is a failed gate, not a tool error: the report
+    // stays on stdout and the exit code carries the verdict.
+    if matches!(name.as_str(), "verify_architecture" | "verify_capabilities")
+        && output["state"] == "BLOCKED"
+    {
+        return Ok(ExitCode::FAILURE);
+    }
+    Ok(ExitCode::SUCCESS)
 }
 
-fn analyze(arguments: Vec<String>) -> Result<(), String> {
+fn analyze(arguments: Vec<String>) -> Result<ExitCode, String> {
     let mut repository = PathBuf::from(".");
     let mut pretty = false;
     let mut legacy = false;
@@ -140,7 +151,7 @@ fn analyze(arguments: Vec<String>) -> Result<(), String> {
     }
     .map_err(|error| error.to_string())?;
     println!("{json}");
-    Ok(())
+    Ok(ExitCode::SUCCESS)
 }
 
 fn print_help() {

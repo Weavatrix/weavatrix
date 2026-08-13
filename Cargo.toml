@@ -1,6 +1,6 @@
 [package]
 name = "weavatrix"
-version = "1.7.1"
+version = "1.8.0"
 edition = "2024"
 rust-version = "1.89"
 description = "Native MCP server for Weavatrix repository intelligence: 43 read-only evidence, impact, architecture, API, Git, search, semantic, and memory operations"
@@ -30,7 +30,7 @@ path = "src/main.rs"
 blazingly-json = "0.1.0"
 mcport = "0.5.0"
 notify = "8.2.0"
-weavatrix-rust = { version = "2.5.1", features = ["full", "lang-rust"] }
+weavatrix-rust = { path = "../weavatrix-rust", version = "2.6.0", features = ["full", "lang-rust"] }
 
 [profile.release]
 lto = "fat"

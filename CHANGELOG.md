@@ -1,5 +1,47 @@
 # Changelog
 
+## 1.8.0 - 2026-08-12
+
+Engine `weavatrix-rust` 2.6.0.
+
+- MCP package surface is gated at =95% line coverage via
+  `scripts/check-mcp-coverage.ps1` (`cargo llvm-cov` on `src/mcp`, excluding
+  the stdio entrypoint and the engine crate).
+
+- The architecture contract grows into a policy engine. `forbid` rules
+  accept `reachability: "transitive"` and prove each violation with a
+  deterministic shortest path; `require` demands that every selected source
+  reach a target component; `allow_only` closes a component's dependency
+  list; and the synthetic `unresolved` kind turns unresolvable local imports
+  into rule violations.
+
+- Dependency rules select files by path, the Dependency-Cruiser way.
+  `fromPath` and `toPath` regular-expression selectors join component
+  addressing, `fromPathNot`/`toPathNot` exclude what the positive selector
+  caught, and `toPath` may reference `fromPath` capture groups as
+  `$1`..`$9`: `fromPath: "^src/([^/]+)/ui/"` with `toPath: "^src/$1/db/"`
+  keeps a feature's UI inside that same feature's data layer. Patterns are
+  a declared regex subset; shorthand classes, backreferences, counted
+  quantifiers, and lookarounds reject the contract instead of silently
+  selecting nothing.
+
+- Rules carry `severity`. `error`, the default, blocks; `warn` reports the
+  violation in the new `warnings` array of `verify_architecture` without
+  changing the state, so a rule can be staged before it is enforced.
+
+- Unknown dependency-rule fields are rejected. A misspelled selector used
+  to be a rule that matched nothing and verified as passing; it now names
+  the field and fails closed.
+
+- `weavatrix tool verify_architecture` and `verify_capabilities` exit
+  non-zero when the verification is BLOCKED, so a CI step gates on the
+  exit code without parsing JSON. The report stays on stdout.
+
+- Rust graph truth: a module declared with `#[path]` resolves as local
+  source instead of an external package, a function passed as a value -
+  `iter.and_then(validate)` - keeps its reference evidence, and
+  `Type::method()` receivers reference their type.
+
 ## 1.7.1 - 2026-08-12
 
 Engine `weavatrix-rust` 2.5.1.

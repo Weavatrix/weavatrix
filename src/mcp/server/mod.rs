@@ -46,7 +46,7 @@ pub fn parse_output_format(value: &str) -> Result<ToolPayload, String> {
     }
 }
 
-struct WeavatrixServer {
+pub struct WeavatrixServer {
     profile: McpProfile,
     default_payload: ToolPayload,
     identity: ServerIdentity,
@@ -133,28 +133,37 @@ impl ToolServer for WeavatrixServer {
 /// # Errors
 ///
 /// Returns stdio failures or a missing repository root.
-pub fn serve_with_options(root: impl AsRef<Path>, options: ServeOptions) -> Result<(), McpError> {
-    let root = root.as_ref();
-    if !root.is_dir() {
-        return Err(McpError::Io(std::io::Error::new(
+/// Builds the MCP tool server for a repository root (does not block on stdio).
+pub fn build_server(
+    root: impl AsRef<Path>,
+    options: ServeOptions,
+) -> Result<WeavatrixServer, McpError> {
+    validate_serve_root(root.as_ref())?;
+    log_default_payload(options.default_payload);
+    WeavatrixServer::new(root, options)
+}
+
+fn validate_serve_root(root: &Path) -> Result<(), McpError> {
+    if root.is_dir() {
+        Ok(())
+    } else {
+        Err(McpError::Io(std::io::Error::new(
             std::io::ErrorKind::NotFound,
             format!("repository root {} is not a directory", root.display()),
-        )));
+        )))
     }
-    if options.default_payload != ToolPayload::Mirrored {
-        // stdout carries the protocol, so the one line that tells an operator
-        // which answer shape this process produces belongs on stderr.
-        eprintln!(
-            "weavatrix: answering with output_format={} unless a call names its own",
-            match options.default_payload {
-                ToolPayload::Text => "text",
-                ToolPayload::Structured => "structured",
-                ToolPayload::Mirrored => "json",
-            }
-        );
-    }
-    let mut server = WeavatrixServer::new(root, options)?;
-    mcport::serve(&mut server).map_err(McpError::Io)
+}
+
+fn log_default_payload(payload: ToolPayload) {
+    // Mirrored is the shipped default and stays quiet; any other startup default
+    // is announced on stderr so operators see the answer shape without grepping
+    // the protocol stream (stdout is reserved for MCP framing).
+    let label = match payload {
+        ToolPayload::Text => "text",
+        ToolPayload::Structured => "structured",
+        ToolPayload::Mirrored => return,
+    };
+    eprintln!("weavatrix: answering with output_format={label} unless a call names its own");
 }
 
 #[cfg(test)]

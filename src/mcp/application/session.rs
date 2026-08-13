@@ -135,6 +135,11 @@ impl RepositorySession {
     pub(crate) fn monitor_is_not_started(&self) -> bool {
         matches!(self.monitor, MonitorState::NotStarted)
     }
+
+    #[cfg(test)]
+    pub(crate) fn monitor_changed_for_test(&self) -> Result<bool, String> {
+        self.monitor_changed()
+    }
 }
 
 fn watcher_error(error: &io::Error) -> String {
