@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.9.0 - 2026-08-23
+
+Engine `weavatrix-rust` 2.7.1.
+
+- Swift is no longer a generic braced table. Same-target files resolve without
+  `import`, type heritage is recorded, and URLSession/WebSocket clients become
+  `Consumes` endpoints (`WS /ws`, `ANY /push/register`) instead of disappearing
+  from `list_endpoints`.
+
 ## 1.8.0 - 2026-08-12
 
 Engine `weavatrix-rust` 2.6.0.
