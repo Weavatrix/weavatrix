@@ -56,6 +56,73 @@ claude mcp add weavatrix -- \
   npx -y weavatrix mcp C:/work/my-project --profile=code
 ```
 
+## Configure Grok
+
+```sh
+grok mcp add weavatrix -- \
+  npx -y weavatrix mcp C:/work/my-project --profile=code
+```
+
+Grok parses its own flags before `--` and passes everything after it to the
+server, which is what keeps `-y` attached to `npx`. The written form:
+
+```toml
+# ~/.grok/config.toml
+[mcp_servers.weavatrix]
+command = "npx"
+args = ["-y", "weavatrix", "mcp", "C:/work/my-project", "--profile=code"]
+startup_timeout_sec = 120
+```
+
+The npm package unpacks to roughly 40 MB. A first `npx` launch downloads it
+before answering the MCP handshake, which can outlast Grok's 30-second default
+startup timeout, so raise it for that run. Installing the launcher once with
+`npm i -g weavatrix` or `cargo install weavatrix` avoids the cold start and
+lets `command = "weavatrix"` replace the `npx` wrapper.
+
+`grok mcp add --scope project` writes `.grok/config.toml` in the current
+directory instead of the home config, so a repository can ship the server to
+every machine that clones it. Verify either scope with:
+
+```sh
+grok mcp list
+grok mcp doctor weavatrix
+```
+
+Grok also reads Claude and Cursor MCP configuration, so a machine that already
+has one of those entries needs no second copy.
+
+## Configure Cursor
+
+```json
+{
+  "mcpServers": {
+    "weavatrix": {
+      "command": "npx",
+      "args": ["-y", "weavatrix", "mcp", "C:/work/my-project", "--profile=code"]
+    }
+  }
+}
+```
+
+Cursor reads `~/.cursor/mcp.json` for every project and
+`<project>/.cursor/mcp.json` for one. Weavatrix is not published to any editor
+plugin marketplace, so this file is the supported way to add it.
+
+## Any other client
+
+Weavatrix is published to the official MCP registry as
+`io.github.sergii-ziborov/weavatrix`. A client that installs from the registry
+resolves the same npm package and stdio launch used above, so it needs no
+hand-written entry:
+
+```sh
+curl "https://registry.modelcontextprotocol.io/v0/servers?search=weavatrix&version=latest"
+```
+
+Any client that accepts a raw stdio command takes `npx -y weavatrix mcp .`
+directly. Nothing in the launcher is client-specific.
+
 ## Verify the native product
 
 ```sh

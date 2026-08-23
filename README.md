@@ -82,6 +82,45 @@ args = ["-y", "weavatrix", "mcp", "."]
 claude mcp add weavatrix -- npx -y weavatrix mcp .
 ```
 
+### Grok
+
+```sh
+grok mcp add weavatrix -- npx -y weavatrix mcp .
+```
+
+Everything after `--` is the server command, so `-y` reaches `npx` instead of
+Grok. The equivalent hand-written entry:
+
+```toml
+# ~/.grok/config.toml
+[mcp_servers.weavatrix]
+command = "npx"
+args = ["-y", "weavatrix", "mcp", "."]
+startup_timeout_sec = 120
+```
+
+The package unpacks to roughly 40 MB, so the first `npx` launch can spend
+longer fetching it than Grok's 30-second default startup timeout allows.
+`startup_timeout_sec` covers that once; `npm i -g weavatrix` or
+`cargo install weavatrix` removes the cold start for every later session.
+
+Use `--scope project` to write `.grok/config.toml` inside a repository instead,
+so a clone carries the server with it.
+
+### Cursor
+
+```json
+// ~/.cursor/mcp.json
+{
+  "mcpServers": {
+    "weavatrix": {
+      "command": "npx",
+      "args": ["-y", "weavatrix", "mcp", "."]
+    }
+  }
+}
+```
+
 Profiles expose bounded views of the same engine:
 
 ```sh
