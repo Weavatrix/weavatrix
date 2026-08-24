@@ -1,0 +1,38 @@
+{
+  "name": "weavatrix",
+  "owner": {
+    "name": "Sergii Ziborov",
+    "email": "sergii.ziborov@gmail.com"
+  },
+  "metadata": {
+    "description": "Native repository intelligence for coding agents",
+    "version": "1.9.0"
+  },
+  "plugins": [
+    {
+      "name": "weavatrix",
+      "source": "./plugins/weavatrix",
+      "description": "Read-only code graphs, impact, architecture, APIs, Git, search, and quality evidence through MCP.",
+      "version": "1.9.0",
+      "author": {
+        "name": "Sergii Ziborov",
+        "email": "sergii.ziborov@gmail.com"
+      },
+      "homepage": "https://weavatrix.com",
+      "repository": "https://github.com/sergii-ziborov/weavatrix",
+      "license": "MIT",
+      "keywords": [
+        "mcp",
+        "repository-intelligence",
+        "code-graph",
+        "static-analysis"
+      ],
+      "category": "Developer Tools",
+      "tags": [
+        "MCP",
+        "Code Intelligence",
+        "Architecture"
+      ]
+    }
+  ]
+}

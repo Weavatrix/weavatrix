@@ -1,0 +1,18 @@
+{
+  "name": "weavatrix",
+  "version": "1.9.0",
+  "description": "Native, read-only repository intelligence for coding agents through MCP.",
+  "author": {
+    "name": "Sergii Ziborov",
+    "email": "sergii.ziborov@gmail.com",
+    "url": "https://github.com/sergii-ziborov"
+  },
+  "homepage": "https://weavatrix.com",
+  "repository": "https://github.com/sergii-ziborov/weavatrix",
+  "license": "MIT",
+  "keywords": [
+    "weavatrix",
+    "weavatrix code graph",
+    "weavatrix mcp"
+  ]
+}

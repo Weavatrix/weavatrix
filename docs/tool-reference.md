@@ -1,6 +1,6 @@
 # Operation reference
 
-The full native product exposes 39 bounded read-only MCP operations. JSON
+The full native product exposes 43 bounded read-only MCP operations. JSON
 schemas returned by `tools/list` are the authoritative machine contract.
 
 ## Graph and orientation
@@ -14,11 +14,14 @@ schemas returned by `tools/list` are the authoritative machine contract.
 - `get_community`: one deterministic graph community.
 - `list_communities`: bounded community inventory.
 - `module_map`: repository territories and their relationships.
+- `build_graph`: workspace members, targets, aggregators, and runner topology
+  extracted from manifest evidence.
 
 ## Change impact and proof
 
 - `get_dependents`: bounded reverse blast radius.
 - `change_impact`: Git changes mapped onto graph evidence.
+- `select_tests`: graph-ranked test suites most plausibly affected by a change.
 - `verified_change`: impact, architecture, duplicate, API, and optional test
   evidence for planning or verification.
 - `prepare_change`: relevant context and architecture rules before editing.
@@ -30,6 +33,8 @@ schemas returned by `tools/list` are the authoritative machine contract.
 - `read_source`: verified source excerpt with exact lines.
 - `inspect_symbol`: declaration, owner, inbound, and outbound evidence.
 - `context_bundle`: ranked minimal task workset around a target.
+- `map_stacktrace`: Node, JVM, Python, or Rust frames mapped to files and
+  nearest symbols.
 
 ## Health and quality
 
@@ -56,6 +61,8 @@ result.
 
 - `get_architecture_contract`: read and validate local architecture policy.
 - `verify_architecture`: dependency, cycle, file, and function budget checks.
+- `verify_capabilities`: declared capabilities resolved against exposed
+  endpoint evidence.
 - `explain_architecture_violation`: bounded evidence for one fingerprint.
 - `propose_architecture_exception`: reviewable exception proposal without a
   filesystem write.

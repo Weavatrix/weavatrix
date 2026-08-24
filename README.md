@@ -52,6 +52,45 @@ JavaScript engine. Both distributions run the same native adapter and the same
 package is the legacy JavaScript implementation used for compatibility and
 historical baselines; it is not bundled into `weavatrix`.
 
+## Install as a plugin
+
+The repository ships one plugin bundle for Cursor, Codex, Claude Code, and
+Grok Build. Each client starts the published native npm distribution and loads
+the same read-only MCP tools. Its optional Weavatrix skill activates only for
+tasks that benefit from indexed, cross-file evidence; detailed tool routing is
+loaded separately when needed.
+
+### Cursor plugin
+
+Search for **Weavatrix** in Cursor's Plugins view after its marketplace review
+is complete. The bundle can be tested before listing by copying or linking
+[`plugins/weavatrix`](plugins/weavatrix) to
+`~/.cursor/plugins/local/weavatrix` and reloading the Cursor window.
+
+### Codex plugin
+
+```sh
+codex plugin marketplace add sergii-ziborov/weavatrix --sparse .agents/plugins plugins/weavatrix
+codex plugin add weavatrix@weavatrix
+```
+
+### Claude Code plugin
+
+```sh
+claude plugin marketplace add sergii-ziborov/weavatrix --sparse .claude-plugin plugins
+claude plugin install weavatrix@weavatrix
+```
+
+### Grok Build plugin
+
+```sh
+grok plugin marketplace add sergii-ziborov/weavatrix
+```
+
+Open `/marketplace` and install Weavatrix. Grok also accepts the plugin
+directly with
+`grok plugin install sergii-ziborov/weavatrix#plugins/weavatrix`.
+
 ## Install in 30 seconds
 
 Run the convenient prebuilt npm distribution:

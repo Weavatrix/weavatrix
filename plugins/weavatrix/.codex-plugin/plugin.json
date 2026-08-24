@@ -1,0 +1,41 @@
+{
+  "name": "weavatrix",
+  "version": "1.9.0",
+  "description": "Native, read-only repository intelligence for coding agents through MCP.",
+  "author": {
+    "name": "Sergii Ziborov",
+    "email": "sergii.ziborov@gmail.com",
+    "url": "https://github.com/sergii-ziborov"
+  },
+  "homepage": "https://weavatrix.com",
+  "repository": "https://github.com/sergii-ziborov/weavatrix",
+  "license": "MIT",
+  "keywords": [
+    "mcp",
+    "repository-intelligence",
+    "code-graph",
+    "static-analysis",
+    "architecture"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Weavatrix",
+    "shortDescription": "Evidence-first repository intelligence via MCP",
+    "longDescription": "Inspect code graphs, dependencies, APIs, architecture, Git history, impact, duplicates, dead code, coverage, and source evidence without granting source-write access.",
+    "developerName": "Sergii Ziborov",
+    "category": "Infrastructure",
+    "capabilities": [
+      "Read"
+    ],
+    "websiteURL": "https://weavatrix.com",
+    "defaultPrompt": [
+      "Map this repository and identify its main modules.",
+      "Assess the impact and tests for my current changes.",
+      "Audit architecture, duplicates, and dead-code candidates."
+    ],
+    "brandColor": "#7C6CFF",
+    "composerIcon": "./assets/logo.svg",
+    "logo": "./assets/logo.svg"
+  }
+}

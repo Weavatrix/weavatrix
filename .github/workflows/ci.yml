@@ -74,7 +74,7 @@ jobs:
         run: |
           npm pack ./npm/dist/weavatrix --dry-run --json |
             node scripts/npm-pack-json.mjs require-files README.md LICENSE server.json skill/SKILL.md bin/weavatrix.mjs bin/weavatrix-mcp.mjs
-          node --test scripts/npm-pack-json.test.mjs
+          node --test scripts/npm-pack-json.test.mjs scripts/plugin-manifests.test.mjs
       - name: Reject lifecycle scripts and runtime dependencies
         shell: bash
         run: |

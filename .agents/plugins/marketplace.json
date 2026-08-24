@@ -1,0 +1,20 @@
+{
+  "name": "weavatrix",
+  "interface": {
+    "displayName": "Weavatrix"
+  },
+  "plugins": [
+    {
+      "name": "weavatrix",
+      "source": {
+        "source": "local",
+        "path": "./plugins/weavatrix"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Infrastructure"
+    }
+  ]
+}

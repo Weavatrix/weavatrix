@@ -1,0 +1,32 @@
+{
+  "name": "weavatrix",
+  "description": "Official Weavatrix plugins for Grok Build.",
+  "owner": {
+    "name": "Sergii Ziborov",
+    "email": "sergii.ziborov@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "weavatrix",
+      "description": "Native, read-only repository intelligence for coding agents through MCP.",
+      "category": "development",
+      "source": {
+        "type": "local",
+        "path": "./plugins/weavatrix"
+      },
+      "version": "1.9.0",
+      "author": {
+        "name": "Sergii Ziborov"
+      },
+      "homepage": "https://weavatrix.com",
+      "keywords": [
+        "weavatrix",
+        "weavatrix code graph",
+        "weavatrix mcp"
+      ],
+      "domains": [
+        "weavatrix.com"
+      ]
+    }
+  ]
+}
