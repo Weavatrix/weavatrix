@@ -143,6 +143,28 @@ the reusable protocol-independent engine; it is not an MCP server.
 Its standalone diagnostic therefore reports `weavatrix-rust <engine-version>`,
 while this MCP product reports both its product and embedded-engine identities.
 
+### You do not need the server to use the engines
+
+The layers underneath are separately released npm packages with their own
+repositories, licenses, and TypeScript types. Each one is a native library you
+can `require` directly, with no MCP server, no agent, and no dependency on any
+other Weavatrix package:
+
+| Package | What it does on its own |
+| --- | --- |
+| [`weavatrix-scan`](https://www.npmjs.com/package/weavatrix-scan) | Deterministic repository manifests: normalized paths, sizes, hashes, one revision, typed skip evidence. |
+| [`weavatrix-parse`](https://www.npmjs.com/package/weavatrix-parse) | Lossless tokenization and structural facts for 25 languages, with exact spans. |
+| [`weavatrix-graph`](https://www.npmjs.com/package/weavatrix-graph) | A directed graph with provenance on every edge, plus BFS, SCC, topological sort, and PageRank. |
+| [`weavatrix-memory`](https://www.npmjs.com/package/weavatrix-memory) | Bitemporal, evidence-carrying agent memory with a hard token budget and an audit receipt. |
+| [`weavatrix-search`](https://www.npmjs.com/package/weavatrix-search) | Bounded ignore-aware content search, plus a persistent index updated from watcher events. |
+| [`weavatrix-search-vector`](https://www.npmjs.com/package/weavatrix-search-vector) | Persistent, mutable vector search with metadata filters and an exact oracle. |
+| [`weavatrix-clone`](https://www.npmjs.com/package/weavatrix-clone) | Type-1/2/3 clone detection with per-pair evidence and JSON, SARIF, and BigCloneEval output. |
+
+Their Node and Bun benchmarks against the JavaScript library each would
+otherwise replace live in one place, with the rules written down and the
+losing rows kept:
+[weavatrix-benchmarks](https://github.com/Weavatrix/weavatrix-benchmarks).
+
 Engine 2.2.1 makes three reports carry only what their evidence supports:
 `find_duplicates` reports the lines a clone covers completely and the byte
 range to check them by, `run_audit` runtime findings land on the line they
