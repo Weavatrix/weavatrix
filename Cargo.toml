@@ -1,6 +1,6 @@
 [package]
 name = "weavatrix"
-version = "1.9.1"
+version = "1.9.2"
 edition = "2024"
 rust-version = "1.89"
 description = "Native MCP server for Weavatrix repository intelligence: 43 read-only evidence, impact, architecture, API, Git, search, semantic, and memory operations"

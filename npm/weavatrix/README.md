@@ -129,7 +129,7 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.9.1
+weavatrix 1.9.2
     profile catalog · refresh · watcher · MCP framing
     |
     v

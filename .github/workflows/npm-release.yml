@@ -119,7 +119,7 @@ jobs:
           MCP_NAME="$(node -p "require('./npm/weavatrix/package.json').mcpName")"
           [[ "$GITHUB_REF_NAME" == "v$VERSION" ]]
           [[ -n "$ENGINE_VERSION" ]]
-          [[ "$SERVER_NAME" == "io.github.weavatrix/weavatrix" ]]
+          [[ "$SERVER_NAME" == "io.github.Weavatrix/weavatrix" ]]
           [[ "$MCP_NAME" == "$SERVER_NAME" ]]
           [[ "$SERVER_VERSION" == "$VERSION" ]]
           [[ "$SERVER_PACKAGE" == "weavatrix" ]]
@@ -191,9 +191,9 @@ jobs:
         run: |
           VERSION="$(node -p "require('./npm/weavatrix/package.json').version")"
           ./mcp-publisher validate server.json
-          REGISTRY_RESPONSE="$(curl --fail --silent --show-error 'https://registry.modelcontextprotocol.io/v0.1/servers?search=io.github.weavatrix%2Fweavatrix')"
+          REGISTRY_RESPONSE="$(curl --fail --silent --show-error 'https://registry.modelcontextprotocol.io/v0.1/servers?search=io.github.Weavatrix%2Fweavatrix')"
           if jq --exit-status --arg version "$VERSION" \
-            '.servers[]?.server | select(.name == "io.github.weavatrix/weavatrix" and .version == $version)' \
+            '.servers[]?.server | select(.name == "io.github.Weavatrix/weavatrix" and .version == $version)' \
             <<<"$REGISTRY_RESPONSE" >/dev/null; then
             echo "MCP Registry already contains Weavatrix $VERSION; skipping publish"
           else
@@ -204,12 +204,12 @@ jobs:
         shell: bash
         run: |
           VERSION="$(node -p "require('./npm/weavatrix/package.json').version")"
-          REGISTRY_URL="https://registry.modelcontextprotocol.io/v0.1/servers/io.github.weavatrix%2Fweavatrix/versions/$VERSION"
+          REGISTRY_URL="https://registry.modelcontextprotocol.io/v0.1/servers/io.github.Weavatrix%2Fweavatrix/versions/$VERSION"
           for attempt in $(seq 1 24); do
             echo "MCP Registry verification attempt $attempt/24"
             if curl --fail --silent --show-error "$REGISTRY_URL" |
               jq --exit-status --arg version "$VERSION" \
-                '.server.name == "io.github.weavatrix/weavatrix" and
+                '.server.name == "io.github.Weavatrix/weavatrix" and
                  .server.version == $version and
                  .server.packages[0].identifier == "weavatrix" and
                  .server.packages[0].version == $version' >/dev/null; then
@@ -219,7 +219,7 @@ jobs:
           done
           curl --fail --silent --show-error "$REGISTRY_URL" |
             jq --exit-status --arg version "$VERSION" \
-              '.server.name == "io.github.weavatrix/weavatrix" and
+              '.server.name == "io.github.Weavatrix/weavatrix" and
                .server.version == $version and
                .server.packages[0].identifier == "weavatrix" and
                .server.packages[0].version == $version' >/dev/null

@@ -112,7 +112,7 @@ plugin marketplace, so this file is the supported way to add it.
 ## Any other client
 
 Weavatrix is published to the official MCP registry as
-`io.github.weavatrix/weavatrix`. A client that installs from the registry
+`io.github.Weavatrix/weavatrix`. A client that installs from the registry
 resolves the same npm package and stdio launch used above, so it needs no
 hand-written entry:
 
