@@ -16,7 +16,7 @@ permissions:
   contents: read
 
 env:
-  WEAVATRIX_GIT_REPOSITORY: sergii-ziborov/weavatrix-git
+  WEAVATRIX_GIT_REPOSITORY: Weavatrix/weavatrix-git
   WEAVATRIX_GIT_BUILD_SHA: 2e3d56fd584a69383db627e9046db34b2ce3b007
   WEAVATRIX_GIT_VERSION: 0.3.1
 
@@ -30,7 +30,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          [[ "$GITHUB_REPOSITORY" == "sergii-ziborov/weavatrix" ]]
+          [[ "$GITHUB_REPOSITORY" == "Weavatrix/weavatrix" ]]
           [[ "$CONFIRMATION" == "publish-weavatrix-git-0.3.1" ]] || {
             echo "The confirmation text does not authorize this one-time publication." >&2
             exit 1

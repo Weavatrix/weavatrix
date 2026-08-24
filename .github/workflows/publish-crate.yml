@@ -30,7 +30,7 @@ concurrency:
 
 jobs:
   publish:
-    if: github.repository == 'sergii-ziborov/weavatrix'
+    if: github.repository == 'Weavatrix/weavatrix'
     runs-on: ubuntu-24.04
     environment: crates-io
     permissions:

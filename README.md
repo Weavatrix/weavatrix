@@ -73,26 +73,26 @@ is complete. The bundle can be tested before listing by copying or linking
 ### Codex plugin
 
 ```sh
-codex plugin marketplace add sergii-ziborov/weavatrix --sparse .agents/plugins plugins/weavatrix
+codex plugin marketplace add Weavatrix/weavatrix --sparse .agents/plugins plugins/weavatrix
 codex plugin add weavatrix@weavatrix
 ```
 
 ### Claude Code plugin
 
 ```sh
-claude plugin marketplace add sergii-ziborov/weavatrix --sparse .claude-plugin plugins
+claude plugin marketplace add Weavatrix/weavatrix --sparse .claude-plugin plugins
 claude plugin install weavatrix@weavatrix
 ```
 
 ### Grok Build plugin
 
 ```sh
-grok plugin marketplace add sergii-ziborov/weavatrix
+grok plugin marketplace add Weavatrix/weavatrix
 ```
 
 Open `/marketplace` and install Weavatrix. Grok also accepts the plugin
 directly with
-`grok plugin install sergii-ziborov/weavatrix#plugins/weavatrix`.
+`grok plugin install Weavatrix/weavatrix#plugins/weavatrix`.
 
 ## Install in 30 seconds
 

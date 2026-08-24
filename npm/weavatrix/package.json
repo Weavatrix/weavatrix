@@ -13,7 +13,7 @@
   "bugs": {
     "url": "https://github.com/Weavatrix/weavatrix/issues"
   },
-  "mcpName": "io.github.sergii-ziborov/weavatrix",
+  "mcpName": "io.github.weavatrix/weavatrix",
   "type": "module",
   "engines": {
     "node": ">=18"

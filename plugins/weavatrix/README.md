@@ -28,14 +28,14 @@ is approved. For local testing, copy or link this directory to
 ### Codex
 
 ```text
-codex plugin marketplace add sergii-ziborov/weavatrix --sparse .agents/plugins plugins/weavatrix
+codex plugin marketplace add Weavatrix/weavatrix --sparse .agents/plugins plugins/weavatrix
 codex plugin add weavatrix@weavatrix
 ```
 
 ### Claude Code
 
 ```text
-claude plugin marketplace add sergii-ziborov/weavatrix --sparse .claude-plugin plugins
+claude plugin marketplace add Weavatrix/weavatrix --sparse .claude-plugin plugins
 claude plugin install weavatrix@weavatrix
 ```
 
@@ -44,11 +44,11 @@ claude plugin install weavatrix@weavatrix
 Grok reads Claude-compatible marketplaces automatically:
 
 ```text
-grok plugin marketplace add sergii-ziborov/weavatrix
+grok plugin marketplace add Weavatrix/weavatrix
 ```
 
 Open `/marketplace` and install Weavatrix. For direct testing without adding a
-marketplace, use `grok plugin install sergii-ziborov/weavatrix#plugins/weavatrix`.
+marketplace, use `grok plugin install Weavatrix/weavatrix#plugins/weavatrix`.
 
 ## Safety
 

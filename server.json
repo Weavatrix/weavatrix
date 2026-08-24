@@ -1,6 +1,6 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "io.github.sergii-ziborov/weavatrix",
+  "name": "io.github.weavatrix/weavatrix",
   "title": "Weavatrix",
   "description": "Native Weavatrix MCP: 43 read-only repository tools across 24 code and configuration surfaces.",
   "repository": {
