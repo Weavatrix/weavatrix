@@ -7,14 +7,14 @@
     "url": "https://github.com/Weavatrix/weavatrix",
     "source": "github"
   },
-  "version": "1.9.0",
+  "version": "1.9.1",
   "websiteUrl": "https://weavatrix.com",
   "packages": [
     {
       "registryType": "npm",
       "registryBaseUrl": "https://registry.npmjs.org",
       "identifier": "weavatrix",
-      "version": "1.9.0",
+      "version": "1.9.1",
       "runtimeHint": "npx",
       "transport": {
         "type": "stdio"
