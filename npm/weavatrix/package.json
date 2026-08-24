@@ -8,10 +8,10 @@
   "homepage": "https://weavatrix.com",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sergii-ziborov/weavatrix.git"
+    "url": "git+https://github.com/Weavatrix/weavatrix.git"
   },
   "bugs": {
-    "url": "https://github.com/sergii-ziborov/weavatrix/issues"
+    "url": "https://github.com/Weavatrix/weavatrix/issues"
   },
   "mcpName": "io.github.sergii-ziborov/weavatrix",
   "type": "module",

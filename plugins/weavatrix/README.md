@@ -59,5 +59,5 @@ files or perform network vulnerability scans.
 ## Source and support
 
 - Website: https://weavatrix.com
-- Repository: https://github.com/sergii-ziborov/weavatrix
-- Issues: https://github.com/sergii-ziborov/weavatrix/issues
+- Repository: https://github.com/Weavatrix/weavatrix
+- Issues: https://github.com/Weavatrix/weavatrix/issues

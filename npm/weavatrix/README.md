@@ -1,9 +1,9 @@
 # Weavatrix — native MCP repository intelligence
 
-[![CI](https://github.com/sergii-ziborov/weavatrix/actions/workflows/ci.yml/badge.svg)](https://github.com/sergii-ziborov/weavatrix/actions/workflows/ci.yml)
+[![CI](https://github.com/Weavatrix/weavatrix/actions/workflows/ci.yml/badge.svg)](https://github.com/Weavatrix/weavatrix/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/weavatrix.svg)](https://www.npmjs.com/package/weavatrix)
 [![engine](https://img.shields.io/crates/v/weavatrix-rust.svg?label=engine)](https://crates.io/crates/weavatrix-rust)
-[![MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/sergii-ziborov/weavatrix/blob/main/LICENSE)
+[![MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Weavatrix/weavatrix/blob/main/LICENSE)
 
 **Give your coding agent repository evidence before it starts guessing.**
 
@@ -138,7 +138,7 @@ weavatrix-rust 2.7.1
 ```
 
 This npm product owns MCP transport and native distribution. The
-[`weavatrix-rust`](https://github.com/sergii-ziborov/weavatrix-rust) crate is
+[`weavatrix-rust`](https://github.com/Weavatrix/weavatrix-rust) crate is
 the reusable protocol-independent engine; it is not an MCP server.
 Its standalone diagnostic therefore reports `weavatrix-rust <engine-version>`,
 while this MCP product reports both its product and embedded-engine identities.
@@ -166,7 +166,7 @@ thresholds and sitting slightly above the 30.34x recorded for the 1.0.0
 baseline.
 
 Full evidence and methodology:
-[benchmarks](https://github.com/sergii-ziborov/weavatrix/blob/main/docs/benchmarks.md).
+[benchmarks](https://github.com/Weavatrix/weavatrix/blob/main/docs/benchmarks.md).
 
 ## Safety
 
@@ -181,12 +181,12 @@ Full evidence and methodology:
 
 ## Links
 
-- [Source and issues](https://github.com/sergii-ziborov/weavatrix)
-- [Engine API](https://github.com/sergii-ziborov/weavatrix-rust)
-- [Tool reference](https://github.com/sergii-ziborov/weavatrix/blob/main/docs/tool-reference.md)
-- [Language support](https://github.com/sergii-ziborov/weavatrix/blob/main/docs/language-support.md)
-- [Architecture](https://github.com/sergii-ziborov/weavatrix/blob/main/docs/architecture.md)
-- [Benchmarks](https://github.com/sergii-ziborov/weavatrix/blob/main/docs/benchmarks.md)
+- [Source and issues](https://github.com/Weavatrix/weavatrix)
+- [Engine API](https://github.com/Weavatrix/weavatrix-rust)
+- [Tool reference](https://github.com/Weavatrix/weavatrix/blob/main/docs/tool-reference.md)
+- [Language support](https://github.com/Weavatrix/weavatrix/blob/main/docs/language-support.md)
+- [Architecture](https://github.com/Weavatrix/weavatrix/blob/main/docs/architecture.md)
+- [Benchmarks](https://github.com/Weavatrix/weavatrix/blob/main/docs/benchmarks.md)
 
 ## License
 

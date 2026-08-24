@@ -1,9 +1,12 @@
 # Weavatrix — native MCP repository intelligence
 
-[![CI](https://github.com/sergii-ziborov/weavatrix/actions/workflows/ci.yml/badge.svg)](https://github.com/sergii-ziborov/weavatrix/actions/workflows/ci.yml)
+[![CI](https://github.com/Weavatrix/weavatrix/actions/workflows/ci.yml/badge.svg)](https://github.com/Weavatrix/weavatrix/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/weavatrix.svg)](https://www.npmjs.com/package/weavatrix)
+[![crates.io](https://img.shields.io/crates/v/weavatrix.svg)](https://crates.io/crates/weavatrix)
 [![engine](https://img.shields.io/crates/v/weavatrix-rust.svg?label=engine)](https://crates.io/crates/weavatrix-rust)
 [![MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+Part of the [Weavatrix ecosystem](https://weavatrix.com/ecosystem): evidence infrastructure for AI software agents.
 
 **Give your coding agent repository evidence before it starts guessing.**
 
@@ -31,13 +34,13 @@ Realforge — artifact construction (scaffold / package / deploy)
 | Product | Owns | Does **not** own |
 | --- | --- | --- |
 | **Weavatrix** (this) | Repository / code graph, symbols, deps, search, impact | Capability interchange **Registry**, WVX project graph |
-| **[Weavatrix Loom](https://github.com/sergii-ziborov/weavatrix-loom)** | Capability · Implementation · evidence · GraphPatch · semantic compiler | Deep repo indexing (that stays here) |
+| **[Weavatrix Loom](https://github.com/Weavatrix/weavatrix-loom)** | Capability · Implementation · evidence · GraphPatch · semantic compiler | Deep repo indexing (that stays here) |
 | **[FerroSift](https://github.com/sergii-ziborov/ferrosift)** | Deterministic transform recipes/ops | Capability Registry; code intelligence |
 | **[Cortex Loom](https://github.com/sergii-ziborov/cortex-loom)** | Agent workflow / context budgets | Code index; Loom admit policy |
 
 Loom **consumes** Weavatrix facts for semantic classification (e.g. “this `fn`
 is a candidate for `data.json.parse@1`”). Loom must not grow a second product
-code indexer. Normative Loom side: [ADR-0012](https://github.com/sergii-ziborov/weavatrix-loom/blob/main/docs/adr/0012-ecosystem-boundaries.md).
+code indexer. Normative Loom side: [ADR-0012](https://github.com/Weavatrix/weavatrix-loom/blob/main/docs/adr/0012-ecosystem-boundaries.md).
 
 The same source is distributed in two forms:
 
@@ -277,7 +280,7 @@ weavatrix-rust 2.7.1
 
 This repository owns the MCP transport, watcher, native npm packaging, and
 client-facing identity `weavatrix`. The
-[`weavatrix-rust`](https://github.com/sergii-ziborov/weavatrix-rust) crate owns
+[`weavatrix-rust`](https://github.com/Weavatrix/weavatrix-rust) crate owns
 the reusable engine and standalone diagnostic CLI; it is not an MCP server.
 Its separate binary therefore reports `weavatrix-rust <engine-version>` from
 `--version`, while this product reports both the `weavatrix` product version
@@ -393,7 +396,7 @@ binaries, identity checks, package checks, and installed-boundary gates pass.
 - [npm distribution](docs/npm-distribution.md)
 - [Dependencies](docs/dependencies.md)
 - [Benchmarks](docs/benchmarks.md)
-- [Engine API and architecture](https://github.com/sergii-ziborov/weavatrix-rust)
+- [Engine API and architecture](https://github.com/Weavatrix/weavatrix-rust)
 
 ## License
 

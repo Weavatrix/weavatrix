@@ -1,14 +1,14 @@
 {
   "name": "weavatrix",
   "version": "1.9.0",
-  "description": "Native, read-only repository intelligence for coding agents through MCP.",
+  "description": "Evidence infrastructure for AI software agents: 43 read-only repository intelligence tools through MCP.",
   "author": {
-    "name": "Sergii Ziborov",
+    "name": "Weavatrix",
     "email": "sergii.ziborov@gmail.com",
-    "url": "https://github.com/sergii-ziborov"
+    "url": "https://github.com/Weavatrix"
   },
   "homepage": "https://weavatrix.com",
-  "repository": "https://github.com/sergii-ziborov/weavatrix",
+  "repository": "https://github.com/Weavatrix/weavatrix",
   "license": "MIT",
   "keywords": [
     "weavatrix",
