@@ -59,7 +59,7 @@ try {
     const identityPass = installed.result.identity.invariants.every((item) => item.pass)
     const pass = identityPass
         && session.status === 'PASS'
-        && session.protocol.tools.count === 43
+        && session.protocol.tools.count === 44
         && samples.length === calls
         && failures === 0
         && session.cleanup.processTreeGone === true
