@@ -1,7 +1,7 @@
 {
   "name": "weavatrix",
-  "version": "1.9.2",
-  "description": "Evidence infrastructure for AI software agents: 43 read-only repository intelligence tools through MCP.",
+  "version": "1.10.0",
+  "description": "Evidence infrastructure for AI software agents: 44 read-only repository intelligence tools through MCP.",
   "author": {
     "name": "Weavatrix",
     "email": "sergii.ziborov@gmail.com",
@@ -22,7 +22,7 @@
   "interface": {
     "displayName": "Weavatrix",
     "shortDescription": "A living evidence graph for AI software agents",
-    "longDescription": "Turn a repository into a reusable, revision-bound evidence graph for orientation, impact, APIs, architecture, Git, search, semantics, memory, and verification—without granting source-write or network access.",
+    "longDescription": "Turn a repository into a reusable, revision-bound evidence graph for orientation, impact, APIs, architecture, Git, search, semantics, memory, and verificationâ€”without granting source-write or network access.",
     "developerName": "Weavatrix",
     "category": "Infrastructure",
     "capabilities": [

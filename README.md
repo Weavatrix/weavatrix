@@ -1,4 +1,4 @@
-# Weavatrix — native MCP repository intelligence
+# Weavatrix â€” native MCP repository intelligence
 
 [![CI](https://github.com/Weavatrix/weavatrix/actions/workflows/ci.yml/badge.svg)](https://github.com/Weavatrix/weavatrix/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/weavatrix.svg)](https://www.npmjs.com/package/weavatrix)
@@ -11,7 +11,7 @@ Part of the [Weavatrix ecosystem](https://weavatrix.com/ecosystem): evidence inf
 **Give your coding agent repository evidence before it starts guessing.**
 
 Weavatrix is the native MCP product for repository intelligence. It gives
-Codex, Claude Code, and other coding agents 43 read-only operations over one
+Codex, Claude Code, and other coding agents 44 read-only operations over one
 revision-bound evidence graph: impact, architecture, APIs, Git history,
 duplicates, dead code, search, semantic links, and temporal memory.
 
@@ -22,24 +22,24 @@ evidence kind, and confidence that produced it.
 ### Ecosystem place (UNDERSTAND)
 
 ```text
-Weavatrix (this) — code facts
-        │
-        ▼
-Weavatrix Loom — semantic composition (capabilities, registry, compile → Rust)
-        │
-        ▼
-Realforge — artifact construction (scaffold / package / deploy)
+Weavatrix (this) â€” code facts
+        â”‚
+        â–¼
+Weavatrix Loom â€” semantic composition (capabilities, registry, compile â†’ Rust)
+        â”‚
+        â–¼
+Realforge â€” artifact construction (scaffold / package / deploy)
 ```
 
 | Product | Owns | Does **not** own |
 | --- | --- | --- |
 | **Weavatrix** (this) | Repository / code graph, symbols, deps, search, impact | Capability interchange **Registry**, WVX project graph |
-| **[Weavatrix Loom](https://github.com/Weavatrix/weavatrix-loom)** | Capability · Implementation · evidence · GraphPatch · semantic compiler | Deep repo indexing (that stays here) |
+| **[Weavatrix Loom](https://github.com/Weavatrix/weavatrix-loom)** | Capability Â· Implementation Â· evidence Â· GraphPatch Â· semantic compiler | Deep repo indexing (that stays here) |
 | **[FerroSift](https://github.com/sergii-ziborov/ferrosift)** | Deterministic transform recipes/ops | Capability Registry; code intelligence |
 | **[Cortex Loom](https://github.com/sergii-ziborov/cortex-loom)** | Agent workflow / context budgets | Code index; Loom admit policy |
 
-Loom **consumes** Weavatrix facts for semantic classification (e.g. “this `fn`
-is a candidate for `data.json.parse@1`”). Loom must not grow a second product
+Loom **consumes** Weavatrix facts for semantic classification (e.g. â€œthis `fn`
+is a candidate for `data.json.parse@1`â€). Loom must not grow a second product
 code indexer. Normative Loom side: [ADR-0012](https://github.com/Weavatrix/weavatrix-loom/blob/main/docs/adr/0012-ecosystem-boundaries.md).
 
 The same source is distributed in two forms:
@@ -215,7 +215,7 @@ The graph is built once per revision. Impact, API traces, health findings,
 architecture checks, clone families, and context bundles therefore agree about
 repository identity instead of recomputing incompatible partial views.
 
-## The 43 read-only operations
+## The 44 read-only operations
 
 | Workflow | Operations |
 | --- | --- |
@@ -263,12 +263,12 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.9.2
-    profile catalog · session refresh · filesystem watcher · MCP framing
+weavatrix 1.10.0
+    profile catalog Â· session refresh Â· filesystem watcher Â· MCP framing
     |
     v
-weavatrix-rust 2.7.3
-    typed graph · analysis pipeline · 43 read-only operations
+weavatrix-rust 2.9.0
+    typed graph Â· analysis pipeline Â· 44 read-only operations
     |
     +-- weavatrix-scan      repository discovery and selection
     +-- weavatrix-parse     lossless tokenization and structural facts
@@ -368,7 +368,7 @@ application session
         |
 repository + change-monitor ports
         |
-weavatrix-rust adapter · notify adapter
+weavatrix-rust adapter Â· notify adapter
 ```
 
 `mcport` is isolated to the inbound server. The application layer sees neither

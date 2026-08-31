@@ -36,6 +36,7 @@ const toolNames = [
     'get_neighbors',
     'get_node',
     'git_history',
+    'git_read_blob',
     'god_nodes',
     'graph_diff',
     'graph_stats',
@@ -131,7 +132,7 @@ test('the plugin skill is the released Weavatrix skill', () => {
         .filter((name) => name.endsWith('.md'))
         .map((name) => name.slice(0, -3))
         .sort()
-    assert.equal(toolNames.length, 43)
+    assert.equal(toolNames.length, 44)
     assert.deepEqual(canonicalCards, toolNames)
     assert.deepEqual(bundledCards, toolNames)
     for (const name of toolNames) {

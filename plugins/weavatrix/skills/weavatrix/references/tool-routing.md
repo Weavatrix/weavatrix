@@ -2,7 +2,9 @@
 
 Open only the card for the method you are about to call. Each card explains
 when to use the method, its exact published inputs, and a minimal compact call.
-The live MCP `tools/list` schema is authoritative.
+The live MCP `tools/list` schema is authoritative. Every answer carries
+`repository_context` (root, scan revision, Git HEAD, graph age); pass
+`expected_repository` to fail fast when the active repository differs.
 
 ## Graph, source, and orientation
 
@@ -12,9 +14,9 @@ The live MCP `tools/list` schema is authoritative.
 - [`query_graph`](tools/query_graph.md) — Bounded BFS or DFS around exact or textual seeds.
 - [`god_nodes`](tools/god_nodes.md) — Rank high-connectivity production nodes.
 - [`shortest_path`](tools/shortest_path.md) — Shortest typed dependency path between two nodes.
-- [`get_community`](tools/get_community.md) — Return one weak graph component.
-- [`list_communities`](tools/list_communities.md) — List deterministic weak graph components.
-- [`module_map`](tools/module_map.md) — Production folder and dependency map.
+- [`get_community`](tools/get_community.md) — Return one coupling community (containment and package edges excluded).
+- [`list_communities`](tools/list_communities.md) — List deterministic coupling communities (containment and package edges excluded).
+- [`module_map`](tools/module_map.md) — Production folder map at a requested directory depth.
 - [`build_graph`](tools/build_graph.md) — Workspace, target and runner topology from manifest evidence.
 - [`search_code`](tools/search_code.md) — Literal or Rust-regex repository search without ripgrep.
 - [`read_source`](tools/read_source.md) — Bounded source context by node or repository path.
@@ -28,7 +30,8 @@ The live MCP `tools/list` schema is authoritative.
 - [`change_impact`](tools/change_impact.md) — Read-only Git change impact with graph evidence.
 - [`select_tests`](tools/select_tests.md) — Select the test suites a change most plausibly needs to run.
 - [`git_history`](tools/git_history.md) — Bounded direct Git history without launching git.
-- [`cross_repo_git`](tools/cross_repo_git.md) — Parallel histories, shared commits, or diffs across local repositories.
+- [`git_read_blob`](tools/git_read_blob.md) — Bounded UTF-8 file content at an immutable Git revision or blob OID; binary blobs are refused.
+- [`cross_repo_git`](tools/cross_repo_git.md) — Parallel histories, shared commits, or diffs across named local repositories.
 - [`verified_change`](tools/verified_change.md) — Composite pre-commit evidence and conservative verdict.
 - [`graph_diff`](tools/graph_diff.md) — Compare the current snapshot with an immutable Git revision.
 
@@ -38,7 +41,7 @@ The live MCP `tools/list` schema is authoritative.
 - [`find_dead_code`](tools/find_dead_code.md) — Conservative unreferenced-symbol review queue.
 - [`run_audit`](tools/run_audit.md) — Repository structure and evidence completeness audit.
 - [`coverage_map`](tools/coverage_map.md) — Measured coverage discovery or explicit static reachability.
-- [`hot_path_review`](tools/hot_path_review.md) — Rank high-connectivity and large source symbols.
+- [`hot_path_review`](tools/hot_path_review.md) — Rank functions by static complexity times resolved call fan-in.
 - [`get_architecture_contract`](tools/get_architecture_contract.md) — Read or preview the local target-architecture contract.
 - [`prepare_change`](tools/prepare_change.md) — Select architecture rules for intended changed files.
 - [`verify_architecture`](tools/verify_architecture.md) — Verify graph dependencies against the active contract.
@@ -48,14 +51,14 @@ The live MCP `tools/list` schema is authoritative.
 
 ## APIs and transports
 
-- [`list_endpoints`](tools/list_endpoints.md) — Inventory statically extracted HTTP endpoints.
+- [`list_endpoints`](tools/list_endpoints.md) — Inventory statically extracted HTTP endpoints, including hand-rolled req.method/pathname conditions.
 - [`trace_endpoint`](tools/trace_endpoint.md) — Resolve an endpoint and its bounded call neighborhood.
-- [`trace_api_contract`](tools/trace_api_contract.md) — Cross-repository HTTP, GraphQL, gRPC and event-transport contract evidence.
+- [`trace_api_contract`](tools/trace_api_contract.md) — Cross-repository HTTP, GraphQL, gRPC and event-transport contract evidence for named backend and client roots.
 
 ## Repositories and refresh
 
-- [`open_repo`](tools/open_repo.md) — Retarget to another local repository.
-- [`list_known_repos`](tools/list_known_repos.md) — List repositories opened by this server process.
+- [`open_repo`](tools/open_repo.md) — Retarget to another local repository. Graphs unused for 20 minutes unload; asking for one again rescans that folder.
+- [`list_known_repos`](tools/list_known_repos.md) — List repositories with an in-process graph.
 - [`rebuild_graph`](tools/rebuild_graph.md) — Rebuild the derived in-memory graph without source writes.
 
 ## Optional supplied-data analysis

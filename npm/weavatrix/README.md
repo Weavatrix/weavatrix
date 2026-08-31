@@ -1,4 +1,4 @@
-# Weavatrix — native MCP repository intelligence
+# Weavatrix â€” native MCP repository intelligence
 
 [![CI](https://github.com/Weavatrix/weavatrix/actions/workflows/ci.yml/badge.svg)](https://github.com/Weavatrix/weavatrix/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/weavatrix.svg)](https://www.npmjs.com/package/weavatrix)
@@ -8,7 +8,7 @@
 **Give your coding agent repository evidence before it starts guessing.**
 
 Weavatrix is the native MCP product for repository intelligence. It gives
-Codex, Claude Code, and other coding agents 43 read-only operations over one
+Codex, Claude Code, and other coding agents 44 read-only operations over one
 revision-bound evidence graph: impact, architecture, APIs, Git history,
 duplicates, dead code, search, semantic links, and temporal memory.
 
@@ -93,7 +93,7 @@ contract affected by this branch.
 Build the smallest source bundle needed to edit this symbol safely.
 ```
 
-## The 43 read-only operations
+## The 44 read-only operations
 
 | Workflow | Operations |
 | --- | --- |
@@ -129,12 +129,12 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.9.2
-    profile catalog · refresh · watcher · MCP framing
+weavatrix 1.10.0
+    profile catalog Â· refresh Â· watcher Â· MCP framing
     |
     v
-weavatrix-rust 2.7.3
-    typed graph · analysis · 43 read-only operations
+weavatrix-rust 2.9.0
+    typed graph Â· analysis Â· 44 read-only operations
 ```
 
 This npm product owns MCP transport and native distribution. The

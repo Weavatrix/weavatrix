@@ -1,7 +1,7 @@
 {
   "name": "weavatrix",
-  "version": "1.9.2",
-  "description": "Evidence infrastructure for AI software agents: 43 read-only repository intelligence tools through MCP.",
+  "version": "1.10.0",
+  "description": "Evidence infrastructure for AI software agents: 44 read-only repository intelligence tools through MCP.",
   "author": {
     "name": "Weavatrix",
     "email": "sergii.ziborov@gmail.com"

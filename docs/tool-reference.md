@@ -1,6 +1,6 @@
 # Operation reference
 
-The full native product exposes 43 bounded read-only MCP operations. JSON
+The full native product exposes 44 bounded read-only MCP operations. JSON
 schemas returned by `tools/list` are the authoritative machine contract.
 
 ## Graph and orientation
@@ -70,6 +70,8 @@ result.
 ## Git and repositories
 
 - `git_history`: bounded history, churn, and co-change without spawning Git.
+- `git_read_blob`: bounded UTF-8 file content at a revision or blob OID,
+  without a checkout; binary blobs are refused.
 - `cross_repo_git`: histories, shared commits, or diffs across local roots.
 - `open_repo`: switch the process-local active repository.
 - `list_known_repos`: repositories opened by this process.

@@ -1,10 +1,10 @@
 # `list_known_repos`
 
-List repositories opened by this server process.
+List repositories with an in-process graph.
 
 ## When to use
 
-List repositories previously opened by this server process.
+See which roots this process has already opened.
 
 ## Inputs
 

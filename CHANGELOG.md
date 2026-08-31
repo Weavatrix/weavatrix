@@ -1,7 +1,31 @@
 # Changelog
 
-## Unreleased
+## 1.10.0 - 2026-08-31
 
+Engine `weavatrix-rust` 2.9.0 - the repo-lens audit release.
+
+- New `git_read_blob` tool (44 operations): bounded UTF-8 file content at an
+  immutable Git revision or blob OID, so a diff can be followed by "the file
+  as it was" without a checkout. Binary blobs fail closed.
+- Symbol resolution stops guessing: JavaScript/TypeScript member references
+  and bare locals never bind to an unrelated same-named symbol in another
+  file, and function-local `const`/`let` are no longer graph symbols.
+- Local page resources resolve: HTML `src`/`href` and CSS `@import` become
+  import edges (case-insensitive like Node), assets and URLs stop appearing
+  as missing npm dependencies, and a file excluded by scan policy but present
+  on disk is linked instead of reported as unresolved.
+- Hand-rolled `createServer` routes (`req.method === "GET" && url.pathname
+  === "/ping"`) appear in `list_endpoints`, and Electron
+  `loadFile("renderer/index.html")` chains make renderer code reachable.
+- Every advertised parameter is applied - array `relation_filter`,
+  `max_references`, `min_score` and the hot-path thresholds - and every
+  answer carries `repository_context` (root, scan revision, Git HEAD, graph
+  age) with `expected_repository` failing fast on a mismatch.
+- `context_bundle` never drops the target's own source under a token budget;
+  `find_dead_code` confidence is evidence-tiered at 25/50/85; a commented
+  empty `catch` reports as low severity; communities are computed over
+  coupling edges only; `module_map` takes `depth`; `mockups/` classifies as
+  auxiliary content.
 - Windows `weavatrix.exe` now embeds the company mark from
   `plugins/weavatrix/assets/logo.svg`, so Task Manager and Explorer show the
   Weavatrix icon instead of the generic application glyph.
