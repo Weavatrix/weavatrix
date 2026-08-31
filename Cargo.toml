@@ -14,6 +14,8 @@ keywords = ["mcp", "repository", "code-graph", "static-analysis", "coding-agents
 categories = ["development-tools", "command-line-utilities"]
 include = [
     "/src/**",
+    "/assets/**",
+    "/build.rs",
     "/.weavatrix/architecture.json",
     "/Cargo.toml",
     "/Cargo.lock",
@@ -31,6 +33,9 @@ blazingly-json = "0.1.0"
 mcport = "0.5.0"
 notify = "8.2.0"
 weavatrix-rust = { version = "2.7.3", features = ["full", "lang-rust"] }
+
+[build-dependencies]
+winresource = "0.1.20"
 
 [profile.release]
 lto = "fat"

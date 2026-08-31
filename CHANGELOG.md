@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Windows `weavatrix.exe` now embeds the company mark from
+  `plugins/weavatrix/assets/logo.svg`, so Task Manager and Explorer show the
+  Weavatrix icon instead of the generic application glyph.
+
 ## 1.9.0 - 2026-08-23
 
 Engine `weavatrix-rust` 2.7.1.
