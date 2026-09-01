@@ -6,7 +6,7 @@ on:
       - "v*"
 
 concurrency:
-  group: npm-release-${{ github.ref }}
+  group: release-${{ github.ref }}
   cancel-in-progress: false
 
 permissions:
@@ -153,8 +153,8 @@ jobs:
           if-no-files-found: error
           retention-days: 30
       - name: Publish existing canonical package with provenance
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        # Auth is npm trusted publishing (OIDC): the registry trusts this
+        # repository and workflow file directly, so no token is configured.
         shell: bash
         run: |
           VERSION="$(node -p "require('./npm/weavatrix/package.json').version")"
