@@ -1,4 +1,6 @@
-# Weavatrix â€” native MCP repository intelligence
+# Weavatrix — native MCP repository intelligence
+
+<img src="plugins/weavatrix/assets/logo.svg" alt="Weavatrix logo" width="88" align="right">
 
 [![CI](https://github.com/Weavatrix/weavatrix/actions/workflows/ci.yml/badge.svg)](https://github.com/Weavatrix/weavatrix/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/weavatrix.svg)](https://www.npmjs.com/package/weavatrix)
@@ -22,24 +24,24 @@ evidence kind, and confidence that produced it.
 ### Ecosystem place (UNDERSTAND)
 
 ```text
-Weavatrix (this) â€” code facts
-        â”‚
-        â–¼
-Weavatrix Loom â€” semantic composition (capabilities, registry, compile â†’ Rust)
-        â”‚
-        â–¼
-Realforge â€” artifact construction (scaffold / package / deploy)
+Weavatrix (this) — code facts
+        │
+        ▼
+Weavatrix Loom — semantic composition (capabilities, registry, compile → Rust)
+        │
+        ▼
+Realforge — artifact construction (scaffold / package / deploy)
 ```
 
 | Product | Owns | Does **not** own |
 | --- | --- | --- |
 | **Weavatrix** (this) | Repository / code graph, symbols, deps, search, impact | Capability interchange **Registry**, WVX project graph |
-| **[Weavatrix Loom](https://github.com/Weavatrix/weavatrix-loom)** | Capability Â· Implementation Â· evidence Â· GraphPatch Â· semantic compiler | Deep repo indexing (that stays here) |
+| **[Weavatrix Loom](https://github.com/Weavatrix/weavatrix-loom)** | Capability · Implementation · evidence · GraphPatch · semantic compiler | Deep repo indexing (that stays here) |
 | **[FerroSift](https://github.com/sergii-ziborov/ferrosift)** | Deterministic transform recipes/ops | Capability Registry; code intelligence |
 | **[Cortex Loom](https://github.com/sergii-ziborov/cortex-loom)** | Agent workflow / context budgets | Code index; Loom admit policy |
 
-Loom **consumes** Weavatrix facts for semantic classification (e.g. â€œthis `fn`
-is a candidate for `data.json.parse@1`â€). Loom must not grow a second product
+Loom **consumes** Weavatrix facts for semantic classification (e.g. “this `fn`
+is a candidate for `data.json.parse@1`”). Loom must not grow a second product
 code indexer. Normative Loom side: [ADR-0012](https://github.com/Weavatrix/weavatrix-loom/blob/main/docs/adr/0012-ecosystem-boundaries.md).
 
 The same source is distributed in two forms:
@@ -207,6 +209,7 @@ Which dependency violates .weavatrix/architecture.json?
 Find every GraphQL, gRPC, Kafka, RabbitMQ, NATS, JMS, SQS, or SNS
 contract affected by this branch.
 Build the smallest source bundle needed to edit this symbol safely.
+Show me this file as it was two commits ago, without a checkout.
 Suggest internal links without mixing inferred SEO relationships into
 the deterministic code graph.
 ```
@@ -214,6 +217,79 @@ the deterministic code graph.
 The graph is built once per revision. Impact, API traces, health findings,
 architecture checks, clone families, and context bundles therefore agree about
 repository identity instead of recomputing incompatible partial views.
+
+## See it answer
+
+Real answers from Weavatrix analyzing its own repository at commit
+`ec8bf30`, abridged (`…`) and with the local root shortened. Reproduce any of
+them with `weavatrix tool <name> . '<arguments>'`.
+
+**Orient in one call** — and know exactly which repository and revision
+answered:
+
+```json
+{"name": "graph_stats", "arguments": {}}
+```
+
+```json
+{
+  "nodes": 1294,
+  "edges": 2771,
+  "freshness": {"state": "CURRENT", "source_revision": "sha256:dd3d96d3…"},
+  "relations": {"calls": 651, "contains": 1271, "imports": 419, "references": 314, "…": "…"},
+  "repository_context": {
+    "root": "…/weavatrix",
+    "git_head": "ec8bf3041588623f23ec5e7ebbaff3a333da9ca7",
+    "scan_revision": "sha256:dd3d96d3…",
+    "graph_age_seconds": 0
+  }
+}
+```
+
+Every answer carries that `repository_context` block. Add
+`"expected_repository": "weavatrix"` to any call and a server that was
+retargeted elsewhere fails loudly instead of answering about the wrong
+repository.
+
+**Blast radius before you edit:**
+
+```json
+{"name": "get_dependents", "arguments": {"label": "file:src/mcp/server/mod.rs", "max_nodes": 6}}
+```
+
+```json
+{
+  "dependents": [
+    {"distance": 1, "node": {"id": "file:src/main.rs", "language": "rust"}},
+    {"distance": 1, "node": {"id": "file:src/mcp/mod.rs"}},
+    {"distance": 1, "node": {"id": "file:src/mcp/server/tests/catalog.rs"}},
+    {"…": "…"}
+  ]
+}
+```
+
+**The file as it was — no checkout** (`git_read_blob`):
+
+```json
+{"name": "git_read_blob", "arguments": {"path": "Cargo.toml", "revision": "HEAD~3", "max_bytes": 400}}
+```
+
+```json
+{
+  "path": "Cargo.toml",
+  "revision": "70b5bc788a10ec89ab28b9ecbc005e3b9c7f9829",
+  "oid": "f5f54bac00a4feb6e965c0d87c5c6d4d25782e91",
+  "kind": "utf8-text",
+  "lines": ["[package]", "name = \"weavatrix\"", "version = \"1.9.2\"", "…"],
+  "size_bytes": 1224,
+  "returned_bytes": 400,
+  "truncated": true
+}
+```
+
+Three commits before `ec8bf30` this package was 1.9.2; the agent reads that
+follow-up to a diff without touching the worktree. Binary blobs fail closed
+instead of being decoded into garbage.
 
 ## The 44 read-only operations
 
@@ -225,7 +301,7 @@ repository identity instead of recomputing incompatible partial views.
 | Health and quality | `find_duplicates`, `find_dead_code`, `run_audit`, `coverage_map`, `hot_path_review` |
 | APIs and transports | `list_endpoints`, `trace_endpoint`, `trace_api_contract` |
 | Architecture | `get_architecture_contract`, `verify_architecture`, `verify_capabilities`, `explain_architecture_violation`, `propose_architecture_exception` |
-| Git and repositories | `git_history`, `cross_repo_git`, `open_repo`, `list_known_repos`, `rebuild_graph` |
+| Git and repositories | `git_history`, `git_read_blob`, `cross_repo_git`, `open_repo`, `list_known_repos`, `rebuild_graph` |
 | Native extensions | `vector_search`, `semantic_link`, `seo_link_suggestions`, `memory_context` |
 
 Every operation is read-only with respect to the analyzed repository.
@@ -264,11 +340,11 @@ coding agent
     | MCP over stdio
     v
 weavatrix 1.10.0
-    profile catalog Â· session refresh Â· filesystem watcher Â· MCP framing
+    profile catalog · session refresh · filesystem watcher · MCP framing
     |
     v
 weavatrix-rust 2.9.0
-    typed graph Â· analysis pipeline Â· 44 read-only operations
+    typed graph · analysis pipeline · 44 read-only operations
     |
     +-- weavatrix-scan      repository discovery and selection
     +-- weavatrix-parse     lossless tokenization and structural facts
@@ -285,12 +361,6 @@ the reusable engine and standalone diagnostic CLI; it is not an MCP server.
 Its separate binary therefore reports `weavatrix-rust <engine-version>` from
 `--version`, while this product reports both the `weavatrix` product version
 and its embedded engine version.
-
-The 2.0.2 engine also closes an integrity gap in duplicate results. After
-test/classified/low-signal filtering and after `top_n` truncation, Weavatrix
-rebuilds clone families from the pairs that remain. Every returned member and
-pair now belongs to the same deterministic connected component; filtered
-members and dangling pair identifiers cannot leak into `find_duplicates`.
 
 Rust applications that want to embed the engine should depend on the crate:
 
@@ -368,7 +438,7 @@ application session
         |
 repository + change-monitor ports
         |
-weavatrix-rust adapter Â· notify adapter
+weavatrix-rust adapter · notify adapter
 ```
 
 `mcport` is isolated to the inbound server. The application layer sees neither

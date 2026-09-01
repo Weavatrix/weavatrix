@@ -1,4 +1,6 @@
-# Weavatrix â€” native MCP repository intelligence
+# Weavatrix — native MCP repository intelligence
+
+<img src="https://raw.githubusercontent.com/Weavatrix/weavatrix/main/plugins/weavatrix/assets/logo.svg" alt="Weavatrix logo" width="88" align="right">
 
 [![CI](https://github.com/Weavatrix/weavatrix/actions/workflows/ci.yml/badge.svg)](https://github.com/Weavatrix/weavatrix/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/weavatrix.svg)](https://www.npmjs.com/package/weavatrix)
@@ -91,7 +93,81 @@ Which dependency violates .weavatrix/architecture.json?
 Find every GraphQL, gRPC, Kafka, RabbitMQ, NATS, JMS, SQS, or SNS
 contract affected by this branch.
 Build the smallest source bundle needed to edit this symbol safely.
+Show me this file as it was two commits ago, without a checkout.
 ```
+
+## See it answer
+
+Real answers from Weavatrix analyzing its own repository at commit
+`ec8bf30`, abridged (`…`) and with the local root shortened. Reproduce any of
+them with `weavatrix tool <name> . '<arguments>'`.
+
+**Orient in one call** — and know exactly which repository and revision
+answered:
+
+```json
+{"name": "graph_stats", "arguments": {}}
+```
+
+```json
+{
+  "nodes": 1294,
+  "edges": 2771,
+  "freshness": {"state": "CURRENT", "source_revision": "sha256:dd3d96d3…"},
+  "relations": {"calls": 651, "contains": 1271, "imports": 419, "references": 314, "…": "…"},
+  "repository_context": {
+    "root": "…/weavatrix",
+    "git_head": "ec8bf3041588623f23ec5e7ebbaff3a333da9ca7",
+    "scan_revision": "sha256:dd3d96d3…",
+    "graph_age_seconds": 0
+  }
+}
+```
+
+Every answer carries that `repository_context` block. Add
+`"expected_repository": "weavatrix"` to any call and a server that was
+retargeted elsewhere fails loudly instead of answering about the wrong
+repository.
+
+**Blast radius before you edit:**
+
+```json
+{"name": "get_dependents", "arguments": {"label": "file:src/mcp/server/mod.rs", "max_nodes": 6}}
+```
+
+```json
+{
+  "dependents": [
+    {"distance": 1, "node": {"id": "file:src/main.rs", "language": "rust"}},
+    {"distance": 1, "node": {"id": "file:src/mcp/mod.rs"}},
+    {"distance": 1, "node": {"id": "file:src/mcp/server/tests/catalog.rs"}},
+    {"…": "…"}
+  ]
+}
+```
+
+**The file as it was — no checkout** (`git_read_blob`):
+
+```json
+{"name": "git_read_blob", "arguments": {"path": "Cargo.toml", "revision": "HEAD~3", "max_bytes": 400}}
+```
+
+```json
+{
+  "path": "Cargo.toml",
+  "revision": "70b5bc788a10ec89ab28b9ecbc005e3b9c7f9829",
+  "oid": "f5f54bac00a4feb6e965c0d87c5c6d4d25782e91",
+  "kind": "utf8-text",
+  "lines": ["[package]", "name = \"weavatrix\"", "version = \"1.9.2\"", "…"],
+  "size_bytes": 1224,
+  "returned_bytes": 400,
+  "truncated": true
+}
+```
+
+Three commits before `ec8bf30` this package was 1.9.2; the agent reads that
+follow-up to a diff without touching the worktree. Binary blobs fail closed
+instead of being decoded into garbage.
 
 ## The 44 read-only operations
 
@@ -103,7 +179,7 @@ Build the smallest source bundle needed to edit this symbol safely.
 | Health and quality | `find_duplicates`, `find_dead_code`, `run_audit`, `coverage_map`, `hot_path_review` |
 | APIs and transports | `list_endpoints`, `trace_endpoint`, `trace_api_contract` |
 | Architecture | `get_architecture_contract`, `verify_architecture`, `verify_capabilities`, `explain_architecture_violation`, `propose_architecture_exception` |
-| Git and repositories | `git_history`, `cross_repo_git`, `open_repo`, `list_known_repos`, `rebuild_graph` |
+| Git and repositories | `git_history`, `git_read_blob`, `cross_repo_git`, `open_repo`, `list_known_repos`, `rebuild_graph` |
 | Native extensions | `vector_search`, `semantic_link`, `seo_link_suggestions`, `memory_context` |
 
 Every operation is read-only with respect to the analyzed repository.
@@ -130,11 +206,11 @@ coding agent
     | MCP over stdio
     v
 weavatrix 1.10.0
-    profile catalog Â· refresh Â· watcher Â· MCP framing
+    profile catalog · refresh · watcher · MCP framing
     |
     v
 weavatrix-rust 2.9.0
-    typed graph Â· analysis Â· 44 read-only operations
+    typed graph · analysis · 44 read-only operations
 ```
 
 This npm product owns MCP transport and native distribution. The
@@ -164,14 +240,6 @@ Their Node and Bun benchmarks against the JavaScript library each would
 otherwise replace live in one place, with the rules written down and the
 losing rows kept:
 [weavatrix-benchmarks](https://github.com/Weavatrix/weavatrix-benchmarks).
-
-Engine 2.2.1 makes three reports carry only what their evidence supports:
-`find_duplicates` reports the lines a clone covers completely and the byte
-range to check them by, `run_audit` runtime findings land on the line they
-matched, and `token_budget` is refused by the operations that cannot apply it
-rather than accepted and ignored. `find_duplicates` also gains
-`include_strings`, which compares the payloads of multi-line literals - inline
-SQL, embedded templates - that the code pass sees as a single token.
 
 ## Release evidence
 

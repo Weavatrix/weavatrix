@@ -1,5 +1,7 @@
 # Weavatrix plugin
 
+<img src="assets/logo.svg" alt="Weavatrix logo" width="72" align="right">
+
 Weavatrix gives Cursor, Codex, Claude, and Grok Build 44 read-only repository
 intelligence operations through one native MCP server. It covers source and
 symbol search, dependency and call graphs, API and event-contract tracing,
