@@ -10,7 +10,7 @@
 **Give your coding agent repository evidence before it starts guessing.**
 
 Weavatrix is the native MCP product for repository intelligence. It gives
-Codex, Claude Code, and other coding agents 44 read-only operations over one
+Codex, Claude Code, and other coding agents 47 read-only operations over one
 revision-bound evidence graph: impact, architecture, APIs, Git history,
 duplicates, dead code, search, semantic links, and temporal memory.
 
@@ -169,14 +169,14 @@ Three commits before `ec8bf30` this package was 1.9.2; the agent reads that
 follow-up to a diff without touching the worktree. Binary blobs fail closed
 instead of being decoded into garbage.
 
-## The 44 read-only operations
+## The 47 read-only operations
 
 | Workflow | Operations |
 | --- | --- |
 | Graph orientation | `graph_stats`, `get_node`, `get_neighbors`, `query_graph`, `god_nodes`, `shortest_path`, `get_community`, `list_communities`, `module_map`, `build_graph` |
 | Change impact | `get_dependents`, `change_impact`, `select_tests`, `verified_change`, `prepare_change`, `graph_diff` |
-| Exact source context | `search_code`, `read_source`, `inspect_symbol`, `context_bundle`, `map_stacktrace` |
-| Health and quality | `find_duplicates`, `find_dead_code`, `run_audit`, `coverage_map`, `hot_path_review` |
+| Exact source context | `search_code`, `read_source`, `inspect_symbol`, `go_to_definition`, `find_references`, `context_bundle`, `map_stacktrace` |
+| Health and quality | `find_duplicates`, `find_dead_code`, `run_audit`, `coverage_map`, `hot_path_review`, `perf_attribution` |
 | APIs and transports | `list_endpoints`, `trace_endpoint`, `trace_api_contract` |
 | Architecture | `get_architecture_contract`, `verify_architecture`, `verify_capabilities`, `explain_architecture_violation`, `propose_architecture_exception` |
 | Git and repositories | `git_history`, `git_read_blob`, `cross_repo_git`, `open_repo`, `list_known_repos`, `rebuild_graph` |
@@ -205,12 +205,12 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.10.0
+weavatrix 1.11.0
     profile catalog · refresh · watcher · MCP framing
     |
     v
-weavatrix-rust 2.9.0
-    typed graph · analysis · 44 read-only operations
+weavatrix-rust 2.10.0
+    typed graph · analysis · 47 read-only operations
 ```
 
 This npm product owns MCP transport and native distribution. The

@@ -1,5 +1,26 @@
 # Changelog
 
+## 1.11.0 - 2026-09-06
+
+Engine `weavatrix-rust` 2.10.0 — compatibility and evidence-correctness release.
+
+- F1: legacy MCP launches with a second positional capability (`offline`,
+  `pinned`, comma-lists) no longer overwrite the repository root; `offline`
+  maps to `--profile=all`, and restricted legacy profiles fail with an explicit
+  migration command instead of silently widening access.
+- F2–F4 (engine): HTTP contract linking uses token evidence (comments and
+  whitespace-sensitive false GET mismatches fixed); `trace_endpoint` is exact by
+  default with honest truncation/ambiguity; `change_impact` accepts legacy
+  `target`→`files` and rejects unknown tool fields that previously yielded an
+  empty `COMPLETE`.
+- New MCP operations: `go_to_definition`, `find_references`, and
+  `perf_attribution` (47 tools). Short-name symbol resolution prefers a unique
+  non-test match; vector/SEO/memory schemas document real item shapes; packaging
+  manifests are excluded from the dead-code queue.
+- README `change_impact` example uses `files` instead of the obsolete `target`
+  field. Plugin skill cards and manifests stay in lockstep with the published
+  npm pin.
+
 ## 1.10.0 - 2026-08-31
 
 Engine `weavatrix-rust` 2.9.0 - the repo-lens audit release.

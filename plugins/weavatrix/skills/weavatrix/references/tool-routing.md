@@ -21,6 +21,8 @@ The live MCP `tools/list` schema is authoritative. Every answer carries
 - [`search_code`](tools/search_code.md) — Literal or Rust-regex repository search without ripgrep.
 - [`read_source`](tools/read_source.md) — Bounded source context by node or repository path.
 - [`inspect_symbol`](tools/inspect_symbol.md) — Definition, direct relationships and source evidence.
+- [`go_to_definition`](tools/go_to_definition.md) — Resolve the symbol at a source position to its definition without guessing by name.
+- [`find_references`](tools/find_references.md) — Occurrences of the symbol at a position or label, from the graph and an on-disk SCIP index if present.
 - [`context_bundle`](tools/context_bundle.md) — Compact graph and source bundle for one symbol.
 - [`map_stacktrace`](tools/map_stacktrace.md) — Map stack-trace text onto repository files and symbols.
 
@@ -42,6 +44,7 @@ The live MCP `tools/list` schema is authoritative. Every answer carries
 - [`run_audit`](tools/run_audit.md) — Repository structure and evidence completeness audit.
 - [`coverage_map`](tools/coverage_map.md) — Measured coverage discovery or explicit static reachability.
 - [`hot_path_review`](tools/hot_path_review.md) — Rank functions by static complexity times resolved call fan-in.
+- [`perf_attribution`](tools/perf_attribution.md) — Correlate a measurement series with the declarations that changed between the revisions that produced it.
 - [`get_architecture_contract`](tools/get_architecture_contract.md) — Read or preview the local target-architecture contract.
 - [`prepare_change`](tools/prepare_change.md) — Select architecture rules for intended changed files.
 - [`verify_architecture`](tools/verify_architecture.md) — Verify graph dependencies against the active contract.

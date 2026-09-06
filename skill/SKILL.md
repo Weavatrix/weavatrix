@@ -19,8 +19,8 @@ contracts. Do not call it merely because the server is available.
 
 1. Call `graph_stats` to confirm the active repository and graph revision.
 2. Use `module_map` for orientation or `search_code` for a known literal.
-3. Pin decisive evidence with `inspect_symbol`, `context_bundle`, or
-   `read_source`.
+3. Pin decisive evidence with `inspect_symbol`, `go_to_definition`,
+   `find_references`, `context_bundle`, or `read_source`.
 4. Expand only when needed: `get_dependents` or `change_impact` for risk,
    `trace_endpoint` or `trace_api_contract` for runtime contracts,
    `verify_architecture` for policy, and `run_audit` for a broad health pass.

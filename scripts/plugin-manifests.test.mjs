@@ -30,6 +30,7 @@ const toolNames = [
     'explain_architecture_violation',
     'find_dead_code',
     'find_duplicates',
+    'find_references',
     'get_architecture_contract',
     'get_community',
     'get_dependents',
@@ -37,6 +38,7 @@ const toolNames = [
     'get_node',
     'git_history',
     'git_read_blob',
+    'go_to_definition',
     'god_nodes',
     'graph_diff',
     'graph_stats',
@@ -49,6 +51,7 @@ const toolNames = [
     'memory_context',
     'module_map',
     'open_repo',
+    'perf_attribution',
     'prepare_change',
     'propose_architecture_exception',
     'query_graph',
@@ -132,7 +135,7 @@ test('the plugin skill is the released Weavatrix skill', () => {
         .filter((name) => name.endsWith('.md'))
         .map((name) => name.slice(0, -3))
         .sort()
-    assert.equal(toolNames.length, 44)
+    assert.equal(toolNames.length, 47)
     assert.deepEqual(canonicalCards, toolNames)
     assert.deepEqual(bundledCards, toolNames)
     for (const name of toolNames) {

@@ -5,7 +5,7 @@
       "command": "npx",
       "args": [
         "-y",
-        "weavatrix@1.10.0",
+        "weavatrix@1.11.0",
         "mcp",
         "."
       ]
