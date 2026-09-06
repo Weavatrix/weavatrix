@@ -19,7 +19,7 @@
     "architecture",
     "code-intelligence"
   ],
-  "logo": "assets/logo.svg",
-  "skills": "./skills/",
-  "mcpServers": "./mcp.json"
+  "logo": "plugins/weavatrix/assets/logo.svg",
+  "skills": "./plugins/weavatrix/skills/",
+  "mcpServers": "./plugins/weavatrix/mcp.json"
 }

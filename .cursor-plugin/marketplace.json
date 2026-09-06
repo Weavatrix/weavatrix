@@ -22,10 +22,12 @@
       "repository": "https://github.com/Weavatrix/weavatrix",
       "license": "MIT",
       "keywords": [
+        "weavatrix",
         "mcp",
         "repository-intelligence",
         "code-graph",
-        "static-analysis"
+        "static-analysis",
+        "code-intelligence"
       ],
       "logo": "assets/logo.svg",
       "category": "Developer Tools",
