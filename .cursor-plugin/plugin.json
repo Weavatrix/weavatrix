@@ -21,5 +21,15 @@
   ],
   "logo": "plugins/weavatrix/assets/logo.svg",
   "skills": "./plugins/weavatrix/skills/",
-  "mcpServers": "./plugins/weavatrix/mcp.json"
+  "mcpServers": "./plugins/weavatrix/mcp.json",
+  "interface": {
+    "displayName": "Weavatrix",
+    "shortDescription": "A living evidence graph for AI software agents",
+    "longDescription": "Turn a repository into a reusable, revision-bound evidence graph for orientation, impact, APIs, architecture, Git, search, semantics, memory, and verification without granting source-write or network access.",
+    "developerName": "Weavatrix",
+    "category": "Developer Tools",
+    "brandColor": "#7C6CFF",
+    "composerIcon": "./plugins/weavatrix/assets/logo.svg",
+    "logo": "./plugins/weavatrix/assets/logo.svg"
+  }
 }

@@ -27,7 +27,7 @@
     {
       "id": "cli",
       "name": "Process composition and diagnostics",
-      "paths": ["src/main.rs"]
+      "paths": ["src/main.rs", "src/mcp_launch.rs"]
     },
     {
       "id": "automation",
