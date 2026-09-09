@@ -141,3 +141,28 @@ fn call_operation_maps_tool_errors_to_tool_reply_error() {
         "got {text}"
     );
 }
+
+#[test]
+fn pinned_server_rejects_open_repo_away_from_launch_root() {
+    use mcport::ToolServer;
+
+    let mut server = super::served(super::super::ServeOptions {
+        profile: McpProfile::All,
+        allow_retarget: false,
+        ..super::super::ServeOptions::default()
+    });
+    let other = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("..")
+        .canonicalize()
+        .expect("parent of package root");
+    let reply = server.call("open_repo", json!({"path": other.to_string_lossy()}));
+    assert!(
+        !matches!(reply, mcport::ToolReply::Success { .. }),
+        "retarget without --allow-retarget must fail, got {reply:?}"
+    );
+    let text = format!("{reply:?}");
+    assert!(
+        text.contains("pinned") && text.contains("--allow-retarget"),
+        "expected pin refusal, got {text}"
+    );
+}

@@ -42,21 +42,40 @@ weavatrix mcp .
 ```toml
 [mcp_servers.weavatrix]
 command = "npx"
-args = ["-y", "weavatrix", "mcp", "."]
+args = ["-y", "weavatrix@1.11.1", "mcp", "."]
 ```
+
+Pass an absolute repository path when the Codex process cwd is not the project
+you intend to analyze.
 
 ### Claude Code
 
 ```sh
-claude mcp add weavatrix -- npx -y weavatrix mcp .
+claude mcp add weavatrix -- npx -y weavatrix@1.11.1 mcp .
+```
+
+### Cursor
+
+Prefer the plugin, or pin the open workspace explicitly and do not also enable
+the plugin for the same server name:
+
+```json
+{
+  "mcpServers": {
+    "weavatrix": {
+      "command": "npx",
+      "args": ["-y", "weavatrix@1.11.1", "mcp", "${workspaceFolder}"]
+    }
+  }
+}
 ```
 
 Profiles expose bounded views of the same engine:
 
 ```sh
-npx -y weavatrix mcp . --profile=all
-npx -y weavatrix mcp . --profile=code
-npx -y weavatrix mcp . --profile=seo
+npx -y weavatrix@1.11.1 mcp . --profile=all
+npx -y weavatrix@1.11.1 mcp . --profile=code
+npx -y weavatrix@1.11.1 mcp . --profile=seo
 ```
 
 The package contains native binaries for Windows x64/arm64, macOS x64/arm64,
@@ -124,10 +143,12 @@ answered:
 }
 ```
 
-Every answer carries that `repository_context` block. Add
-`"expected_repository": "weavatrix"` to any call and a server that was
-retargeted elsewhere fails loudly instead of answering about the wrong
-repository.
+Every answer carries that `repository_context` block. From **1.11.1**, each MCP
+process pins its launch root for the session: `open_repo` to another path is
+refused unless you started with `--allow-retarget`, and omitted
+`expected_repository` is filled from that pin. Still pass
+`"expected_repository": "weavatrix"` when you already know the folder name — a
+mismatched server fails loudly instead of answering about the wrong repository.
 
 **Blast radius before you edit:**
 

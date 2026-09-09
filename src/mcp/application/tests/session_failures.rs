@@ -117,6 +117,22 @@ fn ensure_loaded_failure_is_wrapped() {
     assert!(error.contains("ensure boom"), "got {error}");
 }
 
+#[test]
+fn pinned_session_rejects_open_repo_away_from_root() {
+    let counts = Arc::new(Mutex::new(RepositoryCounts::default()));
+    let repository = CountingRepository {
+        root: PathBuf::from("fixture"),
+        counts: Arc::clone(&counts),
+    };
+    let mut session = session_with_pin(Box::new(repository), Arc::new(QuietMonitorFactory), false);
+    let error = session
+        .call("open_repo", json!({"path": "other-repo"}))
+        .expect_err("open_repo away from pin must fail");
+    assert!(error.contains("pinned"), "got {error}");
+    assert!(error.contains("--allow-retarget"), "got {error}");
+    assert_eq!(counts.lock().unwrap().calls, 0, "engine must not be called");
+}
+
 struct RefreshFailsRepository {
     root: PathBuf,
 }

@@ -52,7 +52,9 @@ The application session owns refresh policy, not the protocol adapter:
 - first operation refreshes before execution and then starts the watcher;
 - queued changes are drained before later operations;
 - changes arriving during catch-up receive a second drain/refresh pass;
-- `open_repo` retargets the state and watcher;
+- `open_repo` retargets the state and watcher only when the process was started
+  with `--allow-retarget` (default launches refuse leaving the launch root);
+- every tool call injects `expected_repository` from the launch pin when omitted;
 - `rebuild_graph` performs the explicit rebuild path.
 
 Watcher errors are returned as errors rather than converted into stale success.

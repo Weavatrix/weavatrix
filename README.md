@@ -49,7 +49,7 @@ The same source is distributed in two forms:
 | Distribution | Install | Best for |
 | --- | --- | --- |
 | `weavatrix` on crates.io | `cargo install weavatrix` | Rust-first environments and source builds |
-| `weavatrix` on npm | `npx -y weavatrix mcp .` | Ready-made cross-platform binaries without a Rust toolchain |
+| `weavatrix` on npm | `npx -y weavatrix@1.11.1 mcp <repo>` | Ready-made cross-platform binaries without a Rust toolchain |
 
 The npm package exists for convenience; it does not contain a different
 JavaScript engine. Both distributions run the same native adapter and the same
@@ -153,13 +153,17 @@ so a clone carries the server with it.
 
 ### Cursor
 
+Prefer the Cursor plugin (it already passes `${workspaceFolder}`). For a
+hand-written user entry, pin the server to the open workspace — not the host
+process cwd — and avoid running both a user MCP and the plugin at once:
+
 ```json
 // ~/.cursor/mcp.json
 {
   "mcpServers": {
     "weavatrix": {
       "command": "npx",
-      "args": ["-y", "weavatrix", "mcp", "."]
+      "args": ["-y", "weavatrix@1.11.1", "mcp", "${workspaceFolder}"]
     }
   }
 }
@@ -168,9 +172,9 @@ so a clone carries the server with it.
 Profiles expose bounded views of the same engine:
 
 ```sh
-npx -y weavatrix mcp . --profile=all
-npx -y weavatrix mcp . --profile=code
-npx -y weavatrix mcp . --profile=seo
+npx -y weavatrix@1.11.1 mcp . --profile=all
+npx -y weavatrix@1.11.1 mcp . --profile=code
+npx -y weavatrix@1.11.1 mcp . --profile=seo
 ```
 
 The npm package contains native binaries for Windows x64/arm64, macOS
@@ -246,10 +250,12 @@ answered:
 }
 ```
 
-Every answer carries that `repository_context` block. Add
-`"expected_repository": "weavatrix"` to any call and a server that was
-retargeted elsewhere fails loudly instead of answering about the wrong
-repository.
+Every answer carries that `repository_context` block. From **1.11.1**, each MCP
+process pins its launch root for the session: `open_repo` to another path is
+refused unless you started with `--allow-retarget`, and omitted
+`expected_repository` is filled from that pin. Still pass
+`"expected_repository": "weavatrix"` when you already know the folder name — a
+mismatched server fails loudly instead of answering about the wrong repository.
 
 **Blast radius before you edit:**
 

@@ -9,8 +9,16 @@ fn session_with(
     repository: Box<dyn RepositoryPort>,
     factory: Arc<dyn ChangeMonitorFactory>,
 ) -> RepositorySession {
+    session_with_pin(repository, factory, true)
+}
+
+fn session_with_pin(
+    repository: Box<dyn RepositoryPort>,
+    factory: Arc<dyn ChangeMonitorFactory>,
+    allow_retarget: bool,
+) -> RepositorySession {
     let root = repository.root().to_path_buf();
-    RepositorySession::new(repository, factory, RootPin::new(root, true))
+    RepositorySession::new(repository, factory, RootPin::new(root, allow_retarget))
 }
 
 #[derive(Default)]

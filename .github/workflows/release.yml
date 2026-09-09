@@ -166,15 +166,26 @@ jobs:
 
           PUBLISHED_HEAD=""
           PREDICATE=""
-          for attempt in $(seq 1 24); do
-            echo "npm provenance verification attempt $attempt/24"
-            PUBLISHED_HEAD="$(npm view "weavatrix@$VERSION" gitHead --json 2>/dev/null | tr -d '\"\r\n' || true)"
-            PREDICATE="$(npm view "weavatrix@$VERSION" dist.attestations.provenance.predicateType --json 2>/dev/null | tr -d '\"\r\n' || true)"
+          # Registry metadata often lags a few minutes after a successful
+          # provenance publish; wait longer and print diagnostics on failure.
+          for attempt in $(seq 1 60); do
+            echo "npm provenance verification attempt $attempt/60"
+            PUBLISHED_HEAD="$(npm view "weavatrix@$VERSION" gitHead 2>/dev/null | tr -d '\r\n' || true)"
+            PREDICATE="$(npm view "weavatrix@$VERSION" dist.attestations.provenance.predicateType 2>/dev/null | tr -d '\r\n' || true)"
             if [[ "$PUBLISHED_HEAD" == "$GITHUB_SHA" && "$PREDICATE" == "https://slsa.dev/provenance/v1" ]]; then
+              echo "verified gitHead=$PUBLISHED_HEAD predicate=$PREDICATE"
               break
             fi
             sleep 5
           done
+          if [[ "$PUBLISHED_HEAD" != "$GITHUB_SHA" || "$PREDICATE" != "https://slsa.dev/provenance/v1" ]]; then
+            echo "provenance verification failed"
+            echo "expected gitHead=$GITHUB_SHA"
+            echo "actual gitHead=${PUBLISHED_HEAD:-<empty>}"
+            echo "actual predicate=${PREDICATE:-<empty>}"
+            npm view "weavatrix@$VERSION" version gitHead dist.attestations --json || true
+            exit 1
+          fi
           [[ "$PUBLISHED_HEAD" == "$GITHUB_SHA" ]]
           [[ "$PREDICATE" == "https://slsa.dev/provenance/v1" ]]
       - name: Install verified MCP Registry publisher
