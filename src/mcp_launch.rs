@@ -7,6 +7,7 @@ pub(crate) struct McpLaunch {
     pub(crate) repository: String,
     pub(crate) profile: mcp::McpProfile,
     pub(crate) output_format: Option<String>,
+    pub(crate) allow_retarget: bool,
 }
 
 /// Parses `mcp` launch arguments.
@@ -18,12 +19,15 @@ pub(crate) fn parse_mcp_launch(arguments: &[String]) -> Result<McpLaunch, String
     let mut repository = None;
     let mut profile = mcp::McpProfile::All;
     let mut output_format = None;
+    let mut allow_retarget = false;
     let mut positional = 0_u8;
     for argument in arguments {
         if let Some(value) = argument.strip_prefix("--profile=") {
             profile = value.parse()?;
         } else if let Some(value) = argument.strip_prefix("--output-format=") {
             output_format = Some(value.to_owned());
+        } else if argument == "--allow-retarget" {
+            allow_retarget = true;
         } else if argument.starts_with('-') {
             return Err(format!("unknown MCP option: {argument}"));
         } else {
@@ -48,6 +52,7 @@ pub(crate) fn parse_mcp_launch(arguments: &[String]) -> Result<McpLaunch, String
         repository: repository.unwrap_or_else(|| ".".to_owned()),
         profile,
         output_format,
+        allow_retarget,
     })
 }
 
@@ -95,6 +100,13 @@ mod tests {
         let launch = parse_mcp_launch(&args(&["/repo", "--profile=code"])).unwrap();
         assert_eq!(launch.repository, "/repo");
         assert_eq!(launch.profile, McpProfile::Code);
+        assert!(!launch.allow_retarget);
+    }
+
+    #[test]
+    fn allow_retarget_flag() {
+        let launch = parse_mcp_launch(&args(&["/repo", "--allow-retarget"])).unwrap();
+        assert!(launch.allow_retarget);
     }
 
     #[test]

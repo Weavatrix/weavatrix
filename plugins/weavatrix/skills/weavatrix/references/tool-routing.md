@@ -3,8 +3,10 @@
 Open only the card for the method you are about to call. Each card explains
 when to use the method, its exact published inputs, and a minimal compact call.
 The live MCP `tools/list` schema is authoritative. Every answer carries
-`repository_context` (root, scan revision, Git HEAD, graph age); pass
-`expected_repository` to fail fast when the active repository differs.
+`repository_context` (root, scan revision, Git HEAD, graph age). The process
+pins its launch root and injects `expected_repository` when omitted, so answers
+cannot silently switch to another repository. Pass an explicit
+`expected_repository` to fail fast when you already know the intended folder.
 
 ## Graph, source, and orientation
 
@@ -60,7 +62,7 @@ The live MCP `tools/list` schema is authoritative. Every answer carries
 
 ## Repositories and refresh
 
-- [`open_repo`](tools/open_repo.md) — Retarget to another local repository. Graphs unused for 20 minutes unload; asking for one again rescans that folder.
+- [`open_repo`](tools/open_repo.md) — Retarget to another local repository. Default launches refuse this unless started with `--allow-retarget`. Graphs unused for 20 minutes unload; asking for one again rescans that folder.
 - [`list_known_repos`](tools/list_known_repos.md) — List repositories with an in-process graph.
 - [`rebuild_graph`](tools/rebuild_graph.md) — Rebuild the derived in-memory graph without source writes.
 

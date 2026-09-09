@@ -17,7 +17,9 @@ contracts. Do not call it merely because the server is available.
 
 ## Minimal workflow
 
-1. Call `graph_stats` to confirm the active repository and graph revision.
+1. Call `graph_stats` and confirm `repository_context.root` matches the workspace
+   you intend. The MCP process is pinned to its launch root; it will not silently
+   answer for another repository.
 2. Use `module_map` for orientation or `search_code` for a known literal.
 3. Pin decisive evidence with `inspect_symbol`, `go_to_definition`,
    `find_references`, `context_bundle`, or `read_source`.
@@ -25,6 +27,10 @@ contracts. Do not call it merely because the server is available.
    `trace_endpoint` or `trace_api_contract` for runtime contracts,
    `verify_architecture` for policy, and `run_audit` for a broad health pass.
 5. Use repository-native tests or benchmarks for behavioral proof.
+
+Do not call `open_repo` "just in case". Cross-repository tools take explicit
+roots in their arguments. Multi-root retarget requires launching with
+`--allow-retarget`.
 
 Prefer `output_format:"text"` and a small `token_budget` for conversational
 work. Use JSON only for automation or retained evidence. Call `rebuild_graph`

@@ -1,9 +1,17 @@
-use super::RepositorySession;
+use super::{RepositorySession, RootPin};
 use crate::mcp::ports::{ChangeMonitor, ChangeMonitorFactory, RepositoryPort};
 use blazingly_json::{Value, json};
 use std::io;
 use std::path::{Path, PathBuf};
 use std::sync::{Arc, Mutex};
+
+fn session_with(
+    repository: Box<dyn RepositoryPort>,
+    factory: Arc<dyn ChangeMonitorFactory>,
+) -> RepositorySession {
+    let root = repository.root().to_path_buf();
+    RepositorySession::new(repository, factory, RootPin::new(root, true))
+}
 
 #[derive(Default)]
 struct RepositoryCounts {

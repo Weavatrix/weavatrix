@@ -89,7 +89,7 @@ test('both MCP manifests launch the pinned npm release', () => {
         assert.ok(server, `${filename} defines weavatrix`)
         assert.equal(server.type, 'stdio')
         assert.equal(server.command, 'npx')
-        assert.deepEqual(server.args, ['-y', `weavatrix@${version}`, 'mcp', '.'])
+        assert.deepEqual(server.args, ['-y', `weavatrix@${version}`, 'mcp', '${workspaceFolder}'])
     }
 })
 

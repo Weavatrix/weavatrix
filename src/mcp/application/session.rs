@@ -1,3 +1,4 @@
+use crate::mcp::application::RootPin;
 use crate::mcp::ports::{ChangeMonitor, ChangeMonitorFactory, RepositoryPort};
 use blazingly_json::Value;
 use std::io;
@@ -15,6 +16,7 @@ enum MonitorState {
 pub(crate) struct RepositorySession {
     repository: Box<dyn RepositoryPort>,
     monitor_factory: Arc<dyn ChangeMonitorFactory>,
+    pin: RootPin,
     first_tool_call: bool,
     monitor: MonitorState,
 }
@@ -23,16 +25,23 @@ impl RepositorySession {
     pub(crate) fn new(
         repository: Box<dyn RepositoryPort>,
         monitor_factory: Arc<dyn ChangeMonitorFactory>,
+        pin: RootPin,
     ) -> Self {
         Self {
             repository,
             monitor_factory,
+            pin,
             first_tool_call: true,
             monitor: MonitorState::NotStarted,
         }
     }
 
     pub(crate) fn call(&mut self, name: &str, arguments: Value) -> Result<Value, String> {
+        if name == "open_repo" {
+            self.pin.guard_open_repo(&arguments)?;
+        }
+        let arguments = self.pin.inject_expected(arguments);
+
         let graph_was_loaded = self.repository.is_loaded();
         let first_tool_call = self.first_tool_call;
         self.refresh_for_call(name, first_tool_call, graph_was_loaded)?;
@@ -42,6 +51,9 @@ impl RepositorySession {
 
         let result = self.repository.call(name, arguments);
         let opened_repository = result.is_ok() && name == "open_repo";
+        if opened_repository {
+            self.pin.adopt(self.repository.root());
+        }
         if (first_tool_call || !graph_was_loaded || opened_repository)
             && self.repository.is_loaded()
         {

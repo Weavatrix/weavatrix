@@ -8,7 +8,7 @@ symbol search, dependency and call graphs, API and event-contract tracing,
 change impact, architecture policy, Git history, duplicates, dead code,
 coverage evidence, vector search, and temporal memory.
 
-The plugin starts the published `weavatrix@1.11.0` npm package. That package
+The plugin starts the published `weavatrix@1.11.1` npm package. That package
 already contains the matching prebuilt native binaries; it has no lifecycle
 scripts or runtime dependencies. The same release is also available as the
 `weavatrix` crate on crates.io. Node.js 18 or newer is required for the plugin
@@ -26,6 +26,10 @@ reference and is loaded only when needed.
 Search for **Weavatrix** in Cursor's Plugins view after the marketplace listing
 is approved. For local testing, copy or link this directory to
 `~/.cursor/plugins/local/weavatrix`, then reload the Cursor window.
+
+Prefer the plugin MCP (or a User MCP that also uses `${workspaceFolder}`). Do
+not keep a machine-wide `weavatrix mcp .` User MCP beside the plugin: one shared
+process with a cwd root is what lets answers drift across repositories.
 
 ### Codex
 

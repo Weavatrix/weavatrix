@@ -46,7 +46,7 @@ fn not_started_monitor_is_created_synchronously_on_refresh() {
         // First probe: graph_was_loaded. Second: start_monitor gate → false.
         skip_monitor_at: 2,
     };
-    let mut session = RepositorySession::new(Box::new(repository), Arc::new(QuietMonitorFactory));
+    let mut session = session_with(Box::new(repository), Arc::new(QuietMonitorFactory));
     session.call("graph_stats", json!({})).unwrap();
     assert!(
         session.monitor_is_not_started(),
@@ -65,7 +65,7 @@ fn monitor_changed_errors_when_watcher_is_not_ready() {
         root: PathBuf::from("fixture"),
         counts: Arc::clone(&counts),
     };
-    let session = RepositorySession::new(Box::new(repository), Arc::new(QuietMonitorFactory));
+    let session = session_with(Box::new(repository), Arc::new(QuietMonitorFactory));
     let error = session
         .monitor_changed_for_test()
         .expect_err("NotStarted monitor must fail closed");
@@ -106,7 +106,7 @@ fn ensure_loaded_failure_is_wrapped() {
     let repository = EnsureFailsRepository {
         root: PathBuf::from("fixture"),
     };
-    let mut session = RepositorySession::new(Box::new(repository), Arc::new(QuietMonitorFactory));
+    let mut session = session_with(Box::new(repository), Arc::new(QuietMonitorFactory));
     let error = session
         .call("graph_stats", json!({}))
         .expect_err("ensure_loaded must fail the call");
@@ -148,7 +148,7 @@ fn first_call_refresh_failure_surfaces() {
     let repository = RefreshFailsRepository {
         root: PathBuf::from("fixture"),
     };
-    let mut session = RepositorySession::new(Box::new(repository), Arc::new(QuietMonitorFactory));
+    let mut session = session_with(Box::new(repository), Arc::new(QuietMonitorFactory));
     let error = session
         .call("graph_stats", json!({}))
         .expect_err("refresh_if_stale must fail the first call");

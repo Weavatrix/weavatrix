@@ -339,7 +339,7 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.11.0
+weavatrix 1.11.1
     profile catalog · session refresh · filesystem watcher · MCP framing
     |
     v

@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.11.1 - 2026-09-09
+
+- MCP sessions pin the launch repository for the process lifetime. By default
+  `open_repo` cannot leave that root; every tool call injects
+  `expected_repository` from the pin when the agent omits it. Pass
+  `--allow-retarget` only for intentional multi-root sessions.
+- Plugin MCP configs launch against `${workspaceFolder}` instead of `.`, so each
+  Cursor window gets its own workspace root instead of the host process cwd.
+
 ## 1.11.0 - 2026-09-06
 
 Engine `weavatrix-rust` 2.10.0 — compatibility and evidence-correctness release.

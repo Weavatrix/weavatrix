@@ -50,6 +50,7 @@ fn serve_mcp(arguments: &[String]) -> Result<ExitCode, String> {
     let options = mcp::ServeOptions {
         profile: launch.profile,
         default_payload: mcp::parse_output_format(&default_output_format(launch.output_format))?,
+        allow_retarget: launch.allow_retarget,
     };
     // Stdio serve is the product entrypoint; unit coverage lives under `mcp::build_server`.
     let mut server =
@@ -148,11 +149,14 @@ fn print_help() {
     println!(
         "Weavatrix repository intelligence for coding agents\n\n\
 Usage:\n  weavatrix mcp [REPOSITORY] [--profile=all|code|seo] \
-[--output-format=json|text|structured]\n\
+[--output-format=json|text|structured] [--allow-retarget]\n\
   weavatrix analyze [REPOSITORY] [--pretty] [--format=snapshot|legacy]\n\
   weavatrix list-tools [--profile=all|code|seo]\n\
   weavatrix tool NAME [REPOSITORY] ['{{\"argument\":\"value\"}}']\n\
   weavatrix --version\n\n\
+By default the MCP process pins REPOSITORY (or cwd) for its lifetime: \
+open_repo to another path is refused, and every tool call is checked against \
+that pin. Pass --allow-retarget only for intentional multi-root sessions.\n\n\
 Legacy JS launches that passed a second positional capability token are \
 accepted only as:\n\
   offline → --profile=all (native is always offline)\n\

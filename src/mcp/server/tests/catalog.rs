@@ -27,6 +27,7 @@ fn serve_options_default_is_mirrored_all_profile() {
     let options = super::super::ServeOptions::default();
     assert_eq!(options.profile, McpProfile::All);
     assert_eq!(options.default_payload, mcport::ToolPayload::Mirrored);
+    assert!(!options.allow_retarget);
 }
 
 #[test]
@@ -111,6 +112,7 @@ fn build_server_succeeds_for_package_root() {
         super::super::ServeOptions {
             profile: McpProfile::Code,
             default_payload: mcport::ToolPayload::Text,
+            allow_retarget: false,
         },
     )
     .expect("build server");

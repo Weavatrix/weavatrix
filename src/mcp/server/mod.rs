@@ -1,5 +1,5 @@
 use crate::mcp::adapters::{CoreRepository, NotifyMonitorFactory, ToolCatalog};
-use crate::mcp::application::RepositorySession;
+use crate::mcp::application::{RepositorySession, RootPin, resolve_pin_root};
 use crate::mcp::{McpError, McpProfile};
 use mcport::{ServerIdentity, ToolPayload, ToolReply, ToolServer, Value};
 use std::path::Path;
@@ -12,13 +12,15 @@ use std::sync::Arc;
 /// runs an incremental catch-up scan before using it, then starts the
 /// filesystem watcher in the background.
 /// How this server is served, decided once at startup.
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone)]
 pub struct ServeOptions {
     /// Which bounded operation catalog to expose.
     pub profile: McpProfile,
     /// The payload a call receives when it does not name its own
     /// `output_format`.
     pub default_payload: ToolPayload,
+    /// When false (default), `open_repo` cannot leave the launch root.
+    pub allow_retarget: bool,
 }
 
 impl Default for ServeOptions {
@@ -26,6 +28,7 @@ impl Default for ServeOptions {
         Self {
             profile: McpProfile::default(),
             default_payload: ToolPayload::Mirrored,
+            allow_retarget: false,
         }
     }
 }
@@ -59,7 +62,9 @@ impl WeavatrixServer {
     fn new(root: impl AsRef<Path>, options: ServeOptions) -> Result<Self, McpError> {
         let profile = options.profile;
         let catalog = ToolCatalog::for_profile(profile)?;
-        let repository = CoreRepository::open(root.as_ref().to_path_buf())?;
+        let pinned = resolve_pin_root(root.as_ref());
+        let repository = CoreRepository::open(pinned.clone())?;
+        let pin = RootPin::new(pinned, options.allow_retarget);
         Ok(Self {
             profile,
             default_payload: options.default_payload,
@@ -70,7 +75,11 @@ impl WeavatrixServer {
             ),
             catalog: catalog.encoded,
             tool_names: catalog.names,
-            session: RepositorySession::new(Box::new(repository), Arc::new(NotifyMonitorFactory)),
+            session: RepositorySession::new(
+                Box::new(repository),
+                Arc::new(NotifyMonitorFactory),
+                pin,
+            ),
         })
     }
 
@@ -139,8 +148,18 @@ pub fn build_server(
     options: ServeOptions,
 ) -> Result<WeavatrixServer, McpError> {
     validate_serve_root(root.as_ref())?;
+    let pinned = resolve_pin_root(root.as_ref());
+    eprintln!(
+        "weavatrix: pinned repository {} (retarget {})",
+        pinned.display(),
+        if options.allow_retarget {
+            "allowed"
+        } else {
+            "blocked"
+        }
+    );
     log_default_payload(options.default_payload);
-    WeavatrixServer::new(root, options)
+    WeavatrixServer::new(pinned, options)
 }
 
 fn validate_serve_root(root: &Path) -> Result<(), McpError> {

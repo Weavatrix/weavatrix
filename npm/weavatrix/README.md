@@ -205,7 +205,7 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.11.0
+weavatrix 1.11.1
     profile catalog · refresh · watcher · MCP framing
     |
     v

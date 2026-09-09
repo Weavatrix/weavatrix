@@ -166,6 +166,7 @@ fn the_startup_default_decides_the_answer_shape_and_a_call_still_overrides_it() 
     let mut server = served(super::super::ServeOptions {
         profile: McpProfile::All,
         default_payload: mcport::ToolPayload::Structured,
+        allow_retarget: false,
     });
     let call = |server: &mut _, arguments| {
         dispatch(

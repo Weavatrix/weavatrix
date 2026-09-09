@@ -9,7 +9,7 @@ fn quiet_watcher_never_suppresses_the_repository_revision_check() {
         root: PathBuf::from("fixture"),
         counts: Arc::clone(&counts),
     };
-    let mut session = RepositorySession::new(Box::new(repository), Arc::new(QuietMonitorFactory));
+    let mut session = session_with(Box::new(repository), Arc::new(QuietMonitorFactory));
 
     for _ in 0..3 {
         session.call("graph_stats", json!({})).unwrap();
@@ -56,7 +56,7 @@ fn noisy_watcher_triggers_extra_revision_refresh() {
         root: PathBuf::from("fixture"),
         counts: Arc::clone(&counts),
     };
-    let mut session = RepositorySession::new(Box::new(repository), Arc::new(NoisyMonitorFactory));
+    let mut session = session_with(Box::new(repository), Arc::new(NoisyMonitorFactory));
 
     session.call("graph_stats", json!({})).unwrap();
     session.call("graph_stats", json!({})).unwrap();
@@ -77,7 +77,7 @@ fn open_repo_call_still_refreshes_and_starts_monitor_path() {
         root: PathBuf::from("fixture"),
         counts: Arc::clone(&counts),
     };
-    let mut session = RepositorySession::new(Box::new(repository), Arc::new(QuietMonitorFactory));
+    let mut session = session_with(Box::new(repository), Arc::new(QuietMonitorFactory));
     session.call("open_repo", json!({})).unwrap();
     assert!(session.repository_is_loaded());
     // Second open_repo skips the "not rebuild" refresh branch differently.
@@ -117,7 +117,7 @@ fn watcher_factory_failure_surfaces_on_next_call_after_async_start() {
         root: PathBuf::from("fixture"),
         counts: Arc::clone(&counts),
     };
-    let mut session = RepositorySession::new(Box::new(repository), Arc::new(FailingMonitorFactory));
+    let mut session = session_with(Box::new(repository), Arc::new(FailingMonitorFactory));
     // First call starts the watcher on a background thread after the tool succeeds.
     session
         .call("graph_stats", json!({}))
@@ -139,7 +139,7 @@ fn broken_monitor_changed_fails_closed_on_refresh() {
         root: PathBuf::from("fixture"),
         counts: Arc::clone(&counts),
     };
-    let mut session = RepositorySession::new(Box::new(repository), Arc::new(BrokenMonitorFactory));
+    let mut session = session_with(Box::new(repository), Arc::new(BrokenMonitorFactory));
     session
         .call("graph_stats", json!({}))
         .expect("first call starts the broken monitor");
@@ -159,7 +159,7 @@ fn rebuild_graph_skips_monitor_refresh_branch() {
         root: PathBuf::from("fixture"),
         counts: Arc::clone(&counts),
     };
-    let mut session = RepositorySession::new(Box::new(repository), Arc::new(QuietMonitorFactory));
+    let mut session = session_with(Box::new(repository), Arc::new(QuietMonitorFactory));
     session.call("graph_stats", json!({})).unwrap();
     session.call("rebuild_graph", json!({})).unwrap();
     let counts = counts.lock().unwrap();
@@ -201,7 +201,7 @@ fn failed_tool_call_still_starts_monitor_when_repo_loaded() {
         root: PathBuf::from("fixture"),
         refreshes: Arc::clone(&refreshes),
     };
-    let mut session = RepositorySession::new(Box::new(repository), Arc::new(QuietMonitorFactory));
+    let mut session = session_with(Box::new(repository), Arc::new(QuietMonitorFactory));
     let err = session
         .call("graph_stats", json!({}))
         .expect_err("call fails");
@@ -251,7 +251,7 @@ fn first_call_on_unloaded_repository_loads_and_starts_monitor() {
         loaded: false,
         calls: 0,
     };
-    let mut session = RepositorySession::new(Box::new(repository), Arc::new(QuietMonitorFactory));
+    let mut session = session_with(Box::new(repository), Arc::new(QuietMonitorFactory));
     session.call("graph_stats", json!({})).unwrap();
     assert!(session.repository_is_loaded());
 }
