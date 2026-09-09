@@ -12,7 +12,7 @@ use std::sync::Arc;
 /// runs an incremental catch-up scan before using it, then starts the
 /// filesystem watcher in the background.
 /// How this server is served, decided once at startup.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy)]
 pub struct ServeOptions {
     /// Which bounded operation catalog to expose.
     pub profile: McpProfile,
