@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Move the inbound MCP runtime to `mcport` 0.6.1.
+
 ## 1.11.1 - 2026-09-09
 
 - MCP sessions pin the launch repository for the process lifetime. By default
