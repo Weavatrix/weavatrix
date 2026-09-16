@@ -55,7 +55,7 @@ The same source is distributed in two forms:
 | Distribution | Install | Best for |
 | --- | --- | --- |
 | `weavatrix` on crates.io | `cargo install weavatrix` | Rust-first environments and source builds |
-| `weavatrix` on npm | `npx -y weavatrix@1.14.1 mcp <repo>` | Ready-made cross-platform binaries without a Rust toolchain |
+| `weavatrix` on npm | `npx -y weavatrix@1.14.2 mcp <repo>` | Ready-made cross-platform binaries without a Rust toolchain |
 
 The npm package exists for convenience; it does not contain a different
 JavaScript engine. Both distributions run the same native adapter and the same
@@ -169,7 +169,7 @@ process cwd — and avoid running both a user MCP and the plugin at once:
   "mcpServers": {
     "weavatrix": {
       "command": "npx",
-      "args": ["-y", "weavatrix@1.14.1", "mcp", "${workspaceFolder}"]
+      "args": ["-y", "weavatrix@1.14.2", "mcp", "${workspaceFolder}"]
     }
   }
 }
@@ -178,13 +178,13 @@ process cwd — and avoid running both a user MCP and the plugin at once:
 Profiles expose bounded views of the same engine:
 
 ```sh
-npx -y weavatrix@1.14.1 mcp . --profile=all
-npx -y weavatrix@1.14.1 mcp . --profile=code
-npx -y weavatrix@1.14.1 mcp . --profile=seo
-npx -y weavatrix@1.14.1 mcp . --profile=n8n
-npx -y weavatrix@1.14.1 mcp . --profile=dify
-npx -y weavatrix@1.14.1 mcp . --profile=agent
-npx -y weavatrix@1.14.1 mcp . --profile=diagram
+npx -y weavatrix@1.14.2 mcp . --profile=all
+npx -y weavatrix@1.14.2 mcp . --profile=code
+npx -y weavatrix@1.14.2 mcp . --profile=seo
+npx -y weavatrix@1.14.2 mcp . --profile=n8n
+npx -y weavatrix@1.14.2 mcp . --profile=dify
+npx -y weavatrix@1.14.2 mcp . --profile=agent
+npx -y weavatrix@1.14.2 mcp . --profile=diagram
 ```
 
 The npm package contains native binaries for Windows x64/arm64, macOS
@@ -393,7 +393,7 @@ agent stays on the repository revision. It does not log into n8n.
   and `$env` values stay off the default graph and context.
 
 ```sh
-npx -y weavatrix@1.14.1 mcp . --profile=n8n
+npx -y weavatrix@1.14.2 mcp . --profile=n8n
 ```
 
 ### Dify (shipped in 1.13.0)
@@ -418,7 +418,7 @@ call the Dify console.
   inventory and context.
 
 ```sh
-npx -y weavatrix@1.14.1 mcp . --profile=dify
+npx -y weavatrix@1.14.2 mcp . --profile=dify
 ```
 
 ### Agent packages (shipped in 1.14.0)
@@ -432,7 +432,7 @@ snapshots stayed compatible. The agent does not launch commands, and
 `allowed-tools` is not a grant.
 
 ```sh
-npx -y weavatrix@1.14.1 mcp . --profile=agent
+npx -y weavatrix@1.14.2 mcp . --profile=agent
 ```
 
 ### Mermaid diagrams (shipped in 1.14.0)
@@ -446,7 +446,7 @@ Name match is not exact. `change_impact.documentation` is separate from
 production impact.
 
 ```sh
-npx -y weavatrix@1.14.1 mcp . --profile=diagram
+npx -y weavatrix@1.14.2 mcp . --profile=diagram
 ```
 
 ### Compared with adjacent tools
@@ -499,7 +499,7 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.14.1
+weavatrix 1.14.2
     profile catalog · session refresh · filesystem watcher · MCP framing
     |
     v

@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## 1.14.2 - 2026-09-16
+
+- The installed-package load gate expects the advertised 60-operation
+  catalog, including agent and Mermaid tools.
+
 ## 1.14.1 - 2026-09-16
 
 - Keep the MCP Registry `server.json` description at or under 100
