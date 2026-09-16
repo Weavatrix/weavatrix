@@ -2,19 +2,19 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.Weavatrix/weavatrix",
   "title": "Weavatrix",
-  "description": "Native Weavatrix MCP: 60 read-only repository tools across 24 code and configuration surfaces, plus n8n, Dify, agent-package, and Mermaid diagram domains.",
+  "description": "Native Weavatrix MCP: 60 read-only tools for code, n8n, Dify, agent packages, and Mermaid.",
   "repository": {
     "url": "https://github.com/Weavatrix/weavatrix",
     "source": "github"
   },
-  "version": "1.14.0",
+  "version": "1.14.1",
   "websiteUrl": "https://weavatrix.com",
   "packages": [
     {
       "registryType": "npm",
       "registryBaseUrl": "https://registry.npmjs.org",
       "identifier": "weavatrix",
-      "version": "1.14.0",
+      "version": "1.14.1",
       "runtimeHint": "npx",
       "transport": {
         "type": "stdio"

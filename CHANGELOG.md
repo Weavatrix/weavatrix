@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## 1.14.1 - 2026-09-16
+
+- Keep the MCP Registry `server.json` description at or under 100
+  characters so the npm publish quality gate can pass.
+
 ## 1.14.0 - 2026-09-16
 
 - Engine `weavatrix-rust` 2.14.3. Agent package tools and Mermaid flowchart
