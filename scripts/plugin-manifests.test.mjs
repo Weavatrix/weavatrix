@@ -22,11 +22,21 @@ const manifests = {
 }
 
 const toolNames = [
+    'agent_change_impact',
+    'agent_context',
+    'agent_inventory',
+    'agent_trace',
     'build_graph',
     'change_impact',
     'context_bundle',
     'coverage_map',
     'cross_repo_git',
+    'diagram_context',
+    'diagram_inventory',
+    'diagram_trace',
+    'dify_context',
+    'dify_inventory',
+    'dify_trace',
     'explain_architecture_violation',
     'find_dead_code',
     'find_duplicates',
@@ -50,6 +60,9 @@ const toolNames = [
     'map_stacktrace',
     'memory_context',
     'module_map',
+    'n8n_context',
+    'n8n_inventory',
+    'n8n_trace',
     'open_repo',
     'perf_attribution',
     'prepare_change',
@@ -135,7 +148,7 @@ test('the plugin skill is the released Weavatrix skill', () => {
         .filter((name) => name.endsWith('.md'))
         .map((name) => name.slice(0, -3))
         .sort()
-    assert.equal(toolNames.length, 47)
+    assert.equal(toolNames.length, 60)
     assert.deepEqual(canonicalCards, toolNames)
     assert.deepEqual(bundledCards, toolNames)
     for (const name of toolNames) {

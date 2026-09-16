@@ -1,6 +1,6 @@
 # Operation reference
 
-The full native product exposes 44 bounded read-only MCP operations. JSON
+The full native product exposes 60 bounded read-only MCP operations. JSON
 schemas returned by `tools/list` are the authoritative machine contract.
 
 ## Graph and orientation
@@ -87,6 +87,50 @@ result.
 Vectors and events are supplied by the caller. Weavatrix does not call an
 embedding service or model.
 
+## n8n workflows
+
+Shipped in product 1.12.0. These tools read exported workflow JSON after the
+existing JSON parse. They do not call a live n8n API.
+
+- `n8n_inventory`: workflows, nodes, entry points, and analysis bounds.
+- `n8n_trace`: bounded `flows_to`, `depends_on_output`, error, and
+  subworkflow walk from one identity.
+- `n8n_context`: bounded context for one node or workflow, without secrets.
+
+See [weavatrix.com/n8n](https://weavatrix.com/n8n).
+
+## Dify apps
+
+Shipped in product 1.13.0 on engine `weavatrix-rust` 2.13.2 after YAML parse
+of a local export. They do not call the Dify console.
+
+- `dify_inventory`: apps, nodes, modes, and analysis bounds.
+- `dify_trace`: bounded control and data walk, including iteration scope.
+- `dify_context`: bounded context for one node or app, with selector spans
+  and explicit omissions.
+
+See [weavatrix.com/dify](https://weavatrix.com/dify).
+
+## Agent packages
+
+Requires engine `weavatrix-rust` 2.14.3. Local plugin, skill, catalog, and
+observation files only. Not a plugin runtime or policy authority.
+
+- `agent_inventory`: plugins, skills, MCP bindings, catalog tools, observations.
+- `agent_trace`: declared origin and package bindings for one identity.
+- `agent_context`: bounded context; `allowed-tools` is not a grant.
+- `agent_change_impact`: compare two catalog snapshots; a known inject
+  transform can keep one exposure compatible.
+
+## Mermaid diagrams
+
+Requires engine `weavatrix-rust` 2.14.3. Flowcharts in `.mmd`, `.mermaid`,
+and Markdown/MDX fences. Not a renderer.
+
+- `diagram_inventory`: diagrams, native elements, explicit sidecar bindings.
+- `diagram_trace`: `declared_architecture` paths only.
+- `diagram_context`: fragments plus binding status; display names are not IDs.
+
 ## Common arguments and results
 
 Operation-specific schemas define exact arguments. Common controls include:
@@ -112,6 +156,10 @@ guessed target.
 npx -y weavatrix list-tools --profile=all
 npx -y weavatrix list-tools --profile=code
 npx -y weavatrix list-tools --profile=seo
+npx -y weavatrix list-tools --profile=n8n
+npx -y weavatrix list-tools --profile=dify
+npx -y weavatrix list-tools --profile=agent
+npx -y weavatrix list-tools --profile=diagram
 ```
 
 Profile-excluded and uncompiled capabilities are absent from the catalog and

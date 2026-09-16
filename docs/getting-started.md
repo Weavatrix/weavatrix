@@ -37,7 +37,14 @@ Profiles reduce the advertised surface:
 npx -y weavatrix mcp . --profile=all
 npx -y weavatrix mcp . --profile=code
 npx -y weavatrix mcp . --profile=seo
+npx -y weavatrix mcp . --profile=n8n
+npx -y weavatrix mcp . --profile=dify
+npx -y weavatrix mcp . --profile=agent
+npx -y weavatrix mcp . --profile=diagram
 ```
+
+n8n and Dify are domains on the same graph, not separate MCP products. Product pages:
+[n8n](https://weavatrix.com/n8n) · [Dify](https://weavatrix.com/dify).
 
 ## Configure Codex
 
@@ -148,6 +155,8 @@ Show the bounded impact of changing this symbol.
 Verify .weavatrix/architecture.json and explain each new violation.
 Find production dead code, excluding tests and generated evidence.
 Build a minimal context bundle for this change.
+If I change the email recipient in this exported n8n workflow, who reads it?
+If I change start_node.query in this Dify YAML, which nodes consume it?
 ```
 
 ## Architecture contracts

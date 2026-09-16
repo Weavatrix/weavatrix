@@ -2,7 +2,36 @@
 
 ## Unreleased
 
-- Move the inbound MCP runtime to `mcport` 0.6.1.
+## 1.14.0 - 2026-09-16
+
+- Engine `weavatrix-rust` 2.14.3. Agent package tools and Mermaid flowchart
+  tools ship in the product pin: `agent_inventory`, `agent_trace`,
+  `agent_context`, `agent_change_impact`, `diagram_inventory`,
+  `diagram_trace`, `diagram_context`, and `--profile=agent|diagram`. The
+  advertised catalog is 60 operations.
+- Drawn arrows stay `declared_architecture`. Commands are not launched.
+  `allowed-tools` is not a grant.
+
+## 1.13.0 - 2026-09-16
+
+- Engine `weavatrix-rust` 2.13.2. Dify YAML tools ship in the product pin:
+  `dify_inventory`, `dify_trace`, `dify_context`, and `--profile=dify`. The
+  advertised catalog is 53 operations.
+- Domain walks keep exact endpoints, treat a DAG merge as a merge, and
+  report honest `found`/`shown`/`reasons` page cuts. Context returns source
+  fragments and consumer lists for impact tasks.
+- This is still not a live n8n or Dify API, editor, or executor.
+
+## 1.12.0 - 2026-09-15
+
+- Engine `weavatrix-rust` 2.11.0. New read-only n8n tools `n8n_inventory`,
+  `n8n_trace`, and `n8n_context` after JSON parse of exported workflows. The
+  advertised catalog is 50 operations. `--profile=n8n` exposes only those
+  three plus shared graph/source helpers needed to inspect the result.
+- This is not a live n8n API, editor, or executor. Secrets, cookies, auth
+  headers, URL credentials, `pinData`, `staticData`, and `$env` values stay
+  off the default graph and context.
+- Keep the inbound MCP runtime on `mcport` 0.6.1.
 
 ## 1.11.1 - 2026-09-09
 

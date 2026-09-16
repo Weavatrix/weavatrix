@@ -72,3 +72,38 @@ cannot silently switch to another repository. Pass an explicit
 - [`vector_search`](tools/vector_search.md) — Exact or bounded approximate nearest-neighbor search.
 - [`seo_link_suggestions`](tools/seo_link_suggestions.md) — Directional SEO internal-link evidence from supplied page profiles.
 - [`memory_context`](tools/memory_context.md) — Compile bounded temporal memory context from supplied events.
+
+## n8n workflows
+
+- [`n8n_inventory`](tools/n8n_inventory.md) — List exported workflows, nodes, entries, and coverage.
+- [`n8n_trace`](tools/n8n_trace.md) — Bounded flow, output-dependency, error, and subworkflow walk.
+- [`n8n_context`](tools/n8n_context.md) — Bounded context for one node or workflow, without secrets.
+
+## Dify apps
+
+Local YAML export only. Not the Dify console API. Shipped in product 1.13.0
+on engine `weavatrix-rust` 2.13.2. See [weavatrix.com/dify](https://weavatrix.com/dify).
+
+- [`dify_inventory`](tools/dify_inventory.md) — List exported apps, nodes, modes, and coverage.
+- [`dify_trace`](tools/dify_trace.md) — Bounded control and data walk, including iteration scope.
+- [`dify_context`](tools/dify_context.md) — Bounded context for one node or app, without secrets.
+
+## Agent packages
+
+Local plugin, skill, catalog, and observation files only. Not a plugin
+runtime, gateway, or policy authority. Requires engine `weavatrix-rust`
+2.14.3.
+
+- [`agent_inventory`](tools/agent_inventory.md) — List plugins, skills, MCP bindings, catalog tools, and supplied observations.
+- [`agent_trace`](tools/agent_trace.md) — Declared origin, profile, transport, and package bindings for one identity.
+- [`agent_context`](tools/agent_context.md) — Bounded context; `allowed-tools` is not a grant.
+- [`agent_change_impact`](tools/agent_change_impact.md) — Compare two catalog snapshots; a known inject transform can keep one exposure compatible.
+
+## Mermaid diagrams
+
+Local flowchart files and Markdown fences only. Not a renderer. Requires
+engine `weavatrix-rust` 2.14.3.
+
+- [`diagram_inventory`](tools/diagram_inventory.md) — List diagrams, native elements, and explicit sidecar bindings.
+- [`diagram_trace`](tools/diagram_trace.md) — Walk `declared_architecture` arrows only.
+- [`diagram_context`](tools/diagram_context.md) — Fragments and binding status; display names are not IDs.

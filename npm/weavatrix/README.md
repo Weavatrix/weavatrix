@@ -10,9 +10,13 @@
 **Give your coding agent repository evidence before it starts guessing.**
 
 Weavatrix is the native MCP product for repository intelligence. It gives
-Codex, Claude Code, and other coding agents 47 read-only operations over one
+Codex, Claude Code, and other coding agents 60 read-only operations over one
 revision-bound evidence graph: impact, architecture, APIs, Git history,
-duplicates, dead code, search, semantic links, and temporal memory.
+duplicates, dead code, search, semantic links, temporal memory, exported
+n8n workflows, and Dify YAML apps. Those parsers are domains on Weavatrix
+Core, not new MCP products. See
+[n8n](https://weavatrix.com/n8n), [Dify](https://weavatrix.com/dify), and
+[parsers](https://weavatrix.com/parsers).
 
 It does not answer from a larger grep or an invented confidence score. Every
 bounded result can carry the repository revision, file, line, extractor,
@@ -42,7 +46,7 @@ weavatrix mcp .
 ```toml
 [mcp_servers.weavatrix]
 command = "npx"
-args = ["-y", "weavatrix@1.11.1", "mcp", "."]
+args = ["-y", "weavatrix@1.14.0", "mcp", "."]
 ```
 
 Pass an absolute repository path when the Codex process cwd is not the project
@@ -51,7 +55,7 @@ you intend to analyze.
 ### Claude Code
 
 ```sh
-claude mcp add weavatrix -- npx -y weavatrix@1.11.1 mcp .
+claude mcp add weavatrix -- npx -y weavatrix@1.14.0 mcp .
 ```
 
 ### Cursor
@@ -64,7 +68,7 @@ the plugin for the same server name:
   "mcpServers": {
     "weavatrix": {
       "command": "npx",
-      "args": ["-y", "weavatrix@1.11.1", "mcp", "${workspaceFolder}"]
+      "args": ["-y", "weavatrix@1.14.0", "mcp", "${workspaceFolder}"]
     }
   }
 }
@@ -73,9 +77,13 @@ the plugin for the same server name:
 Profiles expose bounded views of the same engine:
 
 ```sh
-npx -y weavatrix@1.11.1 mcp . --profile=all
-npx -y weavatrix@1.11.1 mcp . --profile=code
-npx -y weavatrix@1.11.1 mcp . --profile=seo
+npx -y weavatrix@1.14.0 mcp . --profile=all
+npx -y weavatrix@1.14.0 mcp . --profile=code
+npx -y weavatrix@1.14.0 mcp . --profile=seo
+npx -y weavatrix@1.14.0 mcp . --profile=n8n
+npx -y weavatrix@1.14.0 mcp . --profile=dify
+npx -y weavatrix@1.14.0 mcp . --profile=agent
+npx -y weavatrix@1.14.0 mcp . --profile=diagram
 ```
 
 The package contains native binaries for Windows x64/arm64, macOS x64/arm64,
@@ -113,6 +121,8 @@ Find every GraphQL, gRPC, Kafka, RabbitMQ, NATS, JMS, SQS, or SNS
 contract affected by this branch.
 Build the smallest source bundle needed to edit this symbol safely.
 Show me this file as it was two commits ago, without a checkout.
+If I change the email recipient in this exported n8n workflow, who reads it?
+If I change start_node.query in this Dify YAML, which nodes consume it?
 ```
 
 ## See it answer
@@ -190,7 +200,7 @@ Three commits before `ec8bf30` this package was 1.9.2; the agent reads that
 follow-up to a diff without touching the worktree. Binary blobs fail closed
 instead of being decoded into garbage.
 
-## The 47 read-only operations
+## The 60 read-only operations
 
 | Workflow | Operations |
 | --- | --- |
@@ -202,6 +212,10 @@ instead of being decoded into garbage.
 | Architecture | `get_architecture_contract`, `verify_architecture`, `verify_capabilities`, `explain_architecture_violation`, `propose_architecture_exception` |
 | Git and repositories | `git_history`, `git_read_blob`, `cross_repo_git`, `open_repo`, `list_known_repos`, `rebuild_graph` |
 | Native extensions | `vector_search`, `semantic_link`, `seo_link_suggestions`, `memory_context` |
+| n8n workflows | `n8n_inventory`, `n8n_trace`, `n8n_context` |
+| Dify apps | `dify_inventory`, `dify_trace`, `dify_context` |
+| Agent packages | `agent_inventory`, `agent_trace`, `agent_context`, `agent_change_impact` |
+| Mermaid diagrams | `diagram_inventory`, `diagram_trace`, `diagram_context` |
 
 Every operation is read-only with respect to the analyzed repository.
 Pagination and explicit limits bound large neighborhoods, histories, searches,
@@ -212,12 +226,38 @@ and contract inventories.
 | Group | Surfaces |
 | --- | --- |
 | Code | Rust; JavaScript/JSX; TypeScript/TSX; Python; Go; Java; C#; C; C++; SQL; Bash/Zsh; Swift; Solidity |
-| Contracts and configuration | GraphQL; Protobuf/gRPC; JSON/JSONC; YAML/Kubernetes; Terraform/HCL; XML |
+| Contracts and configuration | GraphQL; Protobuf/gRPC; JSON/JSONC (n8n after parse); YAML/Kubernetes (Dify after parse); Terraform/HCL; XML |
 | Documents and UI | HTML/Vue/Svelte; CSS/SCSS/Sass/Less; Markdown/MDX; reStructuredText; AsciiDoc |
 
 Cross-surface analysis connects HTTP, GraphQL, gRPC, Kafka, RabbitMQ/AMQP,
 JMS, NATS, SQS, and SNS evidence. Dynamic dispatch that cannot be proved stays
 unresolved; static reachability is never presented as measured coverage.
+
+## Workflow export domains
+
+n8n and Dify are after-parse domains on the same graph, not new MCP servers.
+
+```text
+export in git → existing JSON/YAML parse → typed domain → inventory / trace / context
+```
+
+| Domain | Tools | Status |
+| --- | --- | --- |
+| [n8n](https://weavatrix.com/n8n) | `n8n_inventory`, `n8n_trace`, `n8n_context` | Product 1.12.0 |
+| [Dify](https://weavatrix.com/dify) | `dify_inventory`, `dify_trace`, `dify_context` | Product 1.13.0 |
+| Agent packages | `agent_inventory`, `agent_trace`, `agent_context`, `agent_change_impact` | Product 1.14.0 |
+| Mermaid diagrams | `diagram_inventory`, `diagram_trace`, `diagram_context` | Product 1.14.0 |
+
+| Need | Use |
+| --- | --- |
+| Change impact on an export in git | Weavatrix `n8n_*` / `dify_*` |
+| Live n8n instance | [n8n-mcp](https://github.com/czlonkowski/n8n-mcp) |
+| Live Dify console | [dify-mcp](https://github.com/alexjiaguo/dify-mcp) |
+| CI lint/diff of Dify YAML | [difyctl](https://github.com/JSLEEKR/difyctl) |
+
+No invented n8n/Dify millisecond benches. Those tools share the measured
+installed MCP boundary (2026-08-03): cold **32.21x** (157.34 ms vs 5,068.22 ms)
+and warm **36.85x** (7.94 ms vs 292.55 ms) versus `weavatrix-js` 0.3.15.
 
 ## Product and engine are separate
 
@@ -226,12 +266,12 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.11.1
+weavatrix 1.14.0
     profile catalog · refresh · watcher · MCP framing
     |
     v
-weavatrix-rust 2.10.0
-    typed graph · analysis · 47 read-only operations
+weavatrix-rust 2.14.3
+    typed graph · analysis · 60 product operations including n8n, Dify, agent packages, and Mermaid
 ```
 
 This npm product owns MCP transport and native distribution. The
@@ -297,6 +337,7 @@ Full evidence and methodology:
 - [Tool reference](https://github.com/Weavatrix/weavatrix/blob/main/docs/tool-reference.md)
 - [Language support](https://github.com/Weavatrix/weavatrix/blob/main/docs/language-support.md)
 - [Architecture](https://github.com/Weavatrix/weavatrix/blob/main/docs/architecture.md)
+- [n8n](https://weavatrix.com/n8n) · [Dify](https://weavatrix.com/dify) · [parsers](https://weavatrix.com/parsers)
 - [Benchmarks](https://github.com/Weavatrix/weavatrix/blob/main/docs/benchmarks.md)
 
 ## License

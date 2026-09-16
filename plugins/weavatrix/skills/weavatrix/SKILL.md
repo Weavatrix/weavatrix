@@ -4,7 +4,9 @@ description: >-
   Use the Weavatrix MCP when a repository task benefits from indexed evidence:
   codebase orientation, symbol/source search, dependency or call graphs, change
   impact, API/event tracing, architecture checks, Git/coverage evidence,
-  duplicates, dead-code review, or semantic context. Skip it for trivial
+  duplicates, dead-code review, semantic context, exported n8n
+  workflows, exported Dify YAML, Agent Plugins/Skills/MCP
+  catalogs, or Mermaid flowcharts. Skip it for trivial
   single-file edits or when a known source file and native tests already answer
   the task.
 ---
@@ -25,7 +27,14 @@ contracts. Do not call it merely because the server is available.
    `find_references`, `context_bundle`, or `read_source`.
 4. Expand only when needed: `get_dependents` or `change_impact` for risk,
    `trace_endpoint` or `trace_api_contract` for runtime contracts,
-   `verify_architecture` for policy, and `run_audit` for a broad health pass.
+   `verify_architecture` for policy, `run_audit` for a broad health pass,
+   `n8n_inventory` / `n8n_trace` / `n8n_context` for exported n8n
+   workflows, and `dify_inventory` / `dify_trace` / `dify_context` for
+   exported Dify YAML, and `agent_inventory` / `agent_trace` /
+  `agent_context` / `agent_change_impact` for Agent Plugins, Skills, and
+  supplied MCP catalogs, and `diagram_inventory` / `diagram_trace` /
+  `diagram_context` for Mermaid flowcharts. Those paths are static graph
+  evidence, not a live n8n, Dify, MCP, or Mermaid runtime.
 5. Use repository-native tests or benchmarks for behavioral proof.
 
 Do not call `open_repo` "just in case". Cross-repository tools take explicit

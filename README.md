@@ -13,9 +13,15 @@ Part of the [Weavatrix ecosystem](https://weavatrix.com/ecosystem): evidence inf
 **Give your coding agent repository evidence before it starts guessing.**
 
 Weavatrix is the native MCP product for repository intelligence. It gives
-Codex, Claude Code, and other coding agents 47 read-only operations over one
+Codex, Claude Code, and other coding agents 60 read-only operations over one
 revision-bound evidence graph: impact, architecture, APIs, Git history,
-duplicates, dead code, search, semantic links, and temporal memory.
+duplicates, dead code, search, semantic links, temporal memory, exported
+n8n workflows, Dify YAML apps (`n8n_*` / `dify_*`), Agent
+Plugins/Skills/MCP catalogs (`agent_*`), and Mermaid flowcharts
+(`diagram_*`). Those parsers are
+domains on Weavatrix Core, not new MCP products. Dedicated
+pages: [n8n](https://weavatrix.com/n8n) · [Dify](https://weavatrix.com/dify) ·
+[parsers](https://weavatrix.com/parsers).
 
 It does not answer from a larger grep or an invented confidence score. Every
 bounded result can carry the repository revision, file, line, extractor,
@@ -49,7 +55,7 @@ The same source is distributed in two forms:
 | Distribution | Install | Best for |
 | --- | --- | --- |
 | `weavatrix` on crates.io | `cargo install weavatrix` | Rust-first environments and source builds |
-| `weavatrix` on npm | `npx -y weavatrix@1.11.1 mcp <repo>` | Ready-made cross-platform binaries without a Rust toolchain |
+| `weavatrix` on npm | `npx -y weavatrix@1.14.0 mcp <repo>` | Ready-made cross-platform binaries without a Rust toolchain |
 
 The npm package exists for convenience; it does not contain a different
 JavaScript engine. Both distributions run the same native adapter and the same
@@ -163,7 +169,7 @@ process cwd — and avoid running both a user MCP and the plugin at once:
   "mcpServers": {
     "weavatrix": {
       "command": "npx",
-      "args": ["-y", "weavatrix@1.11.1", "mcp", "${workspaceFolder}"]
+      "args": ["-y", "weavatrix@1.14.0", "mcp", "${workspaceFolder}"]
     }
   }
 }
@@ -172,9 +178,13 @@ process cwd — and avoid running both a user MCP and the plugin at once:
 Profiles expose bounded views of the same engine:
 
 ```sh
-npx -y weavatrix@1.11.1 mcp . --profile=all
-npx -y weavatrix@1.11.1 mcp . --profile=code
-npx -y weavatrix@1.11.1 mcp . --profile=seo
+npx -y weavatrix@1.14.0 mcp . --profile=all
+npx -y weavatrix@1.14.0 mcp . --profile=code
+npx -y weavatrix@1.14.0 mcp . --profile=seo
+npx -y weavatrix@1.14.0 mcp . --profile=n8n
+npx -y weavatrix@1.14.0 mcp . --profile=dify
+npx -y weavatrix@1.14.0 mcp . --profile=agent
+npx -y weavatrix@1.14.0 mcp . --profile=diagram
 ```
 
 The npm package contains native binaries for Windows x64/arm64, macOS
@@ -216,6 +226,8 @@ Build the smallest source bundle needed to edit this symbol safely.
 Show me this file as it was two commits ago, without a checkout.
 Suggest internal links without mixing inferred SEO relationships into
 the deterministic code graph.
+If I change the email recipient in this exported n8n workflow, who reads it?
+If I change start_node.query in this Dify YAML, which nodes consume it?
 ```
 
 The graph is built once per revision. Impact, API traces, health findings,
@@ -297,7 +309,7 @@ Three commits before `ec8bf30` this package was 1.9.2; the agent reads that
 follow-up to a diff without touching the worktree. Binary blobs fail closed
 instead of being decoded into garbage.
 
-## The 47 read-only operations
+## The 60 read-only operations
 
 | Workflow | Operations |
 | --- | --- |
@@ -309,6 +321,10 @@ instead of being decoded into garbage.
 | Architecture | `get_architecture_contract`, `verify_architecture`, `verify_capabilities`, `explain_architecture_violation`, `propose_architecture_exception` |
 | Git and repositories | `git_history`, `git_read_blob`, `cross_repo_git`, `open_repo`, `list_known_repos`, `rebuild_graph` |
 | Native extensions | `vector_search`, `semantic_link`, `seo_link_suggestions`, `memory_context` |
+| n8n workflows | `n8n_inventory`, `n8n_trace`, `n8n_context` |
+| Dify apps | `dify_inventory`, `dify_trace`, `dify_context` |
+| Agent packages | `agent_inventory`, `agent_trace`, `agent_context`, `agent_change_impact` |
+| Mermaid diagrams | `diagram_inventory`, `diagram_trace`, `diagram_context` |
 
 Every operation is read-only with respect to the analyzed repository.
 Pagination and explicit limits bound large neighborhoods, histories, searches,
@@ -323,7 +339,7 @@ semantic resolution.
 | Group | Surfaces |
 | --- | --- |
 | Code | Rust; JavaScript/JSX; TypeScript/TSX; Python; Go; Java; C#; C; C++; SQL; Bash/Zsh; Swift; Solidity |
-| Contracts and configuration | GraphQL; Protobuf/gRPC; JSON/JSONC; YAML/Kubernetes; Terraform/HCL; XML |
+| Contracts and configuration | GraphQL; Protobuf/gRPC; JSON/JSONC (n8n after parse); YAML/Kubernetes (Dify after parse); Terraform/HCL; XML |
 | Documents and UI | HTML/Vue/Svelte; CSS/SCSS/Sass/Less; Markdown/MDX; reStructuredText; AsciiDoc |
 
 Cross-surface passes connect HTTP routes and calls, GraphQL operations and
@@ -335,6 +351,144 @@ Dynamic dispatch that cannot be proved stays unresolved. Static reachability is
 not called measured coverage, and absent optional evidence remains explicitly
 absent.
 
+## Workflow export domains
+
+n8n and Dify are not new MCP servers, editors, or runtimes. They are domains
+on the same evidence graph. JSON still goes through the JSON adapter; YAML
+still goes through the Kubernetes adapter. After parse, a recognized export
+becomes typed nodes, ports, and relations. A `package.json` does not become
+an n8n workflow. A Kubernetes `ConfigMap` does not become a Dify app.
+
+```mermaid
+flowchart LR
+  export["n8n JSON / Dify YAML in git"] --> parse["Existing JSON / YAML parse"]
+  parse --> domain["After-parse domain"]
+  domain --> graph["Revision-bound evidence graph"]
+  graph --> inventory["inventory"]
+  graph --> trace["trace"]
+  graph --> context["context"]
+```
+
+Product pages: [n8n](https://weavatrix.com/n8n) · [Dify](https://weavatrix.com/dify) ·
+[parsers](https://weavatrix.com/parsers).
+
+### n8n (shipped in 1.12.0)
+
+Exported workflow JSON → `n8n_inventory`, `n8n_trace`, `n8n_context`.
+
+Use this when the question is about an export already in git: who reads this
+field, which node feeds that output, what this file actually contains. The
+agent stays on the repository revision. It does not log into n8n.
+
+- Identities are scoped per file. The same display name in two workflows
+  stays two nodes; a short label that hits both is `ambiguous`.
+- `flows_to` is control flow. `depends_on_output` is data. They are not
+  walked as one relation.
+- Every `$('Name')` / `$node` / `$items` occurrence is bound, not the first
+  match only. `.item` and `.first()` stay distinct. A dynamic
+  `$('' + prefix)` is `unresolved:dynamic_node`.
+- `typeVersion` `1.7` is not coerced to an integer.
+- Missing subworkflows are “not provided”, not “deleted”.
+- Secrets, cookies, auth headers, URL credentials, `pinData`, `staticData`,
+  and `$env` values stay off the default graph and context.
+
+```sh
+npx -y weavatrix@1.14.0 mcp . --profile=n8n
+```
+
+### Dify (shipped in 1.13.0)
+
+Exported DSL YAML → `dify_inventory`, `dify_trace`, `dify_context`.
+
+Use this when the question is about a local YAML export: which nodes consume
+`start_node.query`, which Code or Template regions mention a selector, what
+the export omitted. The agent stays on the repository revision. It does not
+call the Dify console.
+
+- `AppKey` is corpus + artifact origin. `data.title` is display only.
+- Node subject type is `node.data.type`, not the canvas `custom` UI type.
+- Iteration / loop children keep `parentId` scope. They are not flattened.
+- `{{#start_node.query#}}` markers and structured selectors become
+  `reads_variable` / `depends_on_output` with source spans.
+- Conversation assigner reads and writes stay typed. Code and Template
+  regions are inventoried, not executed.
+- Chat and other modes are recognized. An unsupported mode is
+  `structure_only`, not a successful empty graph.
+- Environment values and credential-shaped labels are omitted from default
+  inventory and context.
+
+```sh
+npx -y weavatrix@1.14.0 mcp . --profile=dify
+```
+
+### Agent packages (shipped in 1.14.0)
+
+Local plugin, skill, catalog, and observation files → `agent_inventory`,
+`agent_trace`, `agent_context`, `agent_change_impact`.
+
+Use this when the question is about a package already in git: which catalog
+tools a plugin exposes, which MCP config binds a server, whether two catalog
+snapshots stayed compatible. The agent does not launch commands, and
+`allowed-tools` is not a grant.
+
+```sh
+npx -y weavatrix@1.14.0 mcp . --profile=agent
+```
+
+### Mermaid diagrams (shipped in 1.14.0)
+
+`.mmd`, `.mermaid`, and Markdown/MDX fences → `diagram_inventory`,
+`diagram_trace`, `diagram_context`.
+
+Drawn arrows are `declared_architecture`, never Calls. They do not clear
+dead-code findings. Bindings come only from `.weavatrix/diagram-links.json`.
+Name match is not exact. `change_impact.documentation` is separate from
+production impact.
+
+```sh
+npx -y weavatrix@1.14.0 mcp . --profile=diagram
+```
+
+### Compared with adjacent tools
+
+These tools solve different jobs. Weavatrix does not replace a live console
+or a CI linter.
+
+| Need | Use |
+| --- | --- |
+| Change impact on an n8n or Dify export already in git | Weavatrix `n8n_*` / `dify_*` on the same revision-bound graph |
+| Operate a live n8n instance (run, credentials, editor API) | [n8n-mcp](https://github.com/czlonkowski/n8n-mcp) |
+| Operate a live Dify console (run, publish, 150+ API tools) | [dify-mcp](https://github.com/alexjiaguo/dify-mcp) |
+| Lint or diff Dify YAML in CI | [difyctl](https://github.com/JSLEEKR/difyctl) |
+
+Weavatrix answers “who consumes this variable in this repository revision?”
+It does not execute expressions, Jinja, or Code nodes, and it does not
+deploy or publish the app.
+
+### Shared engine bench
+
+n8n and Dify evidence is produced in-process after parse. There is no HTTP
+hop to an n8n or Dify host for those tools. We do not invent per-parser
+millisecond numbers.
+
+The measured installed MCP boundary (2026-08-03, packaged 1.2.0 /
+`weavatrix-rust` 2.1.1 vs `weavatrix-js` 0.3.15, same JavaScript service
+repository) is the honest engine figure those domains share:
+
+| Installed boundary | Rust 1.2.0 | JavaScript 0.3.15 | Ratio |
+| --- | ---: | ---: | ---: |
+| Cold boundary median (spawn to first tool result) | **157.34 ms** | 5,068.22 ms | **32.21x** |
+| Warm tools/call median | **7.94 ms** | 292.55 ms | **36.85x** |
+
+Methodology: [Release evidence](#release-evidence) and
+[`docs/benchmarks.md`](docs/benchmarks.md).
+
+### What this is not
+
+No expression or Jinja execution. No n8n or Dify deployment. No automatic
+edits. No new graph engine. Unknown DSL versions and hidden export fields
+are not pretended as full support.
+
 ## Product boundary
 
 Weavatrix is deliberately split into a protocol-independent engine and a thin
@@ -345,12 +499,12 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.11.1
+weavatrix 1.14.0
     profile catalog · session refresh · filesystem watcher · MCP framing
     |
     v
-weavatrix-rust 2.10.0
-    typed graph · analysis pipeline · 47 read-only operations
+weavatrix-rust 2.14.3
+    typed graph · analysis pipeline · 60 product operations including n8n, Dify, agent packages, and Mermaid
     |
     +-- weavatrix-scan      repository discovery and selection
     +-- weavatrix-parse     lossless tokenization and structural facts
@@ -472,6 +626,9 @@ binaries, identity checks, package checks, and installed-boundary gates pass.
 - [npm distribution](docs/npm-distribution.md)
 - [Dependencies](docs/dependencies.md)
 - [Benchmarks](docs/benchmarks.md)
+- [n8n export evidence](https://weavatrix.com/n8n)
+- [Dify export evidence](https://weavatrix.com/dify)
+- [Workflow parsers](https://weavatrix.com/parsers)
 - [Engine API and architecture](https://github.com/Weavatrix/weavatrix-rust)
 
 ## License

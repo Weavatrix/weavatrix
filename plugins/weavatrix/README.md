@@ -2,13 +2,15 @@
 
 <img src="assets/logo.svg" alt="Weavatrix logo" width="72" align="right">
 
-Weavatrix gives Cursor, Codex, Claude, and Grok Build 47 read-only repository
+Weavatrix gives Cursor, Codex, Claude, and Grok Build 60 read-only repository
 intelligence operations through one native MCP server. It covers source and
 symbol search, dependency and call graphs, API and event-contract tracing,
 change impact, architecture policy, Git history, duplicates, dead code,
-coverage evidence, vector search, and temporal memory.
+coverage evidence, vector search, temporal memory, exported n8n workflows,
+Dify YAML apps, Agent Plugins/Skills/MCP catalogs, and Mermaid flowcharts. See
+[n8n](https://weavatrix.com/n8n) and [Dify](https://weavatrix.com/dify).
 
-The plugin starts the published `weavatrix@1.11.1` npm package. That package
+The plugin starts the published `weavatrix@1.14.0` npm package. That package
 already contains the matching prebuilt native binaries; it has no lifecycle
 scripts or runtime dependencies. The same release is also available as the
 `weavatrix` crate on crates.io. Node.js 18 or newer is required for the plugin

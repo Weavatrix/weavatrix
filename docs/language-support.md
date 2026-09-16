@@ -28,8 +28,10 @@ pretend to provide the same semantic depth as a typed adapter.
 | --- | --- |
 | GraphQL | schema types, fields, root operations, executable calls, fragments, and referenced return types |
 | Protobuf / gRPC | packages, messages, enums, services, RPC types, and unary/client/server/bidirectional streaming modes |
-| JSON / JSONC | lossless syntax plus package, compiler, architecture, and application configuration |
-| YAML / Kubernetes | documents, resources, services, workloads, images, ports, and configuration links |
+| JSON / JSONC | lossless syntax plus package, compiler, architecture, and application configuration; recognized n8n workflow exports become an after-parse domain (`n8n_inventory` / `n8n_trace` / `n8n_context`) |
+| YAML / Kubernetes | documents, resources, services, workloads, images, ports, and configuration links; recognized Dify YAML exports become an after-parse domain (`dify_inventory` / `dify_trace` / `dify_context`) |
+| Agent packages | `plugin.json`, `mcp.json`, `SKILL.md`, supplied catalog/origin/observation snapshots; `agent_inventory` / `agent_trace` / `agent_context` / `agent_change_impact` |
+| Mermaid | `.mmd`, `.mermaid`, and fenced flowcharts; `diagram_inventory` / `diagram_trace` / `diagram_context` |
 | Terraform / HCL | blocks, resources, providers, variables, outputs, references, and deployment evidence |
 | XML | elements, attributes, configuration structure, and recognized build/application manifests |
 

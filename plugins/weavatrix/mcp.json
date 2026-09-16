@@ -6,7 +6,7 @@
       "command": "npx",
       "args": [
         "-y",
-        "weavatrix@1.11.1",
+        "weavatrix@1.14.0",
         "mcp",
         "${workspaceFolder}"
       ]

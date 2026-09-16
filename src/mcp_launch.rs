@@ -41,7 +41,7 @@ pub(crate) fn parse_mcp_launch(arguments: &[String]) -> Result<McpLaunch, String
                 _ => {
                     return Err(
                         "mcp accepts at most one repository path and one optional legacy \
-                         capability token; use --profile=all|code|seo"
+                         capability token; use --profile=all|code|seo|n8n|dify|agent|diagram"
                             .into(),
                     );
                 }
@@ -76,12 +76,12 @@ fn map_legacy_capability(value: &str) -> Result<mcp::McpProfile, String> {
         ),
         other if other.contains(',') => Err(format!(
             "legacy comma-separated capability list {other:?} is not accepted by native \
-             Weavatrix; use --profile=all, --profile=code, or --profile=seo. Example: \
+             Weavatrix; use --profile=all, --profile=code, --profile=seo, --profile=n8n, --profile=dify, --profile=agent, or --profile=diagram. Example: \
              weavatrix mcp . --profile=code"
         )),
         other => Err(format!(
             "unknown legacy capability {other:?}; expected offline (maps to --profile=all), \
-             or use --profile=all|code|seo"
+             or use --profile=all|code|seo|n8n|dify|agent|diagram"
         )),
     }
 }
