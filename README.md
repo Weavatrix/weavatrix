@@ -13,12 +13,12 @@ Part of the [Weavatrix ecosystem](https://weavatrix.com/ecosystem): evidence inf
 **Give your coding agent repository evidence before it starts guessing.**
 
 Weavatrix is the native MCP product for repository intelligence. It gives
-Codex, Claude Code, and other coding agents 60 read-only operations over one
+Codex, Claude Code, and other coding agents 64 read-only operations over one
 revision-bound evidence graph: impact, architecture, APIs, Git history,
 duplicates, dead code, search, semantic links, temporal memory, exported
 n8n workflows, Dify YAML apps (`n8n_*` / `dify_*`), Agent
-Plugins/Skills/MCP catalogs (`agent_*`), and Mermaid flowcharts
-(`diagram_*`). Those parsers are
+Plugins/Skills/MCP catalogs (`agent_*`), Mermaid flowcharts
+(`diagram_*`), and Web3 ABI/consumer impact (`web3_*`). Those parsers are
 domains on Weavatrix Core, not new MCP products. Dedicated
 pages: [n8n](https://weavatrix.com/n8n) · [Dify](https://weavatrix.com/dify) ·
 [parsers](https://weavatrix.com/parsers).
@@ -55,7 +55,7 @@ The same source is distributed in two forms:
 | Distribution | Install | Best for |
 | --- | --- | --- |
 | `weavatrix` on crates.io | `cargo install weavatrix` | Rust-first environments and source builds |
-| `weavatrix` on npm | `npx -y weavatrix@1.14.2 mcp <repo>` | Ready-made cross-platform binaries without a Rust toolchain |
+| `weavatrix` on npm | `npx -y weavatrix@1.15.0 mcp <repo>` | Ready-made cross-platform binaries without a Rust toolchain |
 
 The npm package exists for convenience; it does not contain a different
 JavaScript engine. Both distributions run the same native adapter and the same
@@ -169,7 +169,7 @@ process cwd — and avoid running both a user MCP and the plugin at once:
   "mcpServers": {
     "weavatrix": {
       "command": "npx",
-      "args": ["-y", "weavatrix@1.14.2", "mcp", "${workspaceFolder}"]
+      "args": ["-y", "weavatrix@1.15.0", "mcp", "${workspaceFolder}"]
     }
   }
 }
@@ -178,13 +178,14 @@ process cwd — and avoid running both a user MCP and the plugin at once:
 Profiles expose bounded views of the same engine:
 
 ```sh
-npx -y weavatrix@1.14.2 mcp . --profile=all
-npx -y weavatrix@1.14.2 mcp . --profile=code
-npx -y weavatrix@1.14.2 mcp . --profile=seo
-npx -y weavatrix@1.14.2 mcp . --profile=n8n
-npx -y weavatrix@1.14.2 mcp . --profile=dify
-npx -y weavatrix@1.14.2 mcp . --profile=agent
-npx -y weavatrix@1.14.2 mcp . --profile=diagram
+npx -y weavatrix@1.15.0 mcp . --profile=all
+npx -y weavatrix@1.15.0 mcp . --profile=code
+npx -y weavatrix@1.15.0 mcp . --profile=seo
+npx -y weavatrix@1.15.0 mcp . --profile=n8n
+npx -y weavatrix@1.15.0 mcp . --profile=dify
+npx -y weavatrix@1.15.0 mcp . --profile=agent
+npx -y weavatrix@1.15.0 mcp . --profile=diagram
+npx -y weavatrix@1.15.0 mcp . --profile=web3
 ```
 
 The npm package contains native binaries for Windows x64/arm64, macOS
@@ -309,7 +310,7 @@ Three commits before `ec8bf30` this package was 1.9.2; the agent reads that
 follow-up to a diff without touching the worktree. Binary blobs fail closed
 instead of being decoded into garbage.
 
-## The 60 read-only operations
+## The 64 read-only operations
 
 | Workflow | Operations |
 | --- | --- |
@@ -325,6 +326,7 @@ instead of being decoded into garbage.
 | Dify apps | `dify_inventory`, `dify_trace`, `dify_context` |
 | Agent packages | `agent_inventory`, `agent_trace`, `agent_context`, `agent_change_impact` |
 | Mermaid diagrams | `diagram_inventory`, `diagram_trace`, `diagram_context` |
+| Web3 integration | `web3_inventory`, `web3_trace`, `web3_impact`, `web3_context` |
 
 Every operation is read-only with respect to the analyzed repository.
 Pagination and explicit limits bound large neighborhoods, histories, searches,
@@ -393,7 +395,7 @@ agent stays on the repository revision. It does not log into n8n.
   and `$env` values stay off the default graph and context.
 
 ```sh
-npx -y weavatrix@1.14.2 mcp . --profile=n8n
+npx -y weavatrix@1.15.0 mcp . --profile=n8n
 ```
 
 ### Dify (shipped in 1.13.0)
@@ -418,7 +420,7 @@ call the Dify console.
   inventory and context.
 
 ```sh
-npx -y weavatrix@1.14.2 mcp . --profile=dify
+npx -y weavatrix@1.15.0 mcp . --profile=dify
 ```
 
 ### Agent packages (shipped in 1.14.0)
@@ -432,7 +434,7 @@ snapshots stayed compatible. The agent does not launch commands, and
 `allowed-tools` is not a grant.
 
 ```sh
-npx -y weavatrix@1.14.2 mcp . --profile=agent
+npx -y weavatrix@1.15.0 mcp . --profile=agent
 ```
 
 ### Mermaid diagrams (shipped in 1.14.0)
@@ -446,7 +448,21 @@ Name match is not exact. `change_impact.documentation` is separate from
 production impact.
 
 ```sh
-npx -y weavatrix@1.14.2 mcp . --profile=diagram
+npx -y weavatrix@1.15.0 mcp . --profile=diagram
+```
+
+### Web3 integration (shipped in 1.15.0)
+
+ABI JSON, supplied solc/Foundry artifacts, and static viem/wagmi
+consumers → `web3_inventory`, `web3_trace`, `web3_impact`, `web3_context`.
+
+Use this when a contract interface changed and you need the proven client
+call or decoder sites. An indexed-mask event change can silently misdecode.
+ABI equality is not a live deployment proof. The engine does not compile
+contracts, call RPC, or open a wallet.
+
+```sh
+npx -y weavatrix@1.15.0 mcp . --profile=web3
 ```
 
 ### Compared with adjacent tools
@@ -499,12 +515,12 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.14.2
+weavatrix 1.15.0
     profile catalog · session refresh · filesystem watcher · MCP framing
     |
     v
-weavatrix-rust 2.14.3
-    typed graph · analysis pipeline · 60 product operations including n8n, Dify, agent packages, and Mermaid
+weavatrix-rust 2.15.1
+    typed graph · analysis pipeline · 64 product operations including n8n, Dify, agent packages, Mermaid, and Web3
     |
     +-- weavatrix-scan      repository discovery and selection
     +-- weavatrix-parse     lossless tokenization and structural facts

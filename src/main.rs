@@ -148,10 +148,10 @@ fn analyze(arguments: Vec<String>) -> Result<ExitCode, String> {
 fn print_help() {
     println!(
         "Weavatrix repository intelligence for coding agents\n\n\
-Usage:\n  weavatrix mcp [REPOSITORY] [--profile=all|code|seo|n8n|dify|agent|diagram] \
+Usage:\n  weavatrix mcp [REPOSITORY] [--profile=all|code|seo|n8n|dify|agent|diagram|web3] \
 [--output-format=json|text|structured] [--allow-retarget]\n\
   weavatrix analyze [REPOSITORY] [--pretty] [--format=snapshot|legacy]\n\
-  weavatrix list-tools [--profile=all|code|seo|n8n|dify|agent|diagram]\n\
+  weavatrix list-tools [--profile=all|code|seo|n8n|dify|agent|diagram|web3]\n\
   weavatrix tool NAME [REPOSITORY] ['{{\"argument\":\"value\"}}']\n\
   weavatrix --version\n\n\
 By default the MCP process pins REPOSITORY (or cwd) for its lifetime: \

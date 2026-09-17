@@ -1,6 +1,6 @@
 # Operation reference
 
-The full native product exposes 60 bounded read-only MCP operations. JSON
+The full native product exposes 64 bounded read-only MCP operations. JSON
 schemas returned by `tools/list` are the authoritative machine contract.
 
 ## Graph and orientation
@@ -131,6 +131,17 @@ and Markdown/MDX fences. Not a renderer.
 - `diagram_trace`: `declared_architecture` paths only.
 - `diagram_context`: fragments plus binding status; display names are not IDs.
 
+## Web3 integration
+
+Requires engine `weavatrix-rust` 2.15.1. ABI JSON, supplied solc/Foundry
+artifacts, and static viem/wagmi consumers. Not a compiler, RPC, or wallet.
+ABI equality is not a deployment proof.
+
+- `web3_inventory`: artifacts, ABI members, and static consumers.
+- `web3_trace`: proven ABI, artifact, and consumer bindings.
+- `web3_impact`: interface deltas, including silent event misdecode risk.
+- `web3_context`: fragments plus explicit deployment and history gaps.
+
 ## Common arguments and results
 
 Operation-specific schemas define exact arguments. Common controls include:
@@ -160,6 +171,7 @@ npx -y weavatrix list-tools --profile=n8n
 npx -y weavatrix list-tools --profile=dify
 npx -y weavatrix list-tools --profile=agent
 npx -y weavatrix list-tools --profile=diagram
+npx -y weavatrix list-tools --profile=web3
 ```
 
 Profile-excluded and uncompiled capabilities are absent from the catalog and

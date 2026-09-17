@@ -10,10 +10,11 @@
 **Give your coding agent repository evidence before it starts guessing.**
 
 Weavatrix is the native MCP product for repository intelligence. It gives
-Codex, Claude Code, and other coding agents 60 read-only operations over one
+Codex, Claude Code, and other coding agents 64 read-only operations over one
 revision-bound evidence graph: impact, architecture, APIs, Git history,
 duplicates, dead code, search, semantic links, temporal memory, exported
-n8n workflows, and Dify YAML apps. Those parsers are domains on Weavatrix
+n8n workflows, Dify YAML apps, Agent packages, Mermaid flowcharts, and
+Web3 ABI/consumer impact. Those parsers are domains on Weavatrix
 Core, not new MCP products. See
 [n8n](https://weavatrix.com/n8n), [Dify](https://weavatrix.com/dify), and
 [parsers](https://weavatrix.com/parsers).
@@ -46,7 +47,7 @@ weavatrix mcp .
 ```toml
 [mcp_servers.weavatrix]
 command = "npx"
-args = ["-y", "weavatrix@1.14.2", "mcp", "."]
+args = ["-y", "weavatrix@1.15.0", "mcp", "."]
 ```
 
 Pass an absolute repository path when the Codex process cwd is not the project
@@ -55,7 +56,7 @@ you intend to analyze.
 ### Claude Code
 
 ```sh
-claude mcp add weavatrix -- npx -y weavatrix@1.14.2 mcp .
+claude mcp add weavatrix -- npx -y weavatrix@1.15.0 mcp .
 ```
 
 ### Cursor
@@ -68,7 +69,7 @@ the plugin for the same server name:
   "mcpServers": {
     "weavatrix": {
       "command": "npx",
-      "args": ["-y", "weavatrix@1.14.2", "mcp", "${workspaceFolder}"]
+      "args": ["-y", "weavatrix@1.15.0", "mcp", "${workspaceFolder}"]
     }
   }
 }
@@ -77,13 +78,14 @@ the plugin for the same server name:
 Profiles expose bounded views of the same engine:
 
 ```sh
-npx -y weavatrix@1.14.2 mcp . --profile=all
-npx -y weavatrix@1.14.2 mcp . --profile=code
-npx -y weavatrix@1.14.2 mcp . --profile=seo
-npx -y weavatrix@1.14.2 mcp . --profile=n8n
-npx -y weavatrix@1.14.2 mcp . --profile=dify
-npx -y weavatrix@1.14.2 mcp . --profile=agent
-npx -y weavatrix@1.14.2 mcp . --profile=diagram
+npx -y weavatrix@1.15.0 mcp . --profile=all
+npx -y weavatrix@1.15.0 mcp . --profile=code
+npx -y weavatrix@1.15.0 mcp . --profile=seo
+npx -y weavatrix@1.15.0 mcp . --profile=n8n
+npx -y weavatrix@1.15.0 mcp . --profile=dify
+npx -y weavatrix@1.15.0 mcp . --profile=agent
+npx -y weavatrix@1.15.0 mcp . --profile=diagram
+npx -y weavatrix@1.15.0 mcp . --profile=web3
 ```
 
 The package contains native binaries for Windows x64/arm64, macOS x64/arm64,
@@ -200,7 +202,7 @@ Three commits before `ec8bf30` this package was 1.9.2; the agent reads that
 follow-up to a diff without touching the worktree. Binary blobs fail closed
 instead of being decoded into garbage.
 
-## The 60 read-only operations
+## The 64 read-only operations
 
 | Workflow | Operations |
 | --- | --- |
@@ -216,6 +218,7 @@ instead of being decoded into garbage.
 | Dify apps | `dify_inventory`, `dify_trace`, `dify_context` |
 | Agent packages | `agent_inventory`, `agent_trace`, `agent_context`, `agent_change_impact` |
 | Mermaid diagrams | `diagram_inventory`, `diagram_trace`, `diagram_context` |
+| Web3 integration | `web3_inventory`, `web3_trace`, `web3_impact`, `web3_context` |
 
 Every operation is read-only with respect to the analyzed repository.
 Pagination and explicit limits bound large neighborhoods, histories, searches,
@@ -247,6 +250,7 @@ export in git → existing JSON/YAML parse → typed domain → inventory / trac
 | [Dify](https://weavatrix.com/dify) | `dify_inventory`, `dify_trace`, `dify_context` | Product 1.13.0 |
 | Agent packages | `agent_inventory`, `agent_trace`, `agent_context`, `agent_change_impact` | Product 1.14.0 |
 | Mermaid diagrams | `diagram_inventory`, `diagram_trace`, `diagram_context` | Product 1.14.0 |
+| Web3 integration | `web3_inventory`, `web3_trace`, `web3_impact`, `web3_context` | Product 1.15.0 |
 
 | Need | Use |
 | --- | --- |
@@ -266,12 +270,12 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.14.2
+weavatrix 1.15.0
     profile catalog · refresh · watcher · MCP framing
     |
     v
-weavatrix-rust 2.14.3
-    typed graph · analysis · 60 product operations including n8n, Dify, agent packages, and Mermaid
+weavatrix-rust 2.15.1
+    typed graph · analysis · 64 product operations including n8n, Dify, agent packages, Mermaid, and Web3
 ```
 
 This npm product owns MCP transport and native distribution. The

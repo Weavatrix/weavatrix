@@ -6,7 +6,8 @@ description: >-
   impact, API/event tracing, architecture checks, Git/coverage evidence,
   duplicates, dead-code review, semantic context, exported n8n
   workflows, exported Dify YAML, Agent Plugins/Skills/MCP
-  catalogs, or Mermaid flowcharts. Skip it for trivial
+  catalogs, Mermaid flowcharts, or Web3 ABI and client
+  bindings. Skip it for trivial
   single-file edits or when a known source file and native tests already answer
   the task.
 ---
@@ -33,8 +34,10 @@ contracts. Do not call it merely because the server is available.
    exported Dify YAML, and `agent_inventory` / `agent_trace` /
   `agent_context` / `agent_change_impact` for Agent Plugins, Skills, and
   supplied MCP catalogs, and `diagram_inventory` / `diagram_trace` /
-  `diagram_context` for Mermaid flowcharts. Those paths are static graph
-  evidence, not a live n8n, Dify, MCP, or Mermaid runtime.
+  `diagram_context` for Mermaid flowcharts, and `web3_inventory` /
+  `web3_trace` / `web3_impact` / `web3_context` for supplied ABI,
+  artifacts, and static viem/wagmi consumers. Those paths are static graph
+  evidence, not a live n8n, Dify, MCP, Mermaid, or blockchain runtime.
 5. Use repository-native tests or benchmarks for behavioral proof.
 
 Do not call `open_repo` "just in case". Cross-repository tools take explicit

@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+## 1.15.0 - 2026-09-17
+
+- Engine `weavatrix-rust` 2.15.1. Web3 Integration Impact ships in the
+  product pin: `web3_inventory`, `web3_trace`, `web3_impact`,
+  `web3_context`, and `--profile=web3`. The advertised catalog is 64
+  operations. ABI, solc/Foundry artifacts, and static viem/wagmi
+  consumers stay offline; ABI equality is not a deployment proof.
+- The installed-package load gate expects the advertised 64-operation
+  catalog.
+
 ## 1.14.2 - 2026-09-16
 
 - The installed-package load gate expects the advertised 60-operation

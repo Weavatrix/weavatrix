@@ -107,3 +107,14 @@ engine `weavatrix-rust` 2.14.3.
 - [`diagram_inventory`](tools/diagram_inventory.md) — List diagrams, native elements, and explicit sidecar bindings.
 - [`diagram_trace`](tools/diagram_trace.md) — Walk `declared_architecture` arrows only.
 - [`diagram_context`](tools/diagram_context.md) — Fragments and binding status; display names are not IDs.
+
+## Web3 integration
+
+Local ABI JSON, supplied solc/Foundry artifacts, and static viem/wagmi
+sources only. Not a compiler, RPC client, or wallet. Requires engine
+`weavatrix-rust` 2.15.1.
+
+- [`web3_inventory`](tools/web3_inventory.md) — List ABIs, artifacts, and static consumers.
+- [`web3_trace`](tools/web3_trace.md) — Walk proven ABI, artifact, and consumer bindings.
+- [`web3_impact`](tools/web3_impact.md) — Interface deltas and consumer-specific effects, including silent event misdecode.
+- [`web3_context`](tools/web3_context.md) — Bounded fragments plus explicit deployment gaps.

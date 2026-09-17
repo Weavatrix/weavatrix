@@ -41,6 +41,7 @@ npx -y weavatrix mcp . --profile=n8n
 npx -y weavatrix mcp . --profile=dify
 npx -y weavatrix mcp . --profile=agent
 npx -y weavatrix mcp . --profile=diagram
+npx -y weavatrix mcp . --profile=web3
 ```
 
 n8n and Dify are domains on the same graph, not separate MCP products. Product pages:

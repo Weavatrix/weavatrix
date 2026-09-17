@@ -82,6 +82,10 @@ const toolNames = [
     'verified_change',
     'verify_architecture',
     'verify_capabilities',
+    'web3_context',
+    'web3_impact',
+    'web3_inventory',
+    'web3_trace',
 ]
 
 test('plugin identity follows the published product', () => {
@@ -148,7 +152,7 @@ test('the plugin skill is the released Weavatrix skill', () => {
         .filter((name) => name.endsWith('.md'))
         .map((name) => name.slice(0, -3))
         .sort()
-    assert.equal(toolNames.length, 60)
+    assert.equal(toolNames.length, 64)
     assert.deepEqual(canonicalCards, toolNames)
     assert.deepEqual(bundledCards, toolNames)
     for (const name of toolNames) {
