@@ -47,7 +47,7 @@ weavatrix mcp .
 ```toml
 [mcp_servers.weavatrix]
 command = "npx"
-args = ["-y", "weavatrix@1.15.0", "mcp", "."]
+args = ["-y", "weavatrix@1.16.0", "mcp", "."]
 ```
 
 Pass an absolute repository path when the Codex process cwd is not the project
@@ -56,7 +56,7 @@ you intend to analyze.
 ### Claude Code
 
 ```sh
-claude mcp add weavatrix -- npx -y weavatrix@1.15.0 mcp .
+claude mcp add weavatrix -- npx -y weavatrix@1.16.0 mcp .
 ```
 
 ### Cursor
@@ -69,7 +69,7 @@ the plugin for the same server name:
   "mcpServers": {
     "weavatrix": {
       "command": "npx",
-      "args": ["-y", "weavatrix@1.15.0", "mcp", "${workspaceFolder}"]
+      "args": ["-y", "weavatrix@1.16.0", "mcp", "${workspaceFolder}"]
     }
   }
 }
@@ -78,14 +78,14 @@ the plugin for the same server name:
 Profiles expose bounded views of the same engine:
 
 ```sh
-npx -y weavatrix@1.15.0 mcp . --profile=all
-npx -y weavatrix@1.15.0 mcp . --profile=code
-npx -y weavatrix@1.15.0 mcp . --profile=seo
-npx -y weavatrix@1.15.0 mcp . --profile=n8n
-npx -y weavatrix@1.15.0 mcp . --profile=dify
-npx -y weavatrix@1.15.0 mcp . --profile=agent
-npx -y weavatrix@1.15.0 mcp . --profile=diagram
-npx -y weavatrix@1.15.0 mcp . --profile=web3
+npx -y weavatrix@1.16.0 mcp . --profile=all
+npx -y weavatrix@1.16.0 mcp . --profile=code
+npx -y weavatrix@1.16.0 mcp . --profile=seo
+npx -y weavatrix@1.16.0 mcp . --profile=n8n
+npx -y weavatrix@1.16.0 mcp . --profile=dify
+npx -y weavatrix@1.16.0 mcp . --profile=agent
+npx -y weavatrix@1.16.0 mcp . --profile=diagram
+npx -y weavatrix@1.16.0 mcp . --profile=web3
 ```
 
 The package contains native binaries for Windows x64/arm64, macOS x64/arm64,
@@ -250,7 +250,7 @@ export in git → existing JSON/YAML parse → typed domain → inventory / trac
 | [Dify](https://weavatrix.com/dify) | `dify_inventory`, `dify_trace`, `dify_context` | Product 1.13.0 |
 | Agent packages | `agent_inventory`, `agent_trace`, `agent_context`, `agent_change_impact` | Product 1.14.0 |
 | Mermaid diagrams | `diagram_inventory`, `diagram_trace`, `diagram_context` | Product 1.14.0 |
-| Web3 integration | `web3_inventory`, `web3_trace`, `web3_impact`, `web3_context` | Product 1.15.0 |
+| Web3 integration | `web3_inventory`, `web3_trace`, `web3_impact`, `web3_context` | Product 1.16.0 |
 
 | Need | Use |
 | --- | --- |
@@ -270,11 +270,11 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.15.0
+weavatrix 1.16.0
     profile catalog · refresh · watcher · MCP framing
     |
     v
-weavatrix-rust 2.15.1
+weavatrix-rust 2.16.0
     typed graph · analysis · 64 product operations including n8n, Dify, agent packages, Mermaid, and Web3
 ```
 

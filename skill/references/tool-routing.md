@@ -112,7 +112,7 @@ engine `weavatrix-rust` 2.14.3.
 
 Local ABI JSON, supplied solc/Foundry artifacts, and static viem/wagmi
 sources only. Not a compiler, RPC client, or wallet. Requires engine
-`weavatrix-rust` 2.15.1.
+`weavatrix-rust` 2.16.0.
 
 - [`web3_inventory`](tools/web3_inventory.md) — List ABIs, artifacts, and static consumers.
 - [`web3_trace`](tools/web3_trace.md) — Walk proven ABI, artifact, and consumer bindings.

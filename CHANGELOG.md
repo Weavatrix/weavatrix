@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## 1.16.0 - 2026-09-17
+
+- Engine `weavatrix-rust` 2.16.0. Agent schema impact no longer treats a
+  type change as proven-compatible. Tool removal needs a complete AFTER
+  catalog. Web3 impact pairs explicit artifacts and ignores comment/string
+  consumers. n8n array documents keep JSON Pointer selectors.
+
 ## 1.15.0 - 2026-09-17
 
 - Engine `weavatrix-rust` 2.15.1. Web3 Integration Impact ships in the

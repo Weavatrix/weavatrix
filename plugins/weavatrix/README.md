@@ -11,7 +11,7 @@ Dify YAML apps, Agent Plugins/Skills/MCP catalogs, Mermaid flowcharts, and
 Web3 ABI/consumer impact. See
 [n8n](https://weavatrix.com/n8n) and [Dify](https://weavatrix.com/dify).
 
-The plugin starts the published `weavatrix@1.15.0` npm package. That package
+The plugin starts the published `weavatrix@1.16.0` npm package. That package
 already contains the matching prebuilt native binaries; it has no lifecycle
 scripts or runtime dependencies. The same release is also available as the
 `weavatrix` crate on crates.io. Node.js 18 or newer is required for the plugin
