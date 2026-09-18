@@ -27,6 +27,26 @@ It does not answer from a larger grep or an invented confidence score. Every
 bounded result can carry the repository revision, file, line, extractor,
 evidence kind, and confidence that produced it.
 
+### Adjacent MCP tools (not this host)
+
+This repository is the **stdio MCP host and plugin pack**. It pins
+`weavatrix-rust`. It does not grow a second indexer, and it does not compete
+with the engine crate for the same README story.
+
+| You may already use | Use it for | Use this host instead when |
+| --- | --- | --- |
+| Serena | LSP-accurate rename, refs, and edits inside the agent | You need read-only impact, architecture, and provenance — and you do not want the agent to start a language server |
+| Repomix MCP | Stuffing a compressed repo into the next prompt | You need a bounded answer (`change_impact`, `verify_architecture`) without paying the pack-token tax every turn |
+| Aider RepoMap | Ranking symbols that fit one chat | You need the full revision-bound graph, including n8n / Dify / Agent / Web3 / Mermaid domains |
+| Claude Context / vector MCP | Semantic “code like this” retrieval | You need extractor-backed edges, not nearest-neighbor chunks |
+| GitNexus / CodeGraph daemons | A long-lived graph service beside the IDE | You want the published native binary, no extra database process |
+
+The host’s unique job is transport: profiles, watching, npm/crate
+distributions, and the 64-tool catalog over one engine session. Measured
+engine times live in
+[weavatrix-rust benchmarks](https://github.com/Weavatrix/weavatrix-rust/blob/main/docs/benchmarks.md),
+not here.
+
 ### Ecosystem place (UNDERSTAND)
 
 ```text
@@ -55,7 +75,7 @@ The same source is distributed in two forms:
 | Distribution | Install | Best for |
 | --- | --- | --- |
 | `weavatrix` on crates.io | `cargo install weavatrix` | Rust-first environments and source builds |
-| `weavatrix` on npm | `npx -y weavatrix@1.16.0 mcp <repo>` | Ready-made cross-platform binaries without a Rust toolchain |
+| `weavatrix` on npm | `npx -y weavatrix@1.16.1 mcp <repo>` | Ready-made cross-platform binaries without a Rust toolchain |
 
 The npm package exists for convenience; it does not contain a different
 JavaScript engine. Both distributions run the same native adapter and the same
@@ -169,7 +189,7 @@ process cwd — and avoid running both a user MCP and the plugin at once:
   "mcpServers": {
     "weavatrix": {
       "command": "npx",
-      "args": ["-y", "weavatrix@1.16.0", "mcp", "${workspaceFolder}"]
+      "args": ["-y", "weavatrix@1.16.1", "mcp", "${workspaceFolder}"]
     }
   }
 }
@@ -178,14 +198,14 @@ process cwd — and avoid running both a user MCP and the plugin at once:
 Profiles expose bounded views of the same engine:
 
 ```sh
-npx -y weavatrix@1.16.0 mcp . --profile=all
-npx -y weavatrix@1.16.0 mcp . --profile=code
-npx -y weavatrix@1.16.0 mcp . --profile=seo
-npx -y weavatrix@1.16.0 mcp . --profile=n8n
-npx -y weavatrix@1.16.0 mcp . --profile=dify
-npx -y weavatrix@1.16.0 mcp . --profile=agent
-npx -y weavatrix@1.16.0 mcp . --profile=diagram
-npx -y weavatrix@1.16.0 mcp . --profile=web3
+npx -y weavatrix@1.16.1 mcp . --profile=all
+npx -y weavatrix@1.16.1 mcp . --profile=code
+npx -y weavatrix@1.16.1 mcp . --profile=seo
+npx -y weavatrix@1.16.1 mcp . --profile=n8n
+npx -y weavatrix@1.16.1 mcp . --profile=dify
+npx -y weavatrix@1.16.1 mcp . --profile=agent
+npx -y weavatrix@1.16.1 mcp . --profile=diagram
+npx -y weavatrix@1.16.1 mcp . --profile=web3
 ```
 
 The npm package contains native binaries for Windows x64/arm64, macOS
@@ -395,7 +415,7 @@ agent stays on the repository revision. It does not log into n8n.
   and `$env` values stay off the default graph and context.
 
 ```sh
-npx -y weavatrix@1.16.0 mcp . --profile=n8n
+npx -y weavatrix@1.16.1 mcp . --profile=n8n
 ```
 
 ### Dify (shipped in 1.13.0)
@@ -420,7 +440,7 @@ call the Dify console.
   inventory and context.
 
 ```sh
-npx -y weavatrix@1.16.0 mcp . --profile=dify
+npx -y weavatrix@1.16.1 mcp . --profile=dify
 ```
 
 ### Agent packages (shipped in 1.14.0)
@@ -434,7 +454,7 @@ snapshots stayed compatible. The agent does not launch commands, and
 `allowed-tools` is not a grant.
 
 ```sh
-npx -y weavatrix@1.16.0 mcp . --profile=agent
+npx -y weavatrix@1.16.1 mcp . --profile=agent
 ```
 
 ### Mermaid diagrams (shipped in 1.14.0)
@@ -448,7 +468,7 @@ Name match is not exact. `change_impact.documentation` is separate from
 production impact.
 
 ```sh
-npx -y weavatrix@1.16.0 mcp . --profile=diagram
+npx -y weavatrix@1.16.1 mcp . --profile=diagram
 ```
 
 ### Web3 integration (shipped in 1.15.0)
@@ -462,7 +482,7 @@ ABI equality is not a live deployment proof. The engine does not compile
 contracts, call RPC, or open a wallet.
 
 ```sh
-npx -y weavatrix@1.16.0 mcp . --profile=web3
+npx -y weavatrix@1.16.1 mcp . --profile=web3
 ```
 
 ### Compared with adjacent tools
@@ -515,11 +535,11 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.16.0
+weavatrix 1.16.1
     profile catalog · session refresh · filesystem watcher · MCP framing
     |
     v
-weavatrix-rust 2.16.0
+weavatrix-rust 2.16.1
     typed graph · analysis pipeline · 64 product operations including n8n, Dify, agent packages, Mermaid, and Web3
     |
     +-- weavatrix-scan      repository discovery and selection

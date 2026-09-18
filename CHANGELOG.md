@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 1.16.1 - 2026-09-17
+
+- Engine `weavatrix-rust` 2.16.1. Session retarget no longer clones the
+  graph; `graph_stats` reuses a census. READMEs state the MCP host
+  contract against Serena, Repomix, and other adjacent tools.
+
 ## 1.16.0 - 2026-09-17
 
 - Engine `weavatrix-rust` 2.16.0. Agent schema impact no longer treats a

@@ -11,11 +11,17 @@ Dify YAML apps, Agent Plugins/Skills/MCP catalogs, Mermaid flowcharts, and
 Web3 ABI/consumer impact. See
 [n8n](https://weavatrix.com/n8n) and [Dify](https://weavatrix.com/dify).
 
-The plugin starts the published `weavatrix@1.16.0` npm package. That package
+The plugin starts the published `weavatrix@1.16.1` npm package. That package
 already contains the matching prebuilt native binaries; it has no lifecycle
 scripts or runtime dependencies. The same release is also available as the
 `weavatrix` crate on crates.io. Node.js 18 or newer is required for the plugin
 launcher.
+
+This directory is an **IDE marketplace bundle**, not a second product. It
+does not ship an LSP (that is Serena), does not pack the repo into a prompt
+(that is Repomix), and does not reimplement the engine. Its unique job is to
+pin `${workspaceFolder}` so answers cannot drift to whatever directory the
+host process happened to start in.
 
 The bundled `weavatrix` skill is optional and activates only for repository
 tasks that benefit from indexed, cross-file evidence. Its short entry point
