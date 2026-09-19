@@ -44,7 +44,11 @@ npx -y weavatrix mcp . --profile=diagram
 npx -y weavatrix mcp . --profile=web3
 ```
 
-n8n and Dify are domains on the same graph, not separate MCP products. Product pages:
+n8n, Dify, Agent catalogs, Mermaid, and Web3 are domains on the same graph,
+not separate MCP products. Typical questions: who reads this n8n field,
+which Dify nodes consume `start_node.query`, whether an MCP schema still
+accepts yesterday’s request, which viem sites follow an ABI layout change,
+and whether a Mermaid arrow is a real call. Product pages:
 [n8n](https://weavatrix.com/n8n) · [Dify](https://weavatrix.com/dify).
 
 ## Configure Codex

@@ -8,13 +8,13 @@
   "plugins": [
     {
       "name": "weavatrix",
-      "description": "Native, read-only repository intelligence for coding agents through MCP.",
+      "description": "64 read-only MCP tools: impact, architecture, n8n, Dify, Agent catalogs, Mermaid, and Web3.",
       "category": "development",
       "source": {
         "type": "local",
         "path": "./plugins/weavatrix"
       },
-      "version": "1.16.1",
+      "version": "1.16.2",
       "author": {
         "name": "Sergii Ziborov"
       },

@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## 1.16.2 - 2026-09-19
+
+- Engine `weavatrix-rust` 2.16.2. Agent schema impact treats the first
+  AFTER-only enum as a breaking restriction; skill consumers stay inside
+  the tool’s package root. READMEs name the questions the 64 operations
+  actually answer (n8n, Dify, Agent catalogs, Mermaid, Web3).
+
 ## 1.16.1 - 2026-09-17
 
 - Engine `weavatrix-rust` 2.16.1. Session retarget no longer clones the

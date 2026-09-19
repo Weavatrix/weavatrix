@@ -12,15 +12,20 @@ Part of the [Weavatrix ecosystem](https://weavatrix.com/ecosystem): evidence inf
 
 **Give your coding agent repository evidence before it starts guessing.**
 
-Weavatrix is the native MCP product for repository intelligence. It gives
-Codex, Claude Code, and other coding agents 64 read-only operations over one
-revision-bound evidence graph: impact, architecture, APIs, Git history,
-duplicates, dead code, search, semantic links, temporal memory, exported
-n8n workflows, Dify YAML apps (`n8n_*` / `dify_*`), Agent
-Plugins/Skills/MCP catalogs (`agent_*`), Mermaid flowcharts
-(`diagram_*`), and Web3 ABI/consumer impact (`web3_*`). Those parsers are
-domains on Weavatrix Core, not new MCP products. Dedicated
-pages: [n8n](https://weavatrix.com/n8n) · [Dify](https://weavatrix.com/dify) ·
+Weavatrix is the native MCP product that answers the questions agents
+otherwise invent: what breaks if this file changes, who consumes this n8n
+field, whether an MCP schema still accepts yesterday’s request, which
+viem call sites follow an ABI layout change, and whether
+`.weavatrix/architecture.json` still holds. **64 read-only operations**,
+one revision-bound graph, no LSP and no prompt pack.
+
+Codex, Claude Code, Cursor, and Grok get impact, architecture, APIs, Git
+history, duplicates, dead code, search, semantic links, temporal memory,
+exported n8n workflows (`n8n_*`), Dify YAML apps (`dify_*`), Agent
+Plugins/Skills/MCP catalogs (`agent_*`), Mermaid flowcharts (`diagram_*`),
+and Web3 ABI/consumer impact (`web3_*`). Those parsers are domains on
+Weavatrix Core, not new MCP products. Dedicated pages:
+[n8n](https://weavatrix.com/n8n) · [Dify](https://weavatrix.com/dify) ·
 [parsers](https://weavatrix.com/parsers).
 
 It does not answer from a larger grep or an invented confidence score. Every
@@ -75,7 +80,7 @@ The same source is distributed in two forms:
 | Distribution | Install | Best for |
 | --- | --- | --- |
 | `weavatrix` on crates.io | `cargo install weavatrix` | Rust-first environments and source builds |
-| `weavatrix` on npm | `npx -y weavatrix@1.16.1 mcp <repo>` | Ready-made cross-platform binaries without a Rust toolchain |
+| `weavatrix` on npm | `npx -y weavatrix@1.16.2 mcp <repo>` | Ready-made cross-platform binaries without a Rust toolchain |
 
 The npm package exists for convenience; it does not contain a different
 JavaScript engine. Both distributions run the same native adapter and the same
@@ -189,7 +194,7 @@ process cwd — and avoid running both a user MCP and the plugin at once:
   "mcpServers": {
     "weavatrix": {
       "command": "npx",
-      "args": ["-y", "weavatrix@1.16.1", "mcp", "${workspaceFolder}"]
+      "args": ["-y", "weavatrix@1.16.2", "mcp", "${workspaceFolder}"]
     }
   }
 }
@@ -198,14 +203,14 @@ process cwd — and avoid running both a user MCP and the plugin at once:
 Profiles expose bounded views of the same engine:
 
 ```sh
-npx -y weavatrix@1.16.1 mcp . --profile=all
-npx -y weavatrix@1.16.1 mcp . --profile=code
-npx -y weavatrix@1.16.1 mcp . --profile=seo
-npx -y weavatrix@1.16.1 mcp . --profile=n8n
-npx -y weavatrix@1.16.1 mcp . --profile=dify
-npx -y weavatrix@1.16.1 mcp . --profile=agent
-npx -y weavatrix@1.16.1 mcp . --profile=diagram
-npx -y weavatrix@1.16.1 mcp . --profile=web3
+npx -y weavatrix@1.16.2 mcp . --profile=all
+npx -y weavatrix@1.16.2 mcp . --profile=code
+npx -y weavatrix@1.16.2 mcp . --profile=seo
+npx -y weavatrix@1.16.2 mcp . --profile=n8n
+npx -y weavatrix@1.16.2 mcp . --profile=dify
+npx -y weavatrix@1.16.2 mcp . --profile=agent
+npx -y weavatrix@1.16.2 mcp . --profile=diagram
+npx -y weavatrix@1.16.2 mcp . --profile=web3
 ```
 
 The npm package contains native binaries for Windows x64/arm64, macOS
@@ -233,6 +238,17 @@ still wins.
 `structuredContent` would otherwise see an empty result. `text` returns the
 concise text block alone.
 
+### What the new domains actually answer
+
+| Ask | Tool | Honest limit |
+| --- | --- | --- |
+| Will this MCP schema still accept yesterday’s request? | `agent_change_impact` | `string` → `integer` is incompatible. A missing tool in a partial catalog is `unconfirmed`, not removed. |
+| Who calls this ABI after an event layout change? | `web3_impact` | Comment/string “calls” are not consumers. ABI equality is not a live deployment. |
+| Who reads this field in an exported n8n workflow? | `n8n_trace` | Secrets stay off the graph. |
+| Which Dify nodes consume `start_node.query`? | `dify_trace` | Conversation variables are directed edges, not string presence. |
+| Does this Mermaid arrow prove a code call? | `diagram_*` | Arrows are `declared_architecture`, never `Calls`. |
+| Does `.weavatrix/architecture.json` still hold? | `verify_architecture` | Unknown rules fail closed. |
+
 ## What an agent can ask
 
 ```text
@@ -249,6 +265,9 @@ Suggest internal links without mixing inferred SEO relationships into
 the deterministic code graph.
 If I change the email recipient in this exported n8n workflow, who reads it?
 If I change start_node.query in this Dify YAML, which nodes consume it?
+Did this MCP catalog make `id` an integer so old string requests fail?
+Which viem `decodeEventLog` sites still assume the old Deposit layout?
+Is this Mermaid arrow a real call, or only declared architecture?
 ```
 
 The graph is built once per revision. Impact, API traces, health findings,
@@ -415,7 +434,7 @@ agent stays on the repository revision. It does not log into n8n.
   and `$env` values stay off the default graph and context.
 
 ```sh
-npx -y weavatrix@1.16.1 mcp . --profile=n8n
+npx -y weavatrix@1.16.2 mcp . --profile=n8n
 ```
 
 ### Dify (shipped in 1.13.0)
@@ -440,7 +459,7 @@ call the Dify console.
   inventory and context.
 
 ```sh
-npx -y weavatrix@1.16.1 mcp . --profile=dify
+npx -y weavatrix@1.16.2 mcp . --profile=dify
 ```
 
 ### Agent packages (shipped in 1.14.0)
@@ -454,7 +473,7 @@ snapshots stayed compatible. The agent does not launch commands, and
 `allowed-tools` is not a grant.
 
 ```sh
-npx -y weavatrix@1.16.1 mcp . --profile=agent
+npx -y weavatrix@1.16.2 mcp . --profile=agent
 ```
 
 ### Mermaid diagrams (shipped in 1.14.0)
@@ -468,7 +487,7 @@ Name match is not exact. `change_impact.documentation` is separate from
 production impact.
 
 ```sh
-npx -y weavatrix@1.16.1 mcp . --profile=diagram
+npx -y weavatrix@1.16.2 mcp . --profile=diagram
 ```
 
 ### Web3 integration (shipped in 1.15.0)
@@ -482,7 +501,7 @@ ABI equality is not a live deployment proof. The engine does not compile
 contracts, call RPC, or open a wallet.
 
 ```sh
-npx -y weavatrix@1.16.1 mcp . --profile=web3
+npx -y weavatrix@1.16.2 mcp . --profile=web3
 ```
 
 ### Compared with adjacent tools
@@ -535,11 +554,11 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.16.1
+weavatrix 1.16.2
     profile catalog · session refresh · filesystem watcher · MCP framing
     |
     v
-weavatrix-rust 2.16.1
+weavatrix-rust 2.16.2
     typed graph · analysis pipeline · 64 product operations including n8n, Dify, agent packages, Mermaid, and Web3
     |
     +-- weavatrix-scan      repository discovery and selection
