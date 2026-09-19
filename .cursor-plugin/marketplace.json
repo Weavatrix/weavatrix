@@ -6,14 +6,14 @@
   },
   "metadata": {
     "description": "64 read-only MCP tools: impact, architecture, n8n, Dify, Agent catalogs, Mermaid, Web3",
-    "version": "1.16.2"
+    "version": "1.16.3"
   },
   "plugins": [
     {
       "name": "weavatrix",
       "source": "plugins/weavatrix",
       "description": "64 read-only MCP tools: impact, architecture, APIs, n8n, Dify, Agent catalogs, Mermaid, and Web3.",
-      "version": "1.16.2",
+      "version": "1.16.3",
       "author": {
         "name": "Sergii Ziborov",
         "email": "sergii.ziborov@gmail.com"

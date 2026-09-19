@@ -136,7 +136,7 @@ and Markdown/MDX fences. Not a renderer.
 
 ## Web3 integration
 
-Requires engine `weavatrix-rust` 2.16.2. ABI JSON, supplied solc/Foundry
+Requires engine `weavatrix-rust` 2.16.3. ABI JSON, supplied solc/Foundry
 artifacts, and static viem/wagmi consumers. Not a compiler, RPC, or wallet.
 ABI equality is not a deployment proof.
 

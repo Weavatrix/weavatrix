@@ -14,7 +14,7 @@
         "type": "local",
         "path": "./plugins/weavatrix"
       },
-      "version": "1.16.2",
+      "version": "1.16.3",
       "author": {
         "name": "Sergii Ziborov"
       },

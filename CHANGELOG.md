@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 1.16.3 - 2026-09-19
+
+- Engine `weavatrix-rust` 2.16.3. Skills, MCP text, and the evidence model
+  say `coverage_map` only ingests a report. Weavatrix Quality writes
+  `.weavatrix/coverage/lcov.info`. A missing report is unmeasured, not 0%.
+
 ## 1.16.2 - 2026-09-19
 
 - Engine `weavatrix-rust` 2.16.2. Agent schema impact treats the first
