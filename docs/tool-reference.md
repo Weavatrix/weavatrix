@@ -44,7 +44,10 @@ schemas returned by `tools/list` are the authoritative machine contract.
 - `find_dead_code`: review candidates with entry-point, test, configuration,
   dynamic, and external-use classification.
 - `run_audit`: dependency, runtime, graph, and capability health.
-- `coverage_map`: measured coverage attached to graph nodes.
+- `coverage_map`: ingest LCOV, Istanbul, Tarpaulin JSON, or LLVM coverage
+  onto graph nodes. The MCP tool does not run tests. Weavatrix Quality
+  `quality_run` writes `.weavatrix/coverage/lcov.info`. Absence is
+  unmeasured plus labeled static reachability, never a 0% or 100% claim.
 - `hot_path_review`: high-connectivity and high-change review targets.
 
 These operations do not delete code or convert a missing artifact into a clean

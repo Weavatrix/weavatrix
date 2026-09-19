@@ -1,29 +1,69 @@
 # `coverage_map`
 
-Measured coverage discovery or explicit static reachability.
+Ingest a measured coverage report and hang it on graph nodes. This is not a
+test runner.
 
-## When to use
+## Do not get lost
 
-Attach measured coverage reports to graph nodes and keep static reachability separately labeled.
+| Product | Job |
+| --- | --- |
+| Weavatrix Quality (`quality_run` / `wvq run`) | **Build** the report with the project's own frozen runner and write `.weavatrix/coverage/lcov.info`. |
+| Weavatrix `coverage_map` | **Ingest** a report that already exists. Never spawn `cargo test`, Vitest, Jest, Bun, Go, or Playwright. |
 
-A missing measured report must not be described as clean coverage.
+Call Quality first when you need measured numbers. Then call `coverage_map`.
+Calling `coverage_map` alone on a repository that has no report is a successful
+empty ingest: `measured_coverage.present = false`, plus separately labeled
+static reachability. That is not 0% and not 100%.
 
-## Inputs
+Cortex Loom "coverage certificates" are packet facts. They are not line
+coverage and they do not feed this tool.
 
-- `output_format` ("text" | "json" | "structured", default "json") — text returns the concise text block only; json returns structured output and mirrors it into text for clients that read only content; structured drops that mirror, which is the larger copy, and is safe only where the client reads structuredContent.
-- `path` (string).
-- `top_n` (integer, min 0).
+## Search paths (first file wins)
 
-## Minimal call
+1. `lcov.info`
+2. `coverage/lcov.info`
+3. `.weavatrix/coverage/lcov.info` — the path Quality publishes
+4. `tarpaulin-report.json`
+5. `target/tarpaulin/tarpaulin-report.json`
+6. `target/llvm-cov/coverage.json`
+7. `coverage/coverage-final.json`
 
-```json
-{
-  "name": "coverage_map",
-  "arguments": {
-    "output_format": "text"
-  }
-}
-```
+## Arguments
 
-Use `output_format:"text"` for compact agent interaction. The live MCP
-`tools/list` schema remains authoritative for this installed version.
+- `path` — substring filter on report file paths
+- `top_n` — cap the returned file list
+
+## How to read the reply
+
+- `measured_coverage.present = true` — a report was parsed. `report` is the
+  repository-relative path. `source` states that Weavatrix did not execute
+  tests.
+- `measured_coverage.present = false` — none of the search paths existed.
+  `files` is empty. `static_reachability` may still list likely tests. The
+  `warning` field repeats that this is not measured coverage.
+- `status: COMPLETE` with `present = false` is not a green coverage gate.
+
+## Quality builds the report
+
+Weavatrix Quality does not invent a second test stack. Discovery uses what
+the repository already has:
+
+- Rust: `cargo llvm-cov` when that Cargo subcommand exists (skipped on
+  `windows-gnu`, which lacks `profiler_builtins`), else `cargo tarpaulin`,
+  else plain `cargo test` (no measured report).
+- JavaScript/TypeScript: Vitest with an already-declared coverage provider,
+  else Jest `--coverage`, else Bun `--coverage`. Playwright is used only
+  when no other JS runner owns the package.
+- Go: the registered `go-test` coverprofile is normalized and then published
+  as LCOV on the Weavatrix search path.
+
+Policy bindings may still say `cargo-test`. Discovery may upgrade the spawn
+to `cargo-llvm-cov` or `cargo-tarpaulin`. Mutation stays on `cargo-test` so
+each mutant is not measured as if it were a coverage run.
+
+## Agent sequence
+
+1. `quality_run` (or `wvq run`) on the same repository, **or** place one of
+   the files above yourself.
+2. `coverage_map` (optionally `path` / `top_n`).
+3. Treat `present = false` as "unmeasured", not as "uncovered" or "safe".

@@ -38,7 +38,12 @@ contracts. Do not call it merely because the server is available.
   `web3_trace` / `web3_impact` / `web3_context` for supplied ABI,
   artifacts, and static viem/wagmi consumers. Those paths are static graph
   evidence, not a live n8n, Dify, MCP, Mermaid, or blockchain runtime.
-5. Use repository-native tests or benchmarks for behavioral proof.
+5. Use repository-native tests or benchmarks for behavioral proof. For
+   measured line coverage, run Weavatrix Quality `quality_run` so it writes
+   `.weavatrix/coverage/lcov.info`, then call `coverage_map`. Do not start
+   with `coverage_map` — it never runs tests. A missing report is
+   unmeasured, not 0%. See
+   [references/tools/coverage_map.md](references/tools/coverage_map.md).
 
 Do not call `open_repo` "just in case". Cross-repository tools take explicit
 roots in their arguments. Multi-root retarget requires launching with
@@ -58,6 +63,7 @@ audit and coverage results.
 - Keep source spans, graph revision, relation type, extractor, and confidence
   attached to findings.
 - Treat static reachability and audit output as candidates, not runtime proof.
+  `coverage_map` is an ingest. Quality builds the LCOV file.
 - Preserve exact transport identity; do not merge Kafka, AMQP/RabbitMQ, NATS,
   SNS/SQS, JMS, GraphQL, and gRPC evidence because operation names match.
 - The core is local, offline, and read-only. Use `weavatrix-refactor` only for

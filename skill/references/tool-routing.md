@@ -44,7 +44,7 @@ cannot silently switch to another repository. Pass an explicit
 - [`find_duplicates`](tools/find_duplicates.md) — Deterministic Type-1/2/3 clone families.
 - [`find_dead_code`](tools/find_dead_code.md) — Conservative unreferenced-symbol review queue.
 - [`run_audit`](tools/run_audit.md) — Repository structure and evidence completeness audit.
-- [`coverage_map`](tools/coverage_map.md) — Measured coverage discovery or explicit static reachability.
+- [`coverage_map`](tools/coverage_map.md) — Ingest a report Quality already built. Does not run tests. Missing report is unmeasured, not 0%.
 - [`hot_path_review`](tools/hot_path_review.md) — Rank functions by static complexity times resolved call fan-in.
 - [`perf_attribution`](tools/perf_attribution.md) — Correlate a measurement series with the declarations that changed between the revisions that produced it.
 - [`get_architecture_contract`](tools/get_architecture_contract.md) — Read or preview the local target-architecture contract.

@@ -47,8 +47,10 @@ truncated, or error. `UNKNOWN` is not a fallback result.
 ## Coverage
 
 `coverage_map` ingests measured LCOV, Istanbul, Tarpaulin JSON, and LLVM
-coverage. Static reachability may identify likely affected tests but is never
-labelled measured coverage.
+coverage. It does not execute tests. Weavatrix Quality `quality_run` builds
+`.weavatrix/coverage/lcov.info` with the project's native runner. Static
+reachability may identify likely affected tests but is never labelled
+measured coverage.
 
 Artifact absence cannot become a zero-risk or fully-covered conclusion.
 
