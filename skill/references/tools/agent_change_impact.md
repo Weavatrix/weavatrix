@@ -7,7 +7,11 @@ adapter compensation, and declared consumers.
 
 After adding `before` and `after` catalog JSON files to the repository. A
 known inject transform can keep one exposure compatible while the upstream
-required list grew. Incomplete pagination is not a deletion.
+required list grew. Incomplete pagination is not a deletion. Verdicts are
+a supported-subset proof: unsupported keywords stay `undetermined`. A
+boolean `enum: [true, false]` is not a restriction. `integer` to
+`number` is a widening. Duplicate tool labels are `ambiguous-identity`.
+Skill hits are declared `allowed-tools`, not proven calls.
 
 ## Inputs
 

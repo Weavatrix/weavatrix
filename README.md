@@ -80,7 +80,7 @@ The same source is distributed in two forms:
 | Distribution | Install | Best for |
 | --- | --- | --- |
 | `weavatrix` on crates.io | `cargo install weavatrix` | Rust-first environments and source builds |
-| `weavatrix` on npm | `npx -y weavatrix@1.16.3 mcp <repo>` | Ready-made cross-platform binaries without a Rust toolchain |
+| `weavatrix` on npm | `npx -y weavatrix@1.16.4 mcp <repo>` | Ready-made cross-platform binaries without a Rust toolchain |
 
 The npm package exists for convenience; it does not contain a different
 JavaScript engine. Both distributions run the same native adapter and the same
@@ -194,7 +194,7 @@ process cwd — and avoid running both a user MCP and the plugin at once:
   "mcpServers": {
     "weavatrix": {
       "command": "npx",
-      "args": ["-y", "weavatrix@1.16.3", "mcp", "${workspaceFolder}"]
+      "args": ["-y", "weavatrix@1.16.4", "mcp", "${workspaceFolder}"]
     }
   }
 }
@@ -203,14 +203,14 @@ process cwd — and avoid running both a user MCP and the plugin at once:
 Profiles expose bounded views of the same engine:
 
 ```sh
-npx -y weavatrix@1.16.3 mcp . --profile=all
-npx -y weavatrix@1.16.3 mcp . --profile=code
-npx -y weavatrix@1.16.3 mcp . --profile=seo
-npx -y weavatrix@1.16.3 mcp . --profile=n8n
-npx -y weavatrix@1.16.3 mcp . --profile=dify
-npx -y weavatrix@1.16.3 mcp . --profile=agent
-npx -y weavatrix@1.16.3 mcp . --profile=diagram
-npx -y weavatrix@1.16.3 mcp . --profile=web3
+npx -y weavatrix@1.16.4 mcp . --profile=all
+npx -y weavatrix@1.16.4 mcp . --profile=code
+npx -y weavatrix@1.16.4 mcp . --profile=seo
+npx -y weavatrix@1.16.4 mcp . --profile=n8n
+npx -y weavatrix@1.16.4 mcp . --profile=dify
+npx -y weavatrix@1.16.4 mcp . --profile=agent
+npx -y weavatrix@1.16.4 mcp . --profile=diagram
+npx -y weavatrix@1.16.4 mcp . --profile=web3
 ```
 
 The npm package contains native binaries for Windows x64/arm64, macOS
@@ -438,7 +438,7 @@ agent stays on the repository revision. It does not log into n8n.
   and `$env` values stay off the default graph and context.
 
 ```sh
-npx -y weavatrix@1.16.3 mcp . --profile=n8n
+npx -y weavatrix@1.16.4 mcp . --profile=n8n
 ```
 
 ### Dify (shipped in 1.13.0)
@@ -463,7 +463,7 @@ call the Dify console.
   inventory and context.
 
 ```sh
-npx -y weavatrix@1.16.3 mcp . --profile=dify
+npx -y weavatrix@1.16.4 mcp . --profile=dify
 ```
 
 ### Agent packages (shipped in 1.14.0)
@@ -473,11 +473,13 @@ Local plugin, skill, catalog, and observation files → `agent_inventory`,
 
 Use this when the question is about a package already in git: which catalog
 tools a plugin exposes, which MCP config binds a server, whether two catalog
-snapshots stayed compatible. The agent does not launch commands, and
-`allowed-tools` is not a grant.
+snapshots stayed compatible on the supported schema subset. Unsupported
+keywords stay `undetermined`. Duplicate tool labels are
+`ambiguous-identity`. The agent does not launch commands, and
+`allowed-tools` is a declaration, not a proven call.
 
 ```sh
-npx -y weavatrix@1.16.3 mcp . --profile=agent
+npx -y weavatrix@1.16.4 mcp . --profile=agent
 ```
 
 ### Mermaid diagrams (shipped in 1.14.0)
@@ -491,7 +493,7 @@ Name match is not exact. `change_impact.documentation` is separate from
 production impact.
 
 ```sh
-npx -y weavatrix@1.16.3 mcp . --profile=diagram
+npx -y weavatrix@1.16.4 mcp . --profile=diagram
 ```
 
 ### Web3 integration (shipped in 1.15.0)
@@ -500,12 +502,14 @@ ABI JSON, supplied solc/Foundry artifacts, and static viem/wagmi
 consumers → `web3_inventory`, `web3_trace`, `web3_impact`, `web3_context`.
 
 Use this when a contract interface changed and you need the proven client
-call or decoder sites. An indexed-mask event change can silently misdecode.
-ABI equality is not a live deployment proof. The engine does not compile
-contracts, call RPC, or open a wallet.
+call or decoder sites. Consumers stay on the paired artifact files. A
+missing candidate is `missing_input`, not a removed member. Comment
+properties inside a call object are not the callee. An indexed-mask event
+change can silently misdecode. ABI equality is not a live deployment
+proof. The engine does not compile contracts, call RPC, or open a wallet.
 
 ```sh
-npx -y weavatrix@1.16.3 mcp . --profile=web3
+npx -y weavatrix@1.16.4 mcp . --profile=web3
 ```
 
 ### Compared with adjacent tools
@@ -558,11 +562,11 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.16.3
+weavatrix 1.16.4
     profile catalog · session refresh · filesystem watcher · MCP framing
     |
     v
-weavatrix-rust 2.16.3
+weavatrix-rust 2.16.4
     typed graph · analysis pipeline · 64 product operations including n8n, Dify, agent packages, Mermaid, and Web3
     |
     +-- weavatrix-scan      repository discovery and selection
@@ -577,6 +581,9 @@ This repository owns the MCP transport, watcher, native npm packaging, and
 client-facing identity `weavatrix`. The
 [`weavatrix-rust`](https://github.com/Weavatrix/weavatrix-rust) crate owns
 the reusable engine and standalone diagnostic CLI; it is not an MCP server.
+[`weavatrix-stream`](https://github.com/Weavatrix/weavatrix-stream) is a
+separate crate that provides adapters for Weavatrix observations; this
+host does not take a runtime dependency on it.
 Its separate binary therefore reports `weavatrix-rust <engine-version>` from
 `--version`, while this product reports both the `weavatrix` product version
 and its embedded engine version.

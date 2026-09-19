@@ -6,7 +6,9 @@ call site.
 ## When to use
 
 After `web3_inventory`, when a function or event name is not enough: follow
-the exact occurrence to its ABI member and static client binding.
+the exact occurrence to its ABI member and static client binding. `depth`
+is walked from the seed; a cut reports truncation instead of pretending
+the walk finished.
 
 ## Inputs
 

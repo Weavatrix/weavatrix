@@ -7,7 +7,10 @@ deltas, including silent event misdecode risk.
 
 A contract ABI changed and a client still binds an older copy. An indexed
 mask change can decode without throwing. Deployment state stays
-`not_provided` unless a runtime observation was supplied.
+`not_provided` unless a runtime observation was supplied. Consumers stay
+on the paired baseline/candidate files. A missing candidate is
+`missing_input`, not `MEMBER_REMOVED`. Comment properties inside a call
+object are not the callee.
 
 ## Inputs
 

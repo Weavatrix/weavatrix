@@ -97,7 +97,7 @@ runtime, gateway, or policy authority. Requires engine `weavatrix-rust`
 - [`agent_inventory`](tools/agent_inventory.md) — List plugins, skills, MCP bindings, catalog tools, and supplied observations.
 - [`agent_trace`](tools/agent_trace.md) — Declared origin, profile, transport, and package bindings for one identity.
 - [`agent_context`](tools/agent_context.md) — Bounded context; `allowed-tools` is not a grant.
-- [`agent_change_impact`](tools/agent_change_impact.md) — Compare two catalog snapshots; a known inject transform can keep one exposure compatible.
+- [`agent_change_impact`](tools/agent_change_impact.md) — Compare two catalog snapshots on a supported schema subset. Unsupported keywords stay undetermined. Duplicate labels are `ambiguous-identity`. Skill hits are declared `allowed-tools`.
 
 ## Mermaid diagrams
 
@@ -112,9 +112,9 @@ engine `weavatrix-rust` 2.14.3.
 
 Local ABI JSON, supplied solc/Foundry artifacts, and static viem/wagmi
 sources only. Not a compiler, RPC client, or wallet. Requires engine
-`weavatrix-rust` 2.16.3.
+`weavatrix-rust` 2.16.4.
 
-- [`web3_inventory`](tools/web3_inventory.md) — List ABIs, artifacts, and static consumers.
-- [`web3_trace`](tools/web3_trace.md) — Walk proven ABI, artifact, and consumer bindings.
-- [`web3_impact`](tools/web3_impact.md) — Interface deltas and consumer-specific effects, including silent event misdecode.
+- [`web3_inventory`](tools/web3_inventory.md) — List ABIs, artifacts, and static consumers. Truncation is reported.
+- [`web3_trace`](tools/web3_trace.md) — Walk the requested depth from the seed. A cut reports truncation.
+- [`web3_impact`](tools/web3_impact.md) — Interface deltas on the paired files. A missing candidate is `missing_input`. Comment properties are not the callee.
 - [`web3_context`](tools/web3_context.md) — Bounded fragments plus explicit deployment gaps.

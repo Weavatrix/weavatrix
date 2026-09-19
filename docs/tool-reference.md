@@ -122,8 +122,10 @@ observation files only. Not a plugin runtime or policy authority.
 - `agent_inventory`: plugins, skills, MCP bindings, catalog tools, observations.
 - `agent_trace`: declared origin and package bindings for one identity.
 - `agent_context`: bounded context; `allowed-tools` is not a grant.
-- `agent_change_impact`: compare two catalog snapshots; a known inject
-  transform can keep one exposure compatible.
+- `agent_change_impact`: compare two catalog snapshots on a supported
+  schema subset. Unsupported keywords stay undetermined. Duplicate tool
+  labels are `ambiguous-identity`. Skill hits are declared
+  `allowed-tools`, not proven calls.
 
 ## Mermaid diagrams
 
@@ -136,13 +138,17 @@ and Markdown/MDX fences. Not a renderer.
 
 ## Web3 integration
 
-Requires engine `weavatrix-rust` 2.16.3. ABI JSON, supplied solc/Foundry
+Requires engine `weavatrix-rust` 2.16.4. ABI JSON, supplied solc/Foundry
 artifacts, and static viem/wagmi consumers. Not a compiler, RPC, or wallet.
 ABI equality is not a deployment proof.
 
 - `web3_inventory`: artifacts, ABI members, and static consumers.
-- `web3_trace`: proven ABI, artifact, and consumer bindings.
-- `web3_impact`: interface deltas, including silent event misdecode risk.
+  Truncation is reported when a section hits its bound.
+- `web3_trace`: walks the requested depth from the seed. A cut reports
+  truncation.
+- `web3_impact`: interface deltas scoped to the paired artifact files. A
+  missing candidate is `missing_input`, not `MEMBER_REMOVED`. Comment
+  properties inside a call object are not the callee.
 - `web3_context`: fragments plus explicit deployment and history gaps.
 
 ## Common arguments and results

@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+## 1.16.4 - 2026-09-19
+
+- Engine `weavatrix-rust` 2.16.4. Agent schema impact keeps enum values
+  and numeric bounds without CSV/i64 collapse. Unsupported keywords stay
+  `undetermined`. Duplicate tool labels are `ambiguous-identity`. Skill
+  hits stay declared `allowed-tools`. Web3 impact scopes consumers to the
+  paired files; a missing candidate is `missing_input`. `web3_trace`
+  walks the requested depth. Skills and READMEs state the same limits.
+
 ## 1.16.3 - 2026-09-19
 
 - Engine `weavatrix-rust` 2.16.3. Skills, MCP text, and the evidence model

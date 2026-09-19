@@ -58,7 +58,7 @@ weavatrix mcp .
 ```toml
 [mcp_servers.weavatrix]
 command = "npx"
-args = ["-y", "weavatrix@1.16.3", "mcp", "."]
+args = ["-y", "weavatrix@1.16.4", "mcp", "."]
 ```
 
 Pass an absolute repository path when the Codex process cwd is not the project
@@ -67,7 +67,7 @@ you intend to analyze.
 ### Claude Code
 
 ```sh
-claude mcp add weavatrix -- npx -y weavatrix@1.16.3 mcp .
+claude mcp add weavatrix -- npx -y weavatrix@1.16.4 mcp .
 ```
 
 ### Cursor
@@ -80,7 +80,7 @@ the plugin for the same server name:
   "mcpServers": {
     "weavatrix": {
       "command": "npx",
-      "args": ["-y", "weavatrix@1.16.3", "mcp", "${workspaceFolder}"]
+      "args": ["-y", "weavatrix@1.16.4", "mcp", "${workspaceFolder}"]
     }
   }
 }
@@ -89,14 +89,14 @@ the plugin for the same server name:
 Profiles expose bounded views of the same engine:
 
 ```sh
-npx -y weavatrix@1.16.3 mcp . --profile=all
-npx -y weavatrix@1.16.3 mcp . --profile=code
-npx -y weavatrix@1.16.3 mcp . --profile=seo
-npx -y weavatrix@1.16.3 mcp . --profile=n8n
-npx -y weavatrix@1.16.3 mcp . --profile=dify
-npx -y weavatrix@1.16.3 mcp . --profile=agent
-npx -y weavatrix@1.16.3 mcp . --profile=diagram
-npx -y weavatrix@1.16.3 mcp . --profile=web3
+npx -y weavatrix@1.16.4 mcp . --profile=all
+npx -y weavatrix@1.16.4 mcp . --profile=code
+npx -y weavatrix@1.16.4 mcp . --profile=seo
+npx -y weavatrix@1.16.4 mcp . --profile=n8n
+npx -y weavatrix@1.16.4 mcp . --profile=dify
+npx -y weavatrix@1.16.4 mcp . --profile=agent
+npx -y weavatrix@1.16.4 mcp . --profile=diagram
+npx -y weavatrix@1.16.4 mcp . --profile=web3
 ```
 
 The package contains native binaries for Windows x64/arm64, macOS x64/arm64,
@@ -235,10 +235,6 @@ instead of being decoded into garbage.
 | Change impact | `get_dependents`, `change_impact`, `select_tests`, `verified_change`, `prepare_change`, `graph_diff` |
 | Exact source context | `search_code`, `read_source`, `inspect_symbol`, `go_to_definition`, `find_references`, `context_bundle`, `map_stacktrace` |
 | Health and quality | `find_duplicates`, `find_dead_code`, `run_audit`, `coverage_map`, `hot_path_review`, `perf_attribution` |
-
-Need measured coverage from this MCP host? Run Weavatrix Quality first, then
-`coverage_map`. The host will not invent percentages from an empty search
-path. Quality publishes `.weavatrix/coverage/lcov.info`.
 | APIs and transports | `list_endpoints`, `trace_endpoint`, `trace_api_contract` |
 | Architecture | `get_architecture_contract`, `verify_architecture`, `verify_capabilities`, `explain_architecture_violation`, `propose_architecture_exception` |
 | Git and repositories | `git_history`, `git_read_blob`, `cross_repo_git`, `open_repo`, `list_known_repos`, `rebuild_graph` |
@@ -252,6 +248,13 @@ path. Quality publishes `.weavatrix/coverage/lcov.info`.
 Every operation is read-only with respect to the analyzed repository.
 Pagination and explicit limits bound large neighborhoods, histories, searches,
 and contract inventories.
+
+Need measured coverage? Run Weavatrix Quality first, then `coverage_map`.
+The host will not invent percentages from an empty search path. Quality
+publishes `.weavatrix/coverage/lcov.info`. Agent schema verdicts are a
+supported-subset proof: unsupported keywords stay `undetermined`, and
+skill hits are declared `allowed-tools`. Web3 consumers stay on the
+paired files; a missing candidate is `missing_input`.
 
 ## 24 repository surfaces
 
@@ -279,7 +282,7 @@ export in git → existing JSON/YAML parse → typed domain → inventory / trac
 | [Dify](https://weavatrix.com/dify) | `dify_inventory`, `dify_trace`, `dify_context` | Product 1.13.0 |
 | Agent packages | `agent_inventory`, `agent_trace`, `agent_context`, `agent_change_impact` | Product 1.14.0 |
 | Mermaid diagrams | `diagram_inventory`, `diagram_trace`, `diagram_context` | Product 1.14.0 |
-| Web3 integration | `web3_inventory`, `web3_trace`, `web3_impact`, `web3_context` | Product 1.16.3 |
+| Web3 integration | `web3_inventory`, `web3_trace`, `web3_impact`, `web3_context` | Product 1.16.4 |
 
 | Need | Use |
 | --- | --- |
@@ -299,17 +302,20 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.16.3
+weavatrix 1.16.4
     profile catalog · refresh · watcher · MCP framing
     |
     v
-weavatrix-rust 2.16.3
+weavatrix-rust 2.16.4
     typed graph · analysis · 64 product operations including n8n, Dify, agent packages, Mermaid, and Web3
 ```
 
 This npm product owns MCP transport and native distribution. The
 [`weavatrix-rust`](https://github.com/Weavatrix/weavatrix-rust) crate is
 the reusable protocol-independent engine; it is not an MCP server.
+[`weavatrix-stream`](https://github.com/Weavatrix/weavatrix-stream)
+provides adapters for Weavatrix observations; this host does not take a
+runtime dependency on it.
 Its standalone diagnostic therefore reports `weavatrix-rust <engine-version>`,
 while this MCP product reports both its product and embedded-engine identities.
 
