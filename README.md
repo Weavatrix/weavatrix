@@ -16,7 +16,7 @@ Weavatrix is the native MCP product that answers the questions agents
 otherwise invent: what breaks if this file changes, who consumes this n8n
 field, whether an MCP schema still accepts yesterday’s request, which
 viem call sites follow an ABI layout change, and whether
-`.weavatrix/architecture.json` still holds. **64 read-only operations**,
+`.weavatrix/architecture.json` still holds. **67 read-only operations**,
 one revision-bound graph, no LSP and no prompt pack.
 
 Codex, Claude Code, Cursor, and Grok get impact, architecture, APIs, Git
@@ -47,7 +47,7 @@ with the engine crate for the same README story.
 | GitNexus / CodeGraph daemons | A long-lived graph service beside the IDE | You want the published native binary, no extra database process |
 
 The host’s unique job is transport: profiles, watching, npm/crate
-distributions, and the 64-tool catalog over one engine session. Measured
+distributions, and the 67-tool catalog over one engine session. Measured
 engine times live in
 [weavatrix-rust benchmarks](https://github.com/Weavatrix/weavatrix-rust/blob/main/docs/benchmarks.md),
 not here.
@@ -80,7 +80,7 @@ The same source is distributed in two forms:
 | Distribution | Install | Best for |
 | --- | --- | --- |
 | `weavatrix` on crates.io | `cargo install weavatrix` | Rust-first environments and source builds |
-| `weavatrix` on npm | `npx -y weavatrix@1.16.4 mcp <repo>` | Ready-made cross-platform binaries without a Rust toolchain |
+| `weavatrix` on npm | `npx -y weavatrix@1.17.0 mcp <repo>` | Ready-made cross-platform binaries without a Rust toolchain |
 
 The npm package exists for convenience; it does not contain a different
 JavaScript engine. Both distributions run the same native adapter and the same
@@ -194,7 +194,7 @@ process cwd — and avoid running both a user MCP and the plugin at once:
   "mcpServers": {
     "weavatrix": {
       "command": "npx",
-      "args": ["-y", "weavatrix@1.16.4", "mcp", "${workspaceFolder}"]
+      "args": ["-y", "weavatrix@1.17.0", "mcp", "${workspaceFolder}"]
     }
   }
 }
@@ -203,14 +203,14 @@ process cwd — and avoid running both a user MCP and the plugin at once:
 Profiles expose bounded views of the same engine:
 
 ```sh
-npx -y weavatrix@1.16.4 mcp . --profile=all
-npx -y weavatrix@1.16.4 mcp . --profile=code
-npx -y weavatrix@1.16.4 mcp . --profile=seo
-npx -y weavatrix@1.16.4 mcp . --profile=n8n
-npx -y weavatrix@1.16.4 mcp . --profile=dify
-npx -y weavatrix@1.16.4 mcp . --profile=agent
-npx -y weavatrix@1.16.4 mcp . --profile=diagram
-npx -y weavatrix@1.16.4 mcp . --profile=web3
+npx -y weavatrix@1.17.0 mcp . --profile=all
+npx -y weavatrix@1.17.0 mcp . --profile=code
+npx -y weavatrix@1.17.0 mcp . --profile=seo
+npx -y weavatrix@1.17.0 mcp . --profile=n8n
+npx -y weavatrix@1.17.0 mcp . --profile=dify
+npx -y weavatrix@1.17.0 mcp . --profile=agent
+npx -y weavatrix@1.17.0 mcp . --profile=diagram
+npx -y weavatrix@1.17.0 mcp . --profile=web3
 ```
 
 The npm package contains native binaries for Windows x64/arm64, macOS
@@ -349,7 +349,7 @@ Three commits before `ec8bf30` this package was 1.9.2; the agent reads that
 follow-up to a diff without touching the worktree. Binary blobs fail closed
 instead of being decoded into garbage.
 
-## The 64 read-only operations
+## The 67 read-only operations
 
 | Workflow | Operations |
 | --- | --- |
@@ -358,11 +358,9 @@ instead of being decoded into garbage.
 | Exact source context | `search_code`, `read_source`, `inspect_symbol`, `go_to_definition`, `find_references`, `context_bundle`, `map_stacktrace` |
 | Health and quality | `find_duplicates`, `find_dead_code`, `run_audit`, `coverage_map`, `hot_path_review`, `perf_attribution` |
 
-`coverage_map` is an ingest, not a test runner. Pair it with Weavatrix
-Quality `quality_run`, which writes `.weavatrix/coverage/lcov.info` onto
-the engine search path. A missing report is unmeasured, not 0%.
 | APIs and transports | `list_endpoints`, `trace_endpoint`, `trace_api_contract` |
-| Architecture | `get_architecture_contract`, `verify_architecture`, `verify_capabilities`, `explain_architecture_violation`, `propose_architecture_exception` |
+| Architecture | `architecture_inventory`, `get_architecture_contract`, `verify_architecture`, `verify_capabilities`, `explain_architecture_violation`, `propose_architecture_exception` |
+| Local CI | `ci_restrictions`, `explain_restriction` |
 | Git and repositories | `git_history`, `git_read_blob`, `cross_repo_git`, `open_repo`, `list_known_repos`, `rebuild_graph` |
 | Native extensions | `vector_search`, `semantic_link`, `seo_link_suggestions`, `memory_context` |
 | n8n workflows | `n8n_inventory`, `n8n_trace`, `n8n_context` |
@@ -371,9 +369,20 @@ the engine search path. A missing report is unmeasured, not 0%.
 | Mermaid diagrams | `diagram_inventory`, `diagram_trace`, `diagram_context` |
 | Web3 integration | `web3_inventory`, `web3_trace`, `web3_impact`, `web3_context` |
 
+`coverage_map` is an ingest, not a test runner. Pair it with Weavatrix
+Quality `quality_run`, which writes `.weavatrix/coverage/lcov.info` onto
+the engine search path. A missing report is unmeasured, not 0%.
+
 Every operation is read-only with respect to the analyzed repository.
 Pagination and explicit limits bound large neighborhoods, histories, searches,
 and contract inventories.
+
+`architecture_inventory` describes observed components without assigning an
+architecture style. `ci_restrictions` reads local GitHub Actions workflows and
+recognizes literal checks, with optional event, base branch, and changed-path
+scenario. `explain_restriction` retrieves one finding. Dynamic conditions,
+actual runs, and remote required checks remain unknown until separate evidence
+is supplied; a workflow file alone never establishes a passing gate.
 
 ## Languages and repository surfaces
 
@@ -438,7 +447,7 @@ agent stays on the repository revision. It does not log into n8n.
   and `$env` values stay off the default graph and context.
 
 ```sh
-npx -y weavatrix@1.16.4 mcp . --profile=n8n
+npx -y weavatrix@1.17.0 mcp . --profile=n8n
 ```
 
 ### Dify (shipped in 1.13.0)
@@ -463,7 +472,7 @@ call the Dify console.
   inventory and context.
 
 ```sh
-npx -y weavatrix@1.16.4 mcp . --profile=dify
+npx -y weavatrix@1.17.0 mcp . --profile=dify
 ```
 
 ### Agent packages (shipped in 1.14.0)
@@ -479,7 +488,7 @@ keywords stay `undetermined`. Duplicate tool labels are
 `allowed-tools` is a declaration, not a proven call.
 
 ```sh
-npx -y weavatrix@1.16.4 mcp . --profile=agent
+npx -y weavatrix@1.17.0 mcp . --profile=agent
 ```
 
 ### Mermaid diagrams (shipped in 1.14.0)
@@ -493,7 +502,7 @@ Name match is not exact. `change_impact.documentation` is separate from
 production impact.
 
 ```sh
-npx -y weavatrix@1.16.4 mcp . --profile=diagram
+npx -y weavatrix@1.17.0 mcp . --profile=diagram
 ```
 
 ### Web3 integration (shipped in 1.15.0)
@@ -509,7 +518,7 @@ change can silently misdecode. ABI equality is not a live deployment
 proof. The engine does not compile contracts, call RPC, or open a wallet.
 
 ```sh
-npx -y weavatrix@1.16.4 mcp . --profile=web3
+npx -y weavatrix@1.17.0 mcp . --profile=web3
 ```
 
 ### Compared with adjacent tools
@@ -562,12 +571,12 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.16.4
+weavatrix 1.17.0
     profile catalog · session refresh · filesystem watcher · MCP framing
     |
     v
-weavatrix-rust 2.16.4
-    typed graph · analysis pipeline · 64 product operations including n8n, Dify, agent packages, Mermaid, and Web3
+weavatrix-rust 2.17.0
+    typed graph · analysis pipeline · 67 product operations including local CI, n8n, Dify, agent packages, Mermaid, and Web3
     |
     +-- weavatrix-scan      repository discovery and selection
     +-- weavatrix-parse     lossless tokenization and structural facts

@@ -26,8 +26,10 @@ const toolNames = [
     'agent_context',
     'agent_inventory',
     'agent_trace',
+    'architecture_inventory',
     'build_graph',
     'change_impact',
+    'ci_restrictions',
     'context_bundle',
     'coverage_map',
     'cross_repo_git',
@@ -38,6 +40,7 @@ const toolNames = [
     'dify_inventory',
     'dify_trace',
     'explain_architecture_violation',
+    'explain_restriction',
     'find_dead_code',
     'find_duplicates',
     'find_references',
@@ -152,7 +155,7 @@ test('the plugin skill is the released Weavatrix skill', () => {
         .filter((name) => name.endsWith('.md'))
         .map((name) => name.slice(0, -3))
         .sort()
-    assert.equal(toolNames.length, 64)
+    assert.equal(toolNames.length, 67)
     assert.deepEqual(canonicalCards, toolNames)
     assert.deepEqual(bundledCards, toolNames)
     for (const name of toolNames) {

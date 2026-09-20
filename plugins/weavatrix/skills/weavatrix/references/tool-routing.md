@@ -41,6 +41,9 @@ cannot silently switch to another repository. Pass an explicit
 
 ## Quality and architecture
 
+- [`architecture_inventory`](tools/architecture_inventory.md) — Observed components and typed edges without a style label.
+- [`ci_restrictions`](tools/ci_restrictions.md) — Local GitHub Actions checks and conditional applicability.
+- [`explain_restriction`](tools/explain_restriction.md) — One restriction and its evidence limits.
 - [`find_duplicates`](tools/find_duplicates.md) — Deterministic Type-1/2/3 clone families.
 - [`find_dead_code`](tools/find_dead_code.md) — Conservative unreferenced-symbol review queue.
 - [`run_audit`](tools/run_audit.md) — Repository structure and evidence completeness audit.

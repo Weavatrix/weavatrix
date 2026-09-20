@@ -1,6 +1,6 @@
 # Operation reference
 
-The full native product exposes 64 bounded read-only MCP operations. JSON
+The full native product exposes 67 bounded read-only MCP operations. JSON
 schemas returned by `tools/list` are the authoritative machine contract.
 
 ## Graph and orientation
@@ -62,6 +62,8 @@ result.
 
 ## Architecture
 
+- `architecture_inventory`: observed packages, components, and typed edges
+  without a style label.
 - `get_architecture_contract`: read and validate local architecture policy.
 - `verify_architecture`: dependency, cycle, file, and function budget checks.
 - `verify_capabilities`: declared capabilities resolved against exposed
@@ -69,6 +71,18 @@ result.
 - `explain_architecture_violation`: bounded evidence for one fingerprint.
 - `propose_architecture_exception`: reviewable exception proposal without a
   filesystem write.
+
+## Local CI restrictions
+
+- `ci_restrictions`: local GitHub Actions jobs, steps, `needs`, matrices,
+  artifact references, and literal check invocations. A supplied scenario can
+  narrow event, base branch, and changed paths. Dynamic conditions, shell
+  control flow, actual execution, and remote merge enforcement remain unknown.
+- `explain_restriction`: one finding by stable ID, with source digest and
+  byte span when available. A configured threshold is not a measured result.
+
+Change tools expose `ci_protection` candidates and declared architecture
+rule bindings. They do not infer a passing CI or remote required check.
 
 ## Git and repositories
 

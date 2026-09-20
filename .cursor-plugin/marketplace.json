@@ -5,15 +5,15 @@
     "email": "sergii.ziborov@gmail.com"
   },
   "metadata": {
-    "description": "64 read-only MCP tools: impact, architecture, n8n, Dify, Agent catalogs, Mermaid, Web3",
-    "version": "1.16.4"
+    "description": "67 read-only MCP tools: impact, architecture, n8n, Dify, Agent catalogs, Mermaid, Web3",
+    "version": "1.17.0"
   },
   "plugins": [
     {
       "name": "weavatrix",
       "source": "plugins/weavatrix",
-      "description": "64 read-only MCP tools: impact, architecture, APIs, n8n, Dify, Agent catalogs, Mermaid, and Web3.",
-      "version": "1.16.4",
+      "description": "67 read-only MCP tools: impact, architecture, APIs, n8n, Dify, Agent catalogs, Mermaid, and Web3.",
+      "version": "1.17.0",
       "author": {
         "name": "Sergii Ziborov",
         "email": "sergii.ziborov@gmail.com"

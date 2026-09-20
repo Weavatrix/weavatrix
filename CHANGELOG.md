@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+## 1.17.0 - 2026-09-20
+
+- Update to engine `weavatrix-rust` 2.17.0 and expose 67 read-only operations.
+  The new `ci_restrictions` and `explain_restriction` methods report local
+  GitHub Actions checks and their limits. `architecture_inventory` reports
+  observed structure without a style label. Change reports include CI
+  candidates and declared architecture rule bindings without claiming that
+  a workflow ran or that a remote merge rule requires it.
+
 ## 1.16.4 - 2026-09-19
 
 - Engine `weavatrix-rust` 2.16.4. Agent schema impact keeps enum values

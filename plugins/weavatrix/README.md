@@ -2,7 +2,7 @@
 
 <img src="assets/logo.svg" alt="Weavatrix logo" width="72" align="right">
 
-Weavatrix gives Cursor, Codex, Claude, and Grok Build **64 read-only
+Weavatrix gives Cursor, Codex, Claude, and Grok Build **67 read-only
 operations** over one revision-bound graph. Ask it what breaks if a file
 changes, who consumes an n8n field, whether an MCP schema still accepts
 yesterday’s request, which viem sites follow an ABI layout change, or
@@ -12,10 +12,11 @@ change impact, architecture policy, Git history, duplicates, dead code,
 coverage evidence, vector search, temporal memory, exported n8n workflows
 (`n8n_*`), Dify YAML apps (`dify_*`), Agent Plugins/Skills/MCP catalogs
 (`agent_*`), Mermaid flowcharts (`diagram_*`), and Web3 ABI/consumer
-impact (`web3_*`). See
+impact (`web3_*`), observed architecture (`architecture_inventory`), and local
+GitHub Actions restrictions (`ci_restrictions`, `explain_restriction`). See
 [n8n](https://weavatrix.com/n8n) and [Dify](https://weavatrix.com/dify).
 
-The plugin starts the published `weavatrix@1.16.4` npm package. That package
+The plugin starts the published `weavatrix@1.17.0` npm package. That package
 already contains the matching prebuilt native binaries; it has no lifecycle
 scripts or runtime dependencies. The same release is also available as the
 `weavatrix` crate on crates.io. Node.js 18 or newer is required for the plugin

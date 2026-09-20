@@ -23,12 +23,15 @@ contracts. Do not call it merely because the server is available.
 1. Call `graph_stats` and confirm `repository_context.root` matches the workspace
    you intend. The MCP process is pinned to its launch root; it will not silently
    answer for another repository.
-2. Use `module_map` for orientation or `search_code` for a known literal.
+2. Use `module_map` or `architecture_inventory` for orientation, or
+   `search_code` for a known literal.
 3. Pin decisive evidence with `inspect_symbol`, `go_to_definition`,
    `find_references`, `context_bundle`, or `read_source`.
 4. Expand only when needed: `get_dependents` or `change_impact` for risk,
    `trace_endpoint` or `trace_api_contract` for runtime contracts,
-   `verify_architecture` for policy, `run_audit` for a broad health pass,
+   `verify_architecture` for policy, `ci_restrictions` for local GitHub Actions
+   checks and `explain_restriction` for one finding, `run_audit` for a broad
+   health pass,
    `n8n_inventory` / `n8n_trace` / `n8n_context` for exported n8n
    workflows, and `dify_inventory` / `dify_trace` / `dify_context` for
    exported Dify YAML, and `agent_inventory` / `agent_trace` /

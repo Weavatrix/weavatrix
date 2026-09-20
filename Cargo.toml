@@ -1,9 +1,9 @@
 [package]
 name = "weavatrix"
-version = "1.16.4"
+version = "1.17.0"
 edition = "2024"
 rust-version = "1.89"
-description = "Native MCP server for Weavatrix repository intelligence: 64 read-only evidence, impact, architecture, API, Git, search, semantic, memory, n8n, Dify, agent-package, Mermaid, and Web3 operations"
+description = "Native MCP server for Weavatrix repository intelligence: 67 read-only evidence, impact, architecture, CI, API, Git, search, semantic, memory, n8n, Dify, agent-package, Mermaid, and Web3 operations"
 license = "MIT"
 authors = ["Sergii Ziborov <sergii.ziborov@gmail.com>"]
 homepage = "https://weavatrix.com"
@@ -32,7 +32,7 @@ path = "src/main.rs"
 blazingly-json = "0.1.0"
 mcport = "0.6.1"
 notify = "8.2.0"
-weavatrix-rust = { version = "2.16.4", features = ["full", "lang-rust"] }
+weavatrix-rust = { version = "2.17.0", features = ["full", "lang-rust"] }
 
 [build-dependencies]
 winresource = "0.1.20"
