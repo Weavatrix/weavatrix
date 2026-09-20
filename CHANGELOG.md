@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## 1.17.1 - 2026-09-20
+
+- Correct the installed npm package gate for the expanded 67-operation MCP
+  catalog. Both published distributions use engine `weavatrix-rust` 2.17.0.
+
 ## 1.17.0 - 2026-09-20
 
 - Update to engine `weavatrix-rust` 2.17.0 and expose 67 read-only operations.
