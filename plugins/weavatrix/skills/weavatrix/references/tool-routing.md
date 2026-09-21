@@ -41,7 +41,7 @@ cannot silently switch to another repository. Pass an explicit
 
 ## Quality and architecture
 
-- [`architecture_inventory`](tools/architecture_inventory.md) — Bounded architecture overview by default, with complete edge/cycle-candidate totals; `detail:"full"` gives paged evidence. Explain the overview in prose, not as a JSON dump.
+- [`architecture_inventory`](tools/architecture_inventory.md) — Bounded architecture overview and evidence-bounded style hypotheses by default, with complete edge/cycle-candidate totals; `detail:"full"` gives paged evidence. Explain statuses and witnesses in prose, not as a JSON dump.
 - [`ci_restrictions`](tools/ci_restrictions.md) — Local GitHub Actions checks and conditional applicability.
 - [`explain_restriction`](tools/explain_restriction.md) — One restriction and its evidence limits.
 - [`find_duplicates`](tools/find_duplicates.md) — Deterministic Type-1/2/3 clone families.

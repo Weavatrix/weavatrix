@@ -23,10 +23,17 @@ contracts. Do not call it merely because the server is available.
 1. Call `graph_stats` and confirm `repository_context.root` matches the workspace
    you intend. The MCP process is pinned to its launch root; it will not silently
    answer for another repository.
-2. For "what is this repository's architecture?", call
-   `architecture_inventory` with no `detail` argument (bounded summary).
-   Explain its packages, component areas, dominant coupling, and limits in
-   your own concise prose; do not paste the tool's JSON as the answer. Use
+2. For "what is this repository's architecture?", including "is it onion,
+   modular, layered, or ports-and-adapters?", call `architecture_inventory`
+   with no `detail` argument (bounded summary). Read
+   `architecture_hypotheses.hypotheses`: report each relevant `SUPPORTED`,
+   `CANDIDATE`, `CONTRADICTED`, or `INSUFFICIENT_EVIDENCE` status with one
+   decisive dependency witness or missing signal. Explain the result,
+   component areas, and limits in concise prose; do not paste the JSON. Do
+   not turn a candidate into a confirmed style, or use a declared contract
+   `style` as proof of the observed architecture. See
+   [references/tools/architecture_inventory.md](references/tools/architecture_inventory.md)
+   for the interpretation rules. Use
    `module_map` for a directory-focused question, or `search_code` for a
    known literal. Request `architecture_inventory` with `detail:"full"`
    only when a specific component, edge, or cycle needs source evidence.

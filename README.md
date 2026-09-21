@@ -80,7 +80,7 @@ The same source is distributed in two forms:
 | Distribution | Install | Best for |
 | --- | --- | --- |
 | `weavatrix` on crates.io | `cargo install weavatrix` | Rust-first environments and source builds |
-| `weavatrix` on npm | `npx -y weavatrix@1.17.3 mcp <repo>` | Ready-made cross-platform binaries without a Rust toolchain |
+| `weavatrix` on npm | `npx -y weavatrix@1.17.4 mcp <repo>` | Ready-made cross-platform binaries without a Rust toolchain |
 
 The npm package exists for convenience; it does not contain a different
 JavaScript engine. Both distributions run the same native adapter and the same
@@ -194,7 +194,7 @@ process cwd — and avoid running both a user MCP and the plugin at once:
   "mcpServers": {
     "weavatrix": {
       "command": "npx",
-      "args": ["-y", "weavatrix@1.17.3", "mcp", "${workspaceFolder}"]
+      "args": ["-y", "weavatrix@1.17.4", "mcp", "${workspaceFolder}"]
     }
   }
 }
@@ -203,14 +203,14 @@ process cwd — and avoid running both a user MCP and the plugin at once:
 Profiles expose bounded views of the same engine:
 
 ```sh
-npx -y weavatrix@1.17.3 mcp . --profile=all
-npx -y weavatrix@1.17.3 mcp . --profile=code
-npx -y weavatrix@1.17.3 mcp . --profile=seo
-npx -y weavatrix@1.17.3 mcp . --profile=n8n
-npx -y weavatrix@1.17.3 mcp . --profile=dify
-npx -y weavatrix@1.17.3 mcp . --profile=agent
-npx -y weavatrix@1.17.3 mcp . --profile=diagram
-npx -y weavatrix@1.17.3 mcp . --profile=web3
+npx -y weavatrix@1.17.4 mcp . --profile=all
+npx -y weavatrix@1.17.4 mcp . --profile=code
+npx -y weavatrix@1.17.4 mcp . --profile=seo
+npx -y weavatrix@1.17.4 mcp . --profile=n8n
+npx -y weavatrix@1.17.4 mcp . --profile=dify
+npx -y weavatrix@1.17.4 mcp . --profile=agent
+npx -y weavatrix@1.17.4 mcp . --profile=diagram
+npx -y weavatrix@1.17.4 mcp . --profile=web3
 ```
 
 The npm package contains native binaries for Windows x64/arm64, macOS
@@ -238,7 +238,7 @@ still wins.
 `structuredContent` would otherwise see an empty result. `text` returns only
 the text block, but that block still contains serialized JSON; it is not a
 summary mode. For an architecture question, call `architecture_inventory`
-without arguments and summarize its bounded overview in prose.
+without arguments and summarize its bounded style hypotheses in prose.
 
 ### What the new domains actually answer
 
@@ -382,7 +382,11 @@ and contract inventories.
 `build_graph` and `architecture_inventory` now share one typed build model.
 `architecture_inventory` defaults to `detail:"summary"`: complete graph
 totals, representative component paths, dominant coupling, and clearly
-labeled cycle candidates in a bounded response. Request `detail:"full"` for
+labeled cycle candidates in a bounded response. It also reports independent
+style hypotheses for modular source organization, onion dependencies,
+ports-and-adapters, layered dependencies, and deployment topology. Each
+hypothesis states its evidence, contradictions, unknowns, and status; the
+declared contract style is never treated as proof. Request `detail:"full"` for
 paged edges and source evidence; `output_format:"text"` does not reduce detail.
 They preserve nested Cargo, npm/TypeScript, Go, and Python components,
 many-to-many declared memberships, collision-free identities, configuration
@@ -461,7 +465,7 @@ agent stays on the repository revision. It does not log into n8n.
   and `$env` values stay off the default graph and context.
 
 ```sh
-npx -y weavatrix@1.17.3 mcp . --profile=n8n
+npx -y weavatrix@1.17.4 mcp . --profile=n8n
 ```
 
 ### Dify (shipped in 1.13.0)
@@ -486,7 +490,7 @@ call the Dify console.
   inventory and context.
 
 ```sh
-npx -y weavatrix@1.17.3 mcp . --profile=dify
+npx -y weavatrix@1.17.4 mcp . --profile=dify
 ```
 
 ### Agent packages (shipped in 1.14.0)
@@ -502,7 +506,7 @@ keywords stay `undetermined`. Duplicate tool labels are
 `allowed-tools` is a declaration, not a proven call.
 
 ```sh
-npx -y weavatrix@1.17.3 mcp . --profile=agent
+npx -y weavatrix@1.17.4 mcp . --profile=agent
 ```
 
 ### Mermaid diagrams (shipped in 1.14.0)
@@ -516,7 +520,7 @@ Name match is not exact. `change_impact.documentation` is separate from
 production impact.
 
 ```sh
-npx -y weavatrix@1.17.3 mcp . --profile=diagram
+npx -y weavatrix@1.17.4 mcp . --profile=diagram
 ```
 
 ### Web3 integration (shipped in 1.15.0)
@@ -532,7 +536,7 @@ change can silently misdecode. ABI equality is not a live deployment
 proof. The engine does not compile contracts, call RPC, or open a wallet.
 
 ```sh
-npx -y weavatrix@1.17.3 mcp . --profile=web3
+npx -y weavatrix@1.17.4 mcp . --profile=web3
 ```
 
 ### Compared with adjacent tools
@@ -585,11 +589,11 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.17.3
+weavatrix 1.17.4
     profile catalog · session refresh · filesystem watcher · MCP framing
     |
     v
-weavatrix-rust 2.17.2
+weavatrix-rust 2.17.3
     typed graph · analysis pipeline · 67 product operations including local CI, n8n, Dify, agent packages, Mermaid, and Web3
     |
     +-- weavatrix-scan      repository discovery and selection

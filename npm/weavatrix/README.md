@@ -58,7 +58,7 @@ weavatrix mcp .
 ```toml
 [mcp_servers.weavatrix]
 command = "npx"
-args = ["-y", "weavatrix@1.17.3", "mcp", "."]
+args = ["-y", "weavatrix@1.17.4", "mcp", "."]
 ```
 
 Pass an absolute repository path when the Codex process cwd is not the project
@@ -67,7 +67,7 @@ you intend to analyze.
 ### Claude Code
 
 ```sh
-claude mcp add weavatrix -- npx -y weavatrix@1.17.3 mcp .
+claude mcp add weavatrix -- npx -y weavatrix@1.17.4 mcp .
 ```
 
 ### Cursor
@@ -80,7 +80,7 @@ the plugin for the same server name:
   "mcpServers": {
     "weavatrix": {
       "command": "npx",
-      "args": ["-y", "weavatrix@1.17.3", "mcp", "${workspaceFolder}"]
+      "args": ["-y", "weavatrix@1.17.4", "mcp", "${workspaceFolder}"]
     }
   }
 }
@@ -89,14 +89,14 @@ the plugin for the same server name:
 Profiles expose bounded views of the same engine:
 
 ```sh
-npx -y weavatrix@1.17.3 mcp . --profile=all
-npx -y weavatrix@1.17.3 mcp . --profile=code
-npx -y weavatrix@1.17.3 mcp . --profile=seo
-npx -y weavatrix@1.17.3 mcp . --profile=n8n
-npx -y weavatrix@1.17.3 mcp . --profile=dify
-npx -y weavatrix@1.17.3 mcp . --profile=agent
-npx -y weavatrix@1.17.3 mcp . --profile=diagram
-npx -y weavatrix@1.17.3 mcp . --profile=web3
+npx -y weavatrix@1.17.4 mcp . --profile=all
+npx -y weavatrix@1.17.4 mcp . --profile=code
+npx -y weavatrix@1.17.4 mcp . --profile=seo
+npx -y weavatrix@1.17.4 mcp . --profile=n8n
+npx -y weavatrix@1.17.4 mcp . --profile=dify
+npx -y weavatrix@1.17.4 mcp . --profile=agent
+npx -y weavatrix@1.17.4 mcp . --profile=diagram
+npx -y weavatrix@1.17.4 mcp . --profile=web3
 ```
 
 The package contains native binaries for Windows x64/arm64, macOS x64/arm64,
@@ -121,6 +121,10 @@ same, and a call that names its own `output_format` still wins.
 
 `json` is the default and keeps the mirror, because a client that ignores
 `structuredContent` would otherwise see an empty result.
+For an architecture question, call `architecture_inventory` with no arguments
+and explain its modular, onion, layered, and ports-and-adapters hypotheses in
+prose. Report `CANDIDATE` and `INSUFFICIENT_EVIDENCE` honestly; the declared
+contract style is not evidence of the observed architecture.
 
 ### What the new domains actually answer
 
@@ -251,6 +255,11 @@ Pagination and explicit limits bound large neighborhoods, histories, searches,
 and contract inventories.
 
 `build_graph` and `architecture_inventory` share one typed build model. They
+also report independent, evidence-bounded hypotheses for modular source
+organization, onion, ports-and-adapters, layered dependencies, and deployment
+uncertainty; the declared target style is never observation. The summary
+includes each hypothesis's status, supporting signals, contradictions, and
+unknowns; use `detail:"full"` for paged graph evidence. They
 preserve nested Cargo, npm/TypeScript, Go, and Python components, many-to-many
 declared memberships, collision-free identities, configuration predicates,
 and immutable source evidence. Totals and SCC/cycle witnesses are computed
@@ -316,11 +325,11 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.17.3
+weavatrix 1.17.4
     profile catalog · refresh · watcher · MCP framing
     |
     v
-weavatrix-rust 2.17.2
+weavatrix-rust 2.17.3
     typed graph · analysis · 67 product operations including local CI, n8n, Dify, agent packages, Mermaid, and Web3
 ```
 

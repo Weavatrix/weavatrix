@@ -16,7 +16,7 @@ impact (`web3_*`), observed architecture (`architecture_inventory`), and local
 GitHub Actions restrictions (`ci_restrictions`, `explain_restriction`). See
 [n8n](https://weavatrix.com/n8n) and [Dify](https://weavatrix.com/dify).
 
-The plugin starts the published `weavatrix@1.17.3` npm package. That package
+The plugin starts the published `weavatrix@1.17.4` npm package. That package
 already contains the matching prebuilt native binaries; it has no lifecycle
 scripts or runtime dependencies. The same release is also available as the
 `weavatrix` crate on crates.io. Node.js 18 or newer is required for the plugin

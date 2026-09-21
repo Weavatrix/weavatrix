@@ -1,8 +1,9 @@
 # `architecture_inventory`
 
-Observed package, nested component, declared-membership, and typed edge
-evidence. The default is a bounded architecture overview, not a raw graph
-dump. No style label or target architecture is inferred.
+Observed package, nested component, declared-membership, typed edge, and
+architecture-style evidence. The default is a bounded overview, not a raw
+graph dump. Style findings are independent hypotheses, never the target
+contract's declared style.
 
 ## When to use
 
@@ -31,8 +32,22 @@ the component quotient is reported as architecture, not as symbol recursion.
 {"name":"architecture_inventory","arguments":{}}
 ```
 
-Turn the returned packages, component paths, dominant coupling, and complete
-edge/cycle-candidate totals into a concise answer in your own words. Never
+Read `architecture_hypotheses.hypotheses` first. `modular_source` concerns
+source organization; `onion` and `layered` concern dependency direction;
+`ports_and_adapters` concerns core interfaces and adapters; `microservices`
+concerns deployment and remains unconfirmed without independent deployment
+evidence. These dimensions may coexist. `SUPPORTED` means the rule's static
+signals were observed, not that architectural intent or runtime behavior was
+proven. `CANDIDATE` requires qualified language, `CONTRADICTED` needs its
+counterexample, and `INSUFFICIENT_EVIDENCE` must not be turned into absence.
+Path names are weak role candidates; inspect `observed_signals`,
+`contradictions`, and `unknowns`. Never use a contract `style`, green
+`verify_architecture` result, or package count as proof of an observed style.
+
+Answer in your own concise prose, for example: "Modular source organization:
+supported (module markers and cross-directory imports). Onion: insufficient
+evidence (no application-to-domain and outer-to-core chain)." Include one
+decisive file-level witness when available, not the entire JSON. Never
 present a quotient/union cycle candidate as a proven executable cycle. Ask
 for `{"detail":"full"}` only to inspect a specific edge, component, or
 cycle witness. The full response can be large and paginates edges.

@@ -65,9 +65,12 @@ result.
 
 - `architecture_inventory`: bounded observed architecture summary by default:
   packages, representative nested components, dominant coupling, and complete
-  edge/cycle-candidate totals. `detail:"full"` returns paged typed edges and
-  source evidence. It never assigns a style label. A component quotient/union
-  cycle is a candidate, not a proven runtime cycle.
+  edge/cycle-candidate totals plus evidence-bounded hypotheses for modular,
+  onion, ports-and-adapters, layered, and deployment architecture.
+  `detail:"full"` returns paged typed edges and source evidence. Hypothesis
+  statuses distinguish supported, candidate, contradicted, and insufficient
+  evidence; the declared contract style is never an observed fact. A component
+  quotient/union cycle is a candidate, not a proven runtime cycle.
 - `get_architecture_contract`: read and validate local architecture policy.
 - `verify_architecture`: dependency, cycle, file, and function budget checks.
 - `verify_capabilities`: declared capabilities resolved against exposed

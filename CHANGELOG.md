@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+## 1.17.4 - 2026-09-21
+
+- Pin `weavatrix-rust` 2.17.3 and expose evidence-bounded architecture-style
+  hypotheses through `architecture_inventory`: modular source organization,
+  onion, ports-and-adapters, layered dependencies, and deployment uncertainty.
+  Each finding includes supporting signals, contradictions, unknowns, and a
+  qualified status; the target contract style is never counted as observation.
+- Update the bundled skill and MCP-facing guidance so architecture questions
+  receive concise prose, not a raw JSON dump. Existing Web3, Mermaid, agent,
+  n8n, and Dify tools remain available.
+
 ## 1.17.3 - 2026-09-21
 
 - Pin `weavatrix-rust` 2.17.2. Architecture questions now receive a bounded

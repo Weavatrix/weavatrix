@@ -43,6 +43,20 @@ fn architecture_question_has_a_bounded_default_and_an_explicit_full_mode() {
     };
     assert_eq!(value["detail"], "summary");
     assert!(value["components_total"].as_u64().unwrap() > 0);
+    let hypotheses = value["architecture_hypotheses"]["hypotheses"]
+        .as_array()
+        .unwrap();
+    assert!(
+        hypotheses
+            .iter()
+            .any(|item| item["name"] == "modular_source")
+    );
+    assert!(hypotheses.iter().any(|item| item["name"] == "onion"));
+    assert!(
+        hypotheses
+            .iter()
+            .any(|item| item["name"] == "ports_and_adapters")
+    );
     assert!(value.get("edges").is_none());
     assert!(blazingly_json::to_vec(&value).unwrap().len() < 20_000);
     let ToolReply::Success { value: full, .. } = server.call(
