@@ -58,7 +58,7 @@ weavatrix mcp .
 ```toml
 [mcp_servers.weavatrix]
 command = "npx"
-args = ["-y", "weavatrix@1.17.2", "mcp", "."]
+args = ["-y", "weavatrix@1.17.3", "mcp", "."]
 ```
 
 Pass an absolute repository path when the Codex process cwd is not the project
@@ -67,7 +67,7 @@ you intend to analyze.
 ### Claude Code
 
 ```sh
-claude mcp add weavatrix -- npx -y weavatrix@1.17.2 mcp .
+claude mcp add weavatrix -- npx -y weavatrix@1.17.3 mcp .
 ```
 
 ### Cursor
@@ -80,7 +80,7 @@ the plugin for the same server name:
   "mcpServers": {
     "weavatrix": {
       "command": "npx",
-      "args": ["-y", "weavatrix@1.17.2", "mcp", "${workspaceFolder}"]
+      "args": ["-y", "weavatrix@1.17.3", "mcp", "${workspaceFolder}"]
     }
   }
 }
@@ -89,14 +89,14 @@ the plugin for the same server name:
 Profiles expose bounded views of the same engine:
 
 ```sh
-npx -y weavatrix@1.17.2 mcp . --profile=all
-npx -y weavatrix@1.17.2 mcp . --profile=code
-npx -y weavatrix@1.17.2 mcp . --profile=seo
-npx -y weavatrix@1.17.2 mcp . --profile=n8n
-npx -y weavatrix@1.17.2 mcp . --profile=dify
-npx -y weavatrix@1.17.2 mcp . --profile=agent
-npx -y weavatrix@1.17.2 mcp . --profile=diagram
-npx -y weavatrix@1.17.2 mcp . --profile=web3
+npx -y weavatrix@1.17.3 mcp . --profile=all
+npx -y weavatrix@1.17.3 mcp . --profile=code
+npx -y weavatrix@1.17.3 mcp . --profile=seo
+npx -y weavatrix@1.17.3 mcp . --profile=n8n
+npx -y weavatrix@1.17.3 mcp . --profile=dify
+npx -y weavatrix@1.17.3 mcp . --profile=agent
+npx -y weavatrix@1.17.3 mcp . --profile=diagram
+npx -y weavatrix@1.17.3 mcp . --profile=web3
 ```
 
 The package contains native binaries for Windows x64/arm64, macOS x64/arm64,
@@ -316,11 +316,11 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.17.2
+weavatrix 1.17.3
     profile catalog · refresh · watcher · MCP framing
     |
     v
-weavatrix-rust 2.17.1
+weavatrix-rust 2.17.2
     typed graph · analysis · 67 product operations including local CI, n8n, Dify, agent packages, Mermaid, and Web3
 ```
 

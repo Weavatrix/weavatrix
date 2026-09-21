@@ -23,6 +23,39 @@ fn tool_server_identity_and_catalog_are_stable() {
 }
 
 #[test]
+fn architecture_question_has_a_bounded_default_and_an_explicit_full_mode() {
+    use mcport::{ToolReply, ToolServer};
+
+    let mut server = server(McpProfile::All);
+    let catalog = server.catalog();
+    let architecture = catalog
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|tool| tool["name"] == "architecture_inventory")
+        .unwrap();
+    assert_eq!(
+        architecture["inputSchema"]["properties"]["detail"]["default"],
+        "summary"
+    );
+    let ToolReply::Success { value, .. } = server.call("architecture_inventory", json!({})) else {
+        panic!("architecture inventory must answer");
+    };
+    assert_eq!(value["detail"], "summary");
+    assert!(value["components_total"].as_u64().unwrap() > 0);
+    assert!(value.get("edges").is_none());
+    assert!(blazingly_json::to_vec(&value).unwrap().len() < 20_000);
+    let ToolReply::Success { value: full, .. } = server.call(
+        "architecture_inventory",
+        json!({"detail": "full", "max_results": 1}),
+    ) else {
+        panic!("full architecture evidence must answer");
+    };
+    assert_eq!(full["detail"], "full");
+    assert_eq!(full["edges"].as_array().unwrap().len(), 1);
+}
+
+#[test]
 fn serve_options_default_is_mirrored_all_profile() {
     let options = super::super::ServeOptions::default();
     assert_eq!(options.profile, McpProfile::All);

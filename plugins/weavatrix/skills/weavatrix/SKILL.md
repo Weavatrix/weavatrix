@@ -23,8 +23,16 @@ contracts. Do not call it merely because the server is available.
 1. Call `graph_stats` and confirm `repository_context.root` matches the workspace
    you intend. The MCP process is pinned to its launch root; it will not silently
    answer for another repository.
-2. Use `module_map` or `architecture_inventory` for orientation, or
-   `search_code` for a known literal.
+2. For "what is this repository's architecture?", call
+   `architecture_inventory` with no `detail` argument (bounded summary).
+   Explain its packages, component areas, dominant coupling, and limits in
+   your own concise prose; do not paste the tool's JSON as the answer. Use
+   `module_map` for a directory-focused question, or `search_code` for a
+   known literal. Request `architecture_inventory` with `detail:"full"`
+   only when a specific component, edge, or cycle needs source evidence.
+   Use `get_architecture_contract` or `verify_architecture` only when the
+   question is about declared target policy or compliance. A component
+   quotient/union cycle is a candidate, not proof of a runtime cycle.
 3. Pin decisive evidence with `inspect_symbol`, `go_to_definition`,
    `find_references`, `context_bundle`, or `read_source`.
 4. Expand only when needed: `get_dependents` or `change_impact` for risk,
@@ -52,8 +60,10 @@ Do not call `open_repo` "just in case". Cross-repository tools take explicit
 roots in their arguments. Multi-root retarget requires launching with
 `--allow-retarget`.
 
-Prefer `output_format:"text"` and a small `token_budget` for conversational
-work. Use JSON only for automation or retained evidence. Call `rebuild_graph`
+`output_format` controls the MCP envelope, not the amount of detail: `text`
+still contains JSON. Choose each tool's summary/detail or result limits for
+conversational work. Use `token_budget` only as an additional ceiling; it can
+drop evidence arrays. Call `rebuild_graph`
 only when the repository changed before automatic refresh completed or when
 deliberately changing graph mode.
 

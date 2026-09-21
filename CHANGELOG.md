@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+## 1.17.3 - 2026-09-21
+
+- Pin `weavatrix-rust` 2.17.2. Architecture questions now receive a bounded
+  observed overview by default; `detail: "full"` explicitly requests paged
+  edge evidence. The MCP schema advertises this choice and no longer implies
+  that `output_format: "text"` summarizes the payload.
+- Update the bundled agent skill and tool guide to explain architectural
+  findings in prose, reserve full evidence for follow-up, and distinguish
+  component cycle candidates from proven runtime cycles. Existing Web3,
+  diagram, agent, n8n, and Dify surfaces remain unchanged.
+
 ## 1.17.2 - 2026-09-21
 
 - Pin `weavatrix-rust` 2.17.1 and expose its P2 architecture recovery through

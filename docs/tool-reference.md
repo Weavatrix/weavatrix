@@ -63,10 +63,11 @@ result.
 
 ## Architecture
 
-- `architecture_inventory`: observed packages, nested components,
-  many-to-many declared memberships, and typed edges without assigning a style
-  label. Collision-free identities, immutable evidence, and SCC/cycle verdicts
-  are computed on the complete projection before pagination.
+- `architecture_inventory`: bounded observed architecture summary by default:
+  packages, representative nested components, dominant coupling, and complete
+  edge/cycle-candidate totals. `detail:"full"` returns paged typed edges and
+  source evidence. It never assigns a style label. A component quotient/union
+  cycle is a candidate, not a proven runtime cycle.
 - `get_architecture_contract`: read and validate local architecture policy.
 - `verify_architecture`: dependency, cycle, file, and function budget checks.
 - `verify_capabilities`: declared capabilities resolved against exposed
