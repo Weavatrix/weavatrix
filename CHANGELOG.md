@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+## 1.17.2 - 2026-09-21
+
+- Pin `weavatrix-rust` 2.17.1 and expose its P2 architecture recovery through
+  the existing 67-operation MCP catalog. `build_graph`,
+  `architecture_inventory`, and local CI answers now share one typed,
+  target-aware build model with nested components, many-to-many declared
+  memberships, collision-free identities, immutable evidence, and complete
+  pre-pagination SCC/cycle verdicts.
+- Keep exact evidence for root files, repeated workflow commands, UTF-8 BOM
+  offsets, and conditional build configurations. Dynamic or remote execution
+  remains explicit unknown evidence. Existing n8n, Dify, Agent, Mermaid, and
+  Web3 profiles and their supported-subset limits are unchanged.
+
 ## 1.17.1 - 2026-09-20
 
 - Correct the installed npm package gate for the expanded 67-operation MCP

@@ -58,7 +58,7 @@ weavatrix mcp .
 ```toml
 [mcp_servers.weavatrix]
 command = "npx"
-args = ["-y", "weavatrix@1.17.1", "mcp", "."]
+args = ["-y", "weavatrix@1.17.2", "mcp", "."]
 ```
 
 Pass an absolute repository path when the Codex process cwd is not the project
@@ -67,7 +67,7 @@ you intend to analyze.
 ### Claude Code
 
 ```sh
-claude mcp add weavatrix -- npx -y weavatrix@1.17.1 mcp .
+claude mcp add weavatrix -- npx -y weavatrix@1.17.2 mcp .
 ```
 
 ### Cursor
@@ -80,7 +80,7 @@ the plugin for the same server name:
   "mcpServers": {
     "weavatrix": {
       "command": "npx",
-      "args": ["-y", "weavatrix@1.17.1", "mcp", "${workspaceFolder}"]
+      "args": ["-y", "weavatrix@1.17.2", "mcp", "${workspaceFolder}"]
     }
   }
 }
@@ -89,14 +89,14 @@ the plugin for the same server name:
 Profiles expose bounded views of the same engine:
 
 ```sh
-npx -y weavatrix@1.17.1 mcp . --profile=all
-npx -y weavatrix@1.17.1 mcp . --profile=code
-npx -y weavatrix@1.17.1 mcp . --profile=seo
-npx -y weavatrix@1.17.1 mcp . --profile=n8n
-npx -y weavatrix@1.17.1 mcp . --profile=dify
-npx -y weavatrix@1.17.1 mcp . --profile=agent
-npx -y weavatrix@1.17.1 mcp . --profile=diagram
-npx -y weavatrix@1.17.1 mcp . --profile=web3
+npx -y weavatrix@1.17.2 mcp . --profile=all
+npx -y weavatrix@1.17.2 mcp . --profile=code
+npx -y weavatrix@1.17.2 mcp . --profile=seo
+npx -y weavatrix@1.17.2 mcp . --profile=n8n
+npx -y weavatrix@1.17.2 mcp . --profile=dify
+npx -y weavatrix@1.17.2 mcp . --profile=agent
+npx -y weavatrix@1.17.2 mcp . --profile=diagram
+npx -y weavatrix@1.17.2 mcp . --profile=web3
 ```
 
 The package contains native binaries for Windows x64/arm64, macOS x64/arm64,
@@ -250,12 +250,18 @@ Every operation is read-only with respect to the analyzed repository.
 Pagination and explicit limits bound large neighborhoods, histories, searches,
 and contract inventories.
 
-`architecture_inventory` describes observed components without assigning an
-architecture style. `ci_restrictions` reads local GitHub Actions workflows and
-recognizes literal checks, with optional event, base branch, and changed-path
-scenario. `explain_restriction` retrieves one finding. Dynamic conditions,
-actual runs, and remote required checks remain unknown until separate evidence
-is supplied; a workflow file alone never establishes a passing gate.
+`build_graph` and `architecture_inventory` share one typed build model. They
+preserve nested Cargo, npm/TypeScript, Go, and Python components, many-to-many
+declared memberships, collision-free identities, configuration predicates,
+and immutable source evidence. Totals and SCC/cycle witnesses are computed
+before pagination, so a response cap cannot change the graph verdict.
+
+`ci_restrictions` reuses that target-aware topology while reading local GitHub
+Actions workflows and literal checks. Root files, repeated commands, UTF-8 BOM
+offsets, optional events, base branches, and changed-path scenarios keep exact
+evidence. Dynamic conditions, mutually exclusive configuration unions, actual
+runs, and remote required checks remain explicit unknowns; a workflow file
+alone never establishes a passing gate.
 
 Need measured coverage? Run Weavatrix Quality first, then `coverage_map`.
 The host will not invent percentages from an empty search path. Quality
@@ -310,11 +316,11 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.17.1
+weavatrix 1.17.2
     profile catalog · refresh · watcher · MCP framing
     |
     v
-weavatrix-rust 2.17.0
+weavatrix-rust 2.17.1
     typed graph · analysis · 67 product operations including local CI, n8n, Dify, agent packages, Mermaid, and Web3
 ```
 

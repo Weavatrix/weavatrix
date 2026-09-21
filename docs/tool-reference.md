@@ -14,8 +14,9 @@ schemas returned by `tools/list` are the authoritative machine contract.
 - `get_community`: one deterministic graph community.
 - `list_communities`: bounded community inventory.
 - `module_map`: repository territories and their relationships.
-- `build_graph`: workspace members, targets, aggregators, and runner topology
-  extracted from manifest evidence.
+- `build_graph`: typed Cargo, npm/TypeScript, Go, and Python workspace members,
+  targets, configurations, tasks, entry points, aggregators, and runners from
+  captured manifest evidence. Presentation limits preserve complete totals.
 
 ## Change impact and proof
 
@@ -62,8 +63,10 @@ result.
 
 ## Architecture
 
-- `architecture_inventory`: observed packages, components, and typed edges
-  without a style label.
+- `architecture_inventory`: observed packages, nested components,
+  many-to-many declared memberships, and typed edges without assigning a style
+  label. Collision-free identities, immutable evidence, and SCC/cycle verdicts
+  are computed on the complete projection before pagination.
 - `get_architecture_contract`: read and validate local architecture policy.
 - `verify_architecture`: dependency, cycle, file, and function budget checks.
 - `verify_capabilities`: declared capabilities resolved against exposed

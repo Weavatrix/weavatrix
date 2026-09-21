@@ -1,10 +1,14 @@
 # `build_graph`
 
-Workspace, target and runner topology from manifest evidence.
+Typed workspace, package, target, task, and runner topology from captured
+manifest evidence.
 
 ## When to use
 
-Inspect workspace members, targets, aggregators, and runner topology extracted from manifests.
+Inspect Cargo, npm/TypeScript, Go, and Python workspace members, targets,
+aggregators, entry points, configuration variants, and runner topology. The
+same model feeds architecture and local CI linkage; source evidence is captured
+with the analyzed snapshot rather than reread from a changing worktree.
 
 ## Inputs
 
@@ -24,3 +28,7 @@ Inspect workspace members, targets, aggregators, and runner topology extracted f
 
 Use `output_format:"text"` for compact agent interaction. The live MCP
 `tools/list` schema remains authoritative for this installed version.
+
+`max_members` limits presentation only. Returned totals still describe the
+complete recovered model, and the result reports an incomplete page instead of
+pretending omitted members do not exist.
