@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## 1.17.5 - 2026-09-21
+
+- Pin `weavatrix-rust` 2.17.4. Rust `impl Trait for Type` now contributes a
+  typed implementation edge, allowing evidence-backed `SUPPORTED` results for
+  onion and ports-and-adapters examples. Inherent `impl Type` is not treated as
+  a port implementation. Existing Web3 and other profiles are unchanged.
+
 ## 1.17.4 - 2026-09-21
 
 - Pin `weavatrix-rust` 2.17.3 and expose evidence-bounded architecture-style
