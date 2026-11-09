@@ -2,6 +2,29 @@
 
 ## Unreleased
 
+- Go methods are declarations. Calls inside a method belong to that method.
+  Receiver names and function-literal parameters are not functions. Reference
+  spans cover the identifier, so a column inside the name resolves.
+- `change_impact` on an explicit file with no measured diff seeds that file's
+  symbols as `file_scope` (`change_basis: "explicit_file"`). That is a
+  hypothetical blast radius, not a recorded edit.
+- `find_dead_code` treats every `main.go` and every Go `func main` as an entry.
+- `git_history` accepts `path` and returns the commits that touch that file or
+  directory. Without `path`, the result is still repository HEAD history.
+- `semantic_link` ranks a text `query` with the local deterministic token hash
+  `weavatrix-token-hash-v1`. It is not a neural embedding. An empty `vectors`
+  array without a query is an error.
+- `go.mod`, `Cargo.toml`, `package.json`, and `pyproject.toml` count as module
+  markers even when the graph does not index the manifest as source. One marker
+  does not make `modular_source` SUPPORTED. `go.sum` is not a marker.
+- `change_impact` `max_nodes` caps the combined impact of every seed.
+- `git_history` `commits_scanned` is the commit window that was read, not the
+  number of commits that matched `path`.
+- A mismatched `expected_repository` tells the caller to relaunch. `open_repo`
+  changes the root only with `--allow-retarget`.
+- Tool text no longer says `output_format: "text"` is a shorter summary, or
+  that `search_code` is a graph search.
+
 ## 1.17.5 - 2026-09-21
 
 - Pin `weavatrix-rust` 2.17.4. Rust `impl Trait for Type` now contributes a

@@ -311,6 +311,8 @@ refused unless you started with `--allow-retarget`, and omitted
 `"expected_repository": "weavatrix"` when you already know the folder name — a
 mismatched server fails loudly instead of answering about the wrong repository.
 
+`change_impact` with `files` or `target` reports that blast radius even when the file matches HEAD. Those symbols are `change: "file_scope"` and `change_basis: "explicit_file"`: a hypothetical scope, not a measured diff. `semantic_link` with `query` ranks symbols by the local token hash `weavatrix-token-hash-v1`. That is not a neural embedding. `git_history` with `path` is the history of that file; without `path` it is repository HEAD history.
+
 **Blast radius before you edit:**
 
 ```json
@@ -591,11 +593,11 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.17.5
+weavatrix 1.17.6
     profile catalog · session refresh · filesystem watcher · MCP framing
     |
     v
-weavatrix-rust 2.17.4
+weavatrix-rust 2.17.6
     typed graph · analysis pipeline · 67 product operations including local CI, n8n, Dify, agent packages, Mermaid, and Web3
     |
     +-- weavatrix-scan      repository discovery and selection

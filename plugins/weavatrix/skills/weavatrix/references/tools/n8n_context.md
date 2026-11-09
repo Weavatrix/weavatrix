@@ -14,7 +14,7 @@ not placed on the default context.
 - `label` (string, required) — exact node or workflow identity.
 - `task` (string, optional) — what the caller intends to change or inspect.
 - `max_related` (number, optional) — related-item bound, default 24.
-- `output_format` ("text" | "json" | "structured", default "json") — text returns the concise text block only; json returns structured output and mirrors it into text for clients that read only content; structured drops that mirror, which is the larger copy, and is safe only where the client reads structuredContent.
+- `output_format` ("text" | "json" | "structured", default "json") — text returns one JSON text block of the full payload, not a shorter summary; json returns structured output and mirrors that JSON into text, so the answer is about twice as large; structured drops the mirror and is the smaller payload when the client reads structuredContent.
 
 ## Minimal call
 
@@ -29,5 +29,4 @@ not placed on the default context.
 }
 ```
 
-Use `output_format:"text"` for compact agent interaction. The live MCP
-`tools/list` schema remains authoritative for this installed version.
+Prefer `output_format:"structured"` when the client reads structuredContent. `text` is still the full JSON payload. The live MCP `tools/list` schema remains authoritative for this installed version.

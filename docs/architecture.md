@@ -72,7 +72,7 @@ The engine crate contains no MCP server, npm package, watcher, `mcport`, or
    the watcher even if the operation itself returns an error.
 4. Later calls drain pending watcher events and refresh only when evidence may
    be stale.
-5. `open_repo` replaces both the canonical repository state and watcher.
+5. `open_repo` replaces both the canonical repository state and watcher only when the process was started with `--allow-retarget`. A default launch stays on its launch root.
 6. `rebuild_graph` explicitly rebuilds derived state.
 
 Watcher events invalidate derived state; they never modify source.

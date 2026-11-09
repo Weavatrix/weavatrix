@@ -12,7 +12,7 @@ label can belong to two packages. Use an exact id if the label is ambiguous.
 
 - `label` (string, required) — exact node id or an unambiguous label.
 - `max_related` (number, optional) — relation page size, 1–200, default 48.
-- `output_format` ("text" | "json" | "structured", default "json") — text returns the concise text block only; json returns structured output and mirrors it into text for clients that read only content; structured drops that mirror, which is the larger copy, and is safe only where the client reads structuredContent.
+- `output_format` ("text" | "json" | "structured", default "json") — text returns one JSON text block of the full payload, not a shorter summary; json returns structured output and mirrors that JSON into text, so the answer is about twice as large; structured drops the mirror and is the smaller payload when the client reads structuredContent.
 
 ## Minimal call
 
@@ -26,5 +26,4 @@ label can belong to two packages. Use an exact id if the label is ambiguous.
 }
 ```
 
-Use `output_format:"text"` for compact agent interaction. The live MCP
-`tools/list` schema remains authoritative for this installed version.
+Prefer `output_format:"structured"` when the client reads structuredContent. `text` is still the full JSON payload. The live MCP `tools/list` schema remains authoritative for this installed version.

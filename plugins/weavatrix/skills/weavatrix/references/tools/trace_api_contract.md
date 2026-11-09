@@ -26,7 +26,7 @@ Keep Kafka, AMQP/RabbitMQ, NATS, SNS/SQS, JMS, GraphQL, and gRPC identities dist
 - `max_source_file_bytes` (integer, min 0).
 - `max_source_files` (integer, min 0).
 - `method` (string).
-- `output_format` ("text" | "json" | "structured", default "json") — text returns the concise text block only; json returns structured output and mirrors it into text for clients that read only content; structured drops that mirror, which is the larger copy, and is safe only where the client reads structuredContent.
+- `output_format` ("text" | "json" | "structured", default "json") — text returns one JSON text block of the full payload, not a shorter summary; json returns structured output and mirrors that JSON into text, so the answer is about twice as large; structured drops the mirror and is the smaller payload when the client reads structuredContent.
 - `page_size` (integer, min 0).
 - `path` (string).
 - `per_item_limit` (integer, min 0).
@@ -50,5 +50,4 @@ Keep Kafka, AMQP/RabbitMQ, NATS, SNS/SQS, JMS, GraphQL, and gRPC identities dist
 }
 ```
 
-Use `output_format:"text"` for compact agent interaction. The live MCP
-`tools/list` schema remains authoritative for this installed version.
+Prefer `output_format:"structured"` when the client reads structuredContent. `text` is still the full JSON payload. The live MCP `tools/list` schema remains authoritative for this installed version.

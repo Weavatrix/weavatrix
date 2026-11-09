@@ -184,8 +184,10 @@ The initial repository is opened before handshake. The first operation performs
 an incremental catch-up and starts the native watcher. Later calls refresh only
 after relevant filesystem changes.
 
-Use `rebuild_graph` when you explicitly want a full rebuild. Use `open_repo`
-to switch the active session to another repository.
+Use `rebuild_graph` when you explicitly want a full rebuild. The process is
+pinned to its launch root. `open_repo` switches repositories only when the
+process was started with `--allow-retarget`. Otherwise relaunch on the other
+repository.
 
 ## Troubleshooting
 

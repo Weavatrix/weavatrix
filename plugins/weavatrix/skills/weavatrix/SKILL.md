@@ -68,11 +68,39 @@ roots in their arguments. Multi-root retarget requires launching with
 `--allow-retarget`.
 
 `output_format` controls the MCP envelope, not the amount of detail: `text`
-still contains JSON. Choose each tool's summary/detail or result limits for
-conversational work. Use `token_budget` only as an additional ceiling; it can
-drop evidence arrays. Call `rebuild_graph`
-only when the repository changed before automatic refresh completed or when
-deliberately changing graph mode.
+is one JSON text block of the full payload, `json` mirrors that payload into
+text (about twice the bytes), and `structured` drops the mirror. Choose each
+tool's summary/detail or result limits for conversational work. Use
+`token_budget` only as an additional ceiling; it can drop evidence arrays.
+Call `rebuild_graph` only when the repository changed before automatic
+refresh completed or when deliberately changing graph mode.
+
+`search_code` scans file text. It does not resolve symbols. Use
+`find_references`, `go_to_definition`, or `inspect_symbol` for a name.
+A column inside an identifier resolves; it does not have to be the first byte.
+
+`semantic_link` with a text `query` ranks symbols by the local deterministic
+token hash `weavatrix-token-hash-v1` (names, paths, and the declaration line).
+That is not a neural embedding, and Weavatrix does not create one. Pass
+`vectors` only when you already have embeddings. An empty `vectors` array
+without `query` is an error.
+
+`change_impact` with `files` or `target` reports the blast radius of those
+files even when the worktree matches HEAD. Those seeds use
+`change: "file_scope"` and `change_basis: "explicit_file"`. That is a
+hypothetical scope, not a measured diff.
+
+`git_history` without `path` is repository HEAD history. Pass `path` for the
+commits that touch one file or directory.
+
+`find_dead_code` treats every `main.go` and every Go `func main` as an entry.
+Receiver names and function-literal parameters are not symbols.
+
+`open_repo` is refused unless the process was started with `--allow-retarget`.
+A mismatched `expected_repository` means relaunch on that repository.
+
+`go.mod`, `Cargo.toml`, `package.json`, and `pyproject.toml` count as module
+markers. One marker leaves `modular_source` at `CANDIDATE`.
 
 Read [references/tool-routing.md](references/tool-routing.md) only when choosing
 among similar tools, tracing cross-repository transports, or interpreting

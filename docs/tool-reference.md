@@ -21,7 +21,7 @@ schemas returned by `tools/list` are the authoritative machine contract.
 ## Change impact and proof
 
 - `get_dependents`: bounded reverse blast radius.
-- `change_impact`: Git changes mapped onto graph evidence.
+- `change_impact`: Git changes mapped onto graph evidence. An explicit file that matches HEAD seeds its symbols as `file_scope` (`change_basis: "explicit_file"`), a hypothetical blast radius rather than a measured edit. `max_nodes` caps the combined impact of every seed, keeping production callers ahead of tests.
 - `select_tests`: graph-ranked test suites most plausibly affected by a change.
 - `verified_change`: impact, architecture, duplicate, API, and optional test
   evidence for planning or verification.
@@ -30,7 +30,7 @@ schemas returned by `tools/list` are the authoritative machine contract.
 
 ## Exact source context
 
-- `search_code`: bounded literal or regex repository search.
+- `search_code`: bounded literal or regex scan of file text. The backend is the filesystem, not the symbol graph.
 - `read_source`: verified source excerpt with exact lines.
 - `inspect_symbol`: declaration, owner, inbound, and outbound evidence.
 - `context_bundle`: ranked minimal task workset around a target.
@@ -43,7 +43,8 @@ schemas returned by `tools/list` are the authoritative machine contract.
   filtering and `top_n` rebuild families from surviving pairs so members,
   pair identifiers, and connected components stay mutually consistent.
 - `find_dead_code`: review candidates with entry-point, test, configuration,
-  dynamic, and external-use classification.
+  dynamic, and external-use classification. Every `main.go` and every Go
+  `func main` is an entry.
 - `run_audit`: dependency, runtime, graph, and capability health.
 - `coverage_map`: ingest LCOV, Istanbul, Tarpaulin JSON, or LLVM coverage
   onto graph nodes. The MCP tool does not run tests. Weavatrix Quality
@@ -69,7 +70,9 @@ result.
   onion, ports-and-adapters, layered, and deployment architecture.
   `detail:"full"` returns paged typed edges and source evidence. Hypothesis
   statuses distinguish supported, candidate, contradicted, and insufficient
-  evidence; the declared contract style is never an observed fact. A component
+  evidence; the declared contract style is never an observed fact.
+  `go.mod`, `Cargo.toml`, `package.json`, and `pyproject.toml` count as module
+  markers from disk. One marker leaves `modular_source` at `CANDIDATE`. A component
   quotient/union cycle is a candidate, not a proven runtime cycle.
 - `get_architecture_contract`: read and validate local architecture policy.
 - `verify_architecture`: dependency, cycle, file, and function budget checks.
@@ -93,18 +96,18 @@ rule bindings. They do not infer a passing CI or remote required check.
 
 ## Git and repositories
 
-- `git_history`: bounded history, churn, and co-change without spawning Git.
+- `git_history`: bounded history without spawning Git. Pass `path` for the commits that touch one file or directory; omit it for repository HEAD history. `commits_scanned` is the window that was read.
 - `git_read_blob`: bounded UTF-8 file content at a revision or blob OID,
   without a checkout; binary blobs are refused.
 - `cross_repo_git`: histories, shared commits, or diffs across local roots.
-- `open_repo`: switch the process-local active repository.
+- `open_repo`: switch the process-local active repository only when the process was started with `--allow-retarget`. A pinned process refuses the call.
 - `list_known_repos`: repositories opened by this process.
 - `rebuild_graph`: explicit full derived-state rebuild.
 
 ## Native extensions
 
 - `vector_search`: exact or bounded approximate nearest-neighbor search.
-- `semantic_link`: inferred links with model and score provenance.
+- `semantic_link`: rank a text `query` with the local token hash `weavatrix-token-hash-v1` (not a neural embedding), or link a non-empty caller-supplied `vectors` array. An empty `vectors` array without `query` is an error.
 - `seo_link_suggestions`: directional internal-link evidence.
 - `memory_context`: bounded temporal context from supplied events.
 

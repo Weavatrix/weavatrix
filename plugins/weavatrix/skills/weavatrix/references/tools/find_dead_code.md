@@ -4,7 +4,7 @@ Conservative unreferenced-symbol review queue.
 
 ## When to use
 
-Build a conservative dead-code review queue with entry-point, test, config, dynamic, and external-use evidence.
+Build a conservative dead-code review queue. Every `main.go` and every Go `func main` is an entry, so `main` itself is reachable. Receiver names and function-literal parameters are not symbols. Exported symbols with no callers stay at confidence 50; private ones at 85. `REVIEW_ONLY` means the queue is a review list.
 
 Never delete from this result alone; confirm source and framework registration points.
 
@@ -14,7 +14,7 @@ Never delete from this result alone; confirm source and framework registration p
 - `include_tests` (boolean).
 - `kinds` (array<string>).
 - `min_confidence` (integer, min 0, max 100).
-- `output_format` ("text" | "json" | "structured", default "json") — text returns the concise text block only; json returns structured output and mirrors it into text for clients that read only content; structured drops that mirror, which is the larger copy, and is safe only where the client reads structuredContent.
+- `output_format` ("text" | "json" | "structured", default "json") — text returns one JSON text block of the full payload, not a shorter summary; json returns structured output and mirrors that JSON into text, so the answer is about twice as large; structured drops the mirror and is the smaller payload when the client reads structuredContent.
 - `path` (string).
 - `top_n` (integer, min 0).
 
@@ -29,5 +29,4 @@ Never delete from this result alone; confirm source and framework registration p
 }
 ```
 
-Use `output_format:"text"` for compact agent interaction. The live MCP
-`tools/list` schema remains authoritative for this installed version.
+Prefer `output_format:"structured"` when the client reads structuredContent. `text` is still the full JSON payload. The live MCP `tools/list` schema remains authoritative for this installed version.

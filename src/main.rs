@@ -166,6 +166,7 @@ Output format (also WEAVATRIX_OUTPUT_FORMAT; a call may still name its own):\n\
 structured\n              output need. The default.\n\
   structured  structuredContent alone. The mirror is the pretty-printed copy \
 of\n              the payload, so dropping it roughly halves every answer.\n\
-  text        the concise text block alone, no structuredContent."
+  text        one JSON text block of the full payload, no structuredContent.\n\
+              It is not a shorter summary."
     );
 }

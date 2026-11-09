@@ -10,7 +10,7 @@ After `graph_diff` or `git_history`, read a file "as it was" at a revision - or 
 
 - `max_bytes` (integer, min 1) — cap on returned content bytes (default 262144); the true size and a truncation flag are always reported.
 - `oid` (string) — blob object id; mutually exclusive with `path`.
-- `output_format` ("text" | "json" | "structured", default "json") — text returns the concise text block only; json returns structured output and mirrors it into text for clients that read only content; structured drops that mirror, which is the larger copy, and is safe only where the client reads structuredContent.
+- `output_format` ("text" | "json" | "structured", default "json") — text returns one JSON text block of the full payload, not a shorter summary; json returns structured output and mirrors that JSON into text, so the answer is about twice as large; structured drops the mirror and is the smaller payload when the client reads structuredContent.
 - `path` (string) — repository-relative file path looked up in the revision's tree.
 - `revision` (string) — any resolvable revision, `~N` first-parent steps supported; default `HEAD`.
 - `token_budget` (integer, min 1) — Approximate output ceiling in tokens (serialized bytes / 4); result arrays are trimmed from the tail to fit and the report states what was dropped.

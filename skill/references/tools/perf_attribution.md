@@ -19,7 +19,7 @@ co-occurrence with structural change - not a profiler sample.
 - `path` (string).
 - `include_tests` (boolean).
 - `include_classified` (boolean).
-- `output_format` ("text" | "json" | "structured", default "json") — text returns the concise text block only; json returns structured output and mirrors it into text for clients that read only content; structured drops that mirror, which is the larger copy, and is safe only where the client reads structuredContent.
+- `output_format` ("text" | "json" | "structured", default "json") — text returns one JSON text block of the full payload, not a shorter summary; json returns structured output and mirrors that JSON into text, so the answer is about twice as large; structured drops the mirror and is the smaller payload when the client reads structuredContent.
 
 ## Minimal call
 

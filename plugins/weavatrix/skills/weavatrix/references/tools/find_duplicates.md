@@ -16,7 +16,7 @@ Review bounded Type-1, Type-2, or Type-3 clone families before confirming candid
 - `min_similarity` (number, min 0, max 100) — 0..1 is a fraction; values above 1 through 100 are percentages.
 - `min_tokens` (integer, min 0).
 - `mode` ("strict" | "exact" | "renamed" | "near_miss").
-- `output_format` ("text" | "json" | "structured", default "json") — text returns the concise text block only; json returns structured output and mirrors it into text for clients that read only content; structured drops that mirror, which is the larger copy, and is safe only where the client reads structuredContent.
+- `output_format` ("text" | "json" | "structured", default "json") — text returns one JSON text block of the full payload, not a shorter summary; json returns structured output and mirrors that JSON into text, so the answer is about twice as large; structured drops the mirror and is the smaller payload when the client reads structuredContent.
 - `top_n` (integer, min 0).
 
 ## Minimal call
@@ -30,5 +30,4 @@ Review bounded Type-1, Type-2, or Type-3 clone families before confirming candid
 }
 ```
 
-Use `output_format:"text"` for compact agent interaction. The live MCP
-`tools/list` schema remains authoritative for this installed version.
+Prefer `output_format:"structured"` when the client reads structuredContent. `text` is still the full JSON payload. The live MCP `tools/list` schema remains authoritative for this installed version.

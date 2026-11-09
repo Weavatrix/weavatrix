@@ -4,7 +4,7 @@ Read-only Git change impact with graph evidence.
 
 ## When to use
 
-Map a working-tree diff, explicit files, or Git revisions onto affected graph nodes.
+Map a working-tree diff, explicit files, or Git revisions onto affected graph nodes. Naming `files` or `target` when that file matches HEAD still returns its symbols as `change: "file_scope"` and `change_basis: "explicit_file"`. That is a hypothetical blast radius, not a measured edit. A dirty file keeps the real symbol diff.
 
 Static impact is not proof that selected behavior executed.
 
@@ -16,9 +16,9 @@ Static impact is not proof that selected behavior executed.
 - `diff` (string).
 - `files` (array<string>).
 - `head_ref` (string).
-- `max_nodes` (integer, min 0).
+- `max_nodes` (integer, min 0, default 40). Combined cap on impacted nodes across every seed. Production callers are kept ahead of tests. A trimmed answer reports `MAX_NODES`.
 - `max_references` (integer, min 0).
-- `output_format` ("text" | "json" | "structured", default "json") — text returns the concise text block only; json returns structured output and mirrors it into text for clients that read only content; structured drops that mirror, which is the larger copy, and is safe only where the client reads structuredContent.
+- `output_format` ("text" | "json" | "structured", default "json") — text returns one JSON text block of the full payload, not a shorter summary; json returns structured output and mirrors that JSON into text, so the answer is about twice as large; structured drops the mirror and is the smaller payload when the client reads structuredContent.
 - `precision` ("graph").
 - `timeout_ms` (integer, min 0).
 
@@ -33,5 +33,4 @@ Static impact is not proof that selected behavior executed.
 }
 ```
 
-Use `output_format:"text"` for compact agent interaction. The live MCP
-`tools/list` schema remains authoritative for this installed version.
+Prefer `output_format:"structured"` when the client reads structuredContent. `text` is still the full JSON payload. The live MCP `tools/list` schema remains authoritative for this installed version.
