@@ -84,6 +84,9 @@ impl WeavatrixServer {
     }
 
     fn call_operation(&mut self, name: &str, arguments: Value) -> ToolReply {
+        if let Some(error) = crate::mcp::closed_library_tool_error(name) {
+            return ToolReply::error(error);
+        }
         if !self.profile.allows(name) {
             return ToolReply::error(format!(
                 "tool {name} is unavailable in the {:?} profile",

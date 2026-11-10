@@ -101,7 +101,7 @@ function createReport({rustBin, semanticRepo, snapshotMs, checks}) {
         setupMs: {snapshot: snapshotMs},
         policy: {
             comparedToJavascript: false,
-            reason: 'The old JavaScript engine has no cross_repo_git, semantic_link, vector_search, seo_link_suggestions, or memory_context tools.',
+            reason: 'The old JavaScript engine has no cross_repo_git or semantic_link. vector_search, seo_link_suggestions, and memory_context are library methods and are not MCP tools.',
             oracle: 'Git CLI or deterministic synthetic fixtures with explicit invariants.',
         },
         checks,

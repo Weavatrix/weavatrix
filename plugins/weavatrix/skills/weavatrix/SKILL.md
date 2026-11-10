@@ -88,7 +88,9 @@ without `query` is an error.
 `change_impact` with `files` or `target` reports the blast radius of those
 files even when the worktree matches HEAD. Those seeds use
 `change: "file_scope"` and `change_basis: "explicit_file"`. That is a
-hypothetical scope, not a measured diff.
+hypothetical scope, not a measured diff. `status` stays COMPLETE when the
+tool ran. Read `evidence_completeness` and `stop_reason`. `MAX_NODES` means
+the combined cap omitted nodes.
 
 `git_history` without `path` is repository HEAD history. Pass `path` for the
 commits that touch one file or directory.

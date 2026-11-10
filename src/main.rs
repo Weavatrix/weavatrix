@@ -81,10 +81,13 @@ fn list_operations(arguments: &[String]) -> Result<ExitCode, String> {
             return Err(format!("unknown list-tools option: {argument}"));
         }
     }
+    let catalog = operations::catalog_for_profile(profile)
+        .into_iter()
+        .filter(|tool| mcp::closed_library_tool_error(tool.name).is_none())
+        .collect::<Vec<_>>();
     println!(
         "{}",
-        blazingly_json::to_string_pretty(&operations::catalog_for_profile(profile))
-            .map_err(|error| error.to_string())?
+        blazingly_json::to_string_pretty(&catalog).map_err(|error| error.to_string())?
     );
     Ok(ExitCode::SUCCESS)
 }
@@ -101,6 +104,9 @@ fn call_operation(arguments: &[String]) -> Result<ExitCode, String> {
             |value| blazingly_json::from_str(value),
         )
         .map_err(|error| format!("invalid operation JSON: {error}"))?;
+    if let Some(error) = mcp::closed_library_tool_error(name) {
+        return Err(error);
+    }
     let mut engine = Weavatrix::open(repository).map_err(|error| error.to_string())?;
     let output = operations::call(&mut engine, name, input)?;
     println!(

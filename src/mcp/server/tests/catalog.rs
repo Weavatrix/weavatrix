@@ -110,13 +110,12 @@ fn call_operation_rejects_tools_outside_profile_with_clear_message() {
     use mcport::ToolServer;
 
     let mut code = server(McpProfile::Code);
-    // Bypass mcport has_tool gate by calling a name the All catalog would have
-    // but Code profile rejects inside call_operation.
+    // ToolServer::call skips the catalog gate, so a stale name reaches the engine.
     let reply = code.call("seo_link_suggestions", json!({}));
     let text = format!("{reply:?}");
     assert!(
-        text.contains("unavailable") || text.contains("profile") || text.contains("Error"),
-        "seo tool must be rejected in Code profile, got {text}"
+        text.contains("is not an MCP tool"),
+        "seo page links stay in weavatrix-semantic, got {text}"
     );
     assert!(
         !matches!(reply, mcport::ToolReply::Success { .. }),

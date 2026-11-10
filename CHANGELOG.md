@@ -1,7 +1,8 @@
 # Changelog
 
-## Unreleased
+## 1.17.6 - 2026-11-09
 
+- Pin `weavatrix-rust` 2.17.6 and `weavatrix-parse` 0.3.4.
 - Go methods are declarations. Calls inside a method belong to that method.
   Receiver names and function-literal parameters are not functions. Reference
   spans cover the identifier, so a column inside the name resolves.
@@ -24,6 +25,10 @@
   changes the root only with `--allow-retarget`.
 - Tool text no longer says `output_format: "text"` is a shorter summary, or
   that `search_code` is a graph search.
+- `vector_search`, `seo_link_suggestions`, and `memory_context` are library
+  methods, not MCP tools. The catalog is 64 tools. `semantic_link` remains.
+  Nearest-neighbor search stays in `weavatrix-search-vector`, page links in
+  `weavatrix-semantic`, and the event journal in `weavatrix-memory`.
 
 ## 1.17.5 - 2026-09-21
 

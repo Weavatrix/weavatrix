@@ -69,12 +69,9 @@ cannot silently switch to another repository. Pass an explicit
 - [`list_known_repos`](tools/list_known_repos.md) — List repositories with an in-process graph.
 - [`rebuild_graph`](tools/rebuild_graph.md) — Rebuild the derived in-memory graph without source writes.
 
-## Optional supplied-data analysis
+## Semantic link
 
-- [`semantic_link`](tools/semantic_link.md) — Build inferred semantic graph evidence from supplied vectors.
-- [`vector_search`](tools/vector_search.md) — Exact or bounded approximate nearest-neighbor search.
-- [`seo_link_suggestions`](tools/seo_link_suggestions.md) — Directional SEO internal-link evidence from supplied page profiles.
-- [`memory_context`](tools/memory_context.md) — Compile bounded temporal memory context from supplied events.
+- [`semantic_link`](tools/semantic_link.md) — Rank a text query with the local token hash `weavatrix-token-hash-v1`, or link a non-empty caller-supplied vectors array. Nearest-neighbor search, SEO page links, and the event journal are library crates, not MCP tools.
 
 ## n8n workflows
 

@@ -1,6 +1,6 @@
 # Operation reference
 
-The full native product exposes 67 bounded read-only MCP operations. JSON
+The full native product exposes 64 bounded read-only MCP operations. JSON
 schemas returned by `tools/list` are the authoritative machine contract.
 
 ## Graph and orientation
@@ -21,7 +21,7 @@ schemas returned by `tools/list` are the authoritative machine contract.
 ## Change impact and proof
 
 - `get_dependents`: bounded reverse blast radius.
-- `change_impact`: Git changes mapped onto graph evidence. An explicit file that matches HEAD seeds its symbols as `file_scope` (`change_basis: "explicit_file"`), a hypothetical blast radius rather than a measured edit. `max_nodes` caps the combined impact of every seed, keeping production callers ahead of tests.
+- `change_impact`: Git changes mapped onto graph evidence. An explicit file that matches HEAD seeds its symbols as `file_scope` (`change_basis: "explicit_file"`), a hypothetical blast radius rather than a measured edit. `max_nodes` caps the combined impact of every seed, keeping production callers ahead of tests. `status` stays COMPLETE when the tool ran. Read `evidence_completeness` and `stop_reason`. `MAX_NODES` means the cap omitted nodes.
 - `select_tests`: graph-ranked test suites most plausibly affected by a change.
 - `verified_change`: impact, architecture, duplicate, API, and optional test
   evidence for planning or verification.
@@ -106,13 +106,11 @@ rule bindings. They do not infer a passing CI or remote required check.
 
 ## Native extensions
 
-- `vector_search`: exact or bounded approximate nearest-neighbor search.
 - `semantic_link`: rank a text `query` with the local token hash `weavatrix-token-hash-v1` (not a neural embedding), or link a non-empty caller-supplied `vectors` array. An empty `vectors` array without `query` is an error.
-- `seo_link_suggestions`: directional internal-link evidence.
-- `memory_context`: bounded temporal context from supplied events.
 
-Vectors and events are supplied by the caller. Weavatrix does not call an
-embedding service or model.
+Nearest-neighbor search, SEO page links, and the event journal stay in
+`weavatrix-search-vector`, `weavatrix-semantic`, and `weavatrix-memory`.
+They are not MCP tools. Weavatrix does not call an embedding service.
 
 ## n8n workflows
 

@@ -61,7 +61,6 @@ const toolNames = [
     'list_endpoints',
     'list_known_repos',
     'map_stacktrace',
-    'memory_context',
     'module_map',
     'n8n_context',
     'n8n_inventory',
@@ -77,11 +76,9 @@ const toolNames = [
     'search_code',
     'select_tests',
     'semantic_link',
-    'seo_link_suggestions',
     'shortest_path',
     'trace_api_contract',
     'trace_endpoint',
-    'vector_search',
     'verified_change',
     'verify_architecture',
     'verify_capabilities',
@@ -155,7 +152,7 @@ test('the plugin skill is the released Weavatrix skill', () => {
         .filter((name) => name.endsWith('.md'))
         .map((name) => name.slice(0, -3))
         .sort()
-    assert.equal(toolNames.length, 67)
+    assert.equal(toolNames.length, 64)
     assert.deepEqual(canonicalCards, toolNames)
     assert.deepEqual(bundledCards, toolNames)
     for (const name of toolNames) {

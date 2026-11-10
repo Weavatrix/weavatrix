@@ -29,8 +29,8 @@ An edge can carry:
 ## Deterministic and inferred evidence
 
 Parser, manifest, Git, route, and measured-coverage facts are deterministic.
-Vector, semantic, and SEO relationships remain inferred with model, score,
-selection policy, and direction.
+Semantic links from a caller-supplied embedding remain inferred with model, score,
+selection policy, and direction. A text query uses the local token hash and says so.
 
 Inferred content edges are never inserted into the deterministic code graph as
 if a compiler or parser proved them.

@@ -3,10 +3,10 @@ import {git, stableHash} from '../tool-harness-lib.mjs'
 export async function runGroundTruthChecks(context) {
     return [
         await checkCrossRepoGit(context),
-        await checkVectorSearch(context),
+        await checkClosedLibraryTool(context, 'vector_search'),
         await checkSemanticLink(context),
-        await checkSeoLinks(context),
-        await checkMemoryContext(context),
+        await checkClosedLibraryTool(context, 'seo_link_suggestions'),
+        await checkClosedLibraryTool(context, 'memory_context'),
     ]
 }
 
@@ -50,30 +50,20 @@ async function checkCrossRepoGit(context) {
     })
 }
 
-async function checkVectorSearch(context) {
-    const args = {
-        vectors: [
-            {node: 'alpha', values: [1, 0, 0]},
-            {node: 'beta', values: [0.9, 0.1, 0]},
-            {node: 'gamma', values: [0, 1, 0]},
-        ],
-        query: [1, 0, 0],
-        top_k: 3,
-        exact: true,
-        output_format: 'json',
+async function checkClosedLibraryTool(context, name) {
+    const args = {output_format: 'json'}
+    const call = await context.client.call(name, args)
+    const error = `${call.response.error || ''}`
+    const pass = call.response.ok === false
+        && (error.includes('unknown tool') || error.includes('is not an MCP tool'))
+    return {
+        tool: name,
+        pass,
+        fixtureHash: stableHash(args),
+        timingMs: call.wallMs,
+        invariants: [{name: 'closed-in-mcp', pass}],
+        ...((context.includeOutput || !pass) ? {output: {error}} : {}),
     }
-    const call = await context.client.call('vector_search', args)
-    const hits = call.response.value?.hits || []
-    return result(context, 'vector_search', args, call, [
-        {name: 'exact-backend', pass: call.response.value?.exact === true},
-        {name: 'known-cosine-order', pass: hits.map((hit) => hit.node).join(',') === 'alpha,beta,gamma'},
-        {name: 'self-distance-zero', pass: Math.abs(Number(hits[0]?.distance)) < 1e-6},
-        {
-            name: 'monotonic-distance',
-            pass: hits.every((hit, index) =>
-                index === 0 || hit.distance >= hits[index - 1].distance),
-        },
-    ])
 }
 
 async function checkSemanticLink(context) {
@@ -105,93 +95,6 @@ async function checkSemanticLink(context) {
         {
             name: 'similar-pair-linked',
             pass: hasPair(links, context.nodeIds[0], context.nodeIds[1]),
-        },
-    ])
-}
-
-async function checkSeoLinks(context) {
-    const args = {
-        vectors: semanticVectors(context.nodeIds),
-        pages: [
-            {node: context.nodeIds[0], site: 'docs', canonical: '/alpha', language: 'en'},
-            {
-                node: context.nodeIds[1],
-                site: 'docs',
-                canonical: '/beta',
-                language: 'en',
-                cornerstone: true,
-                target_priority: 10,
-            },
-            {node: context.nodeIds[2], site: 'docs', canonical: '/gamma', language: 'fr'},
-        ],
-        min_similarity: 0.5,
-        top_k: 2,
-        selection: 'directed',
-        allow_cross_language: false,
-        model: 'ground-truth-3d',
-        output_format: 'json',
-    }
-    const call = await context.client.call('seo_link_suggestions', args)
-    const links = call.response.value?.recommendations || call.response.value?.edges || []
-    return result(context, 'seo_link_suggestions', args, call, [
-        {name: 'no-source-mutation', pass: call.response.value?.mutation === 'NONE'},
-        {name: 'no-self-links', pass: links.every((edge) => sourceOf(edge) !== targetOf(edge))},
-        {
-            name: 'language-policy',
-            pass: links.every((edge) => {
-                const left = context.nodeIds.indexOf(sourceOf(edge))
-                const right = context.nodeIds.indexOf(targetOf(edge))
-                return left < 2 && right < 2
-            }),
-        },
-        {
-            name: 'cornerstone-similar-target',
-            pass: links.some((edge) => targetOf(edge) === context.nodeIds[1]),
-        },
-    ])
-}
-
-async function checkMemoryContext(context) {
-    const args = {
-        events: [{
-            metadata: {
-                id: 'event:test',
-                stream_id: 'stream:test',
-                stream_version: 0,
-                global_position: 0,
-                event_type: 'node_upserted',
-                occurred_at: 1,
-                recorded_at: 1,
-                agent_id: 'agent:test',
-                session_id: 'session:test',
-            },
-            payload: {
-                type: 'node_upserted',
-                node: {id: 'task:test', kind: 'task', label: 'Test task', attributes: {}},
-            },
-        }],
-        request: {
-            seeds: ['task:test'],
-            valid_at: 2,
-            known_at: 2,
-            token_budget: 1000,
-            max_depth: 2,
-            relations: [],
-            repositories: [],
-            branches: [],
-        },
-        output_format: 'json',
-    }
-    const call = await context.client.call('memory_context', args)
-    const serialized = JSON.stringify(call.response.value || {})
-    return result(context, 'memory_context', args, call, [
-        {name: 'no-mutation', pass: call.response.value?.mutation === 'NONE'},
-        {name: 'seed-present-in-view', pass: serialized.includes('task:test')},
-        {name: 'budget-respected', pass: call.response.value?.receipt?.estimated_tokens <= 1000},
-        {
-            name: 'receipt-preserves-time',
-            pass: call.response.value?.receipt?.valid_at === 2
-                && call.response.value?.receipt?.known_at === 2,
         },
     ])
 }

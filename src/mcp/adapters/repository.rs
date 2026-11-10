@@ -13,7 +13,10 @@ pub(crate) struct ToolCatalog {
 
 impl ToolCatalog {
     pub(crate) fn for_profile(profile: McpProfile) -> io::Result<Self> {
-        let definitions = operations::catalog_for_profile(profile);
+        let definitions = operations::catalog_for_profile(profile)
+            .into_iter()
+            .filter(|definition| crate::mcp::closed_library_tool_error(definition.name).is_none())
+            .collect::<Vec<_>>();
         let names = definitions
             .iter()
             .map(|definition| definition.name.to_owned())
@@ -81,6 +84,9 @@ impl RepositoryPort for CoreRepository {
     }
 
     fn call(&mut self, name: &str, arguments: Value) -> Result<Value, String> {
+        if let Some(error) = crate::mcp::closed_library_tool_error(name) {
+            return Err(error);
+        }
         let engine = self.engine().map_err(|error| error.to_string())?;
         let result = operations::call(engine, name, arguments);
         if result.is_ok() && name == "open_repo" {
@@ -135,10 +141,17 @@ mod tests {
     }
 
     #[test]
-    fn catalog_for_code_profile_excludes_seo_tools() {
-        let catalog = ToolCatalog::for_profile(McpProfile::Code).expect("catalog");
-        assert!(catalog.names.contains("graph_stats"));
-        assert!(!catalog.names.contains("seo_link_suggestions"));
+    fn catalog_omits_library_methods() {
+        for profile in [McpProfile::All, McpProfile::Code, McpProfile::Seo] {
+            let catalog = ToolCatalog::for_profile(profile).expect("catalog");
+            assert!(catalog.names.contains("semantic_link"), "{profile:?}");
+            for name in ["vector_search", "seo_link_suggestions", "memory_context"] {
+                assert!(
+                    !catalog.names.contains(name),
+                    "{name} is still listed in {profile:?}"
+                );
+            }
+        }
     }
 
     #[test]
