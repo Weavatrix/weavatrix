@@ -194,7 +194,7 @@ process cwd — and avoid running both a user MCP and the plugin at once:
   "mcpServers": {
     "weavatrix": {
       "command": "npx",
-      "args": ["-y", "weavatrix@1.17.6", "mcp", "${workspaceFolder}"]
+      "args": ["-y", "weavatrix@1.17.6", "mcp", "${workspaceFolder}", "--output-format=structured"]
     }
   }
 }
@@ -310,7 +310,7 @@ refused unless you started with `--allow-retarget`, and omitted
 `"expected_repository": "weavatrix"` when you already know the folder name — a
 mismatched server fails loudly instead of answering about the wrong repository.
 
-`change_impact` with `files` or `target` reports that blast radius even when the file matches HEAD. Those symbols are `change: "file_scope"` and `change_basis: "explicit_file"`: a hypothetical scope, not a measured diff. `status` stays COMPLETE when the tool ran. Read `evidence_completeness` and `stop_reason`. `MAX_NODES` means the combined cap omitted nodes. `semantic_link` with `query` ranks symbols by the local token hash `weavatrix-token-hash-v1`. That is not a neural embedding. `git_history` with `path` is the history of that file; without `path` it is repository HEAD history.
+`change_impact` with `files` or `target` reports that blast radius even when the file matches HEAD. Those symbols are `change: "file_scope"` and `change_basis: "explicit_file"`: a hypothetical scope, not a measured diff. `status` stays COMPLETE when the tool ran. Read `evidence_completeness` and `stop_reason`. `MAX_NODES` means the combined cap omitted nodes. `semantic_link` with `query` ranks symbols by the local token hash `weavatrix-token-hash-v1`. That is not a neural embedding. `git_history` with `path` is the history of that file; without `path` it is repository HEAD history. `search_code` keeps a resident content index for the process. The first search builds it (`backend` is `liveindex`); later searches read it. A `glob` still walks the filesystem.
 
 **Blast radius before you edit:**
 

@@ -4,7 +4,7 @@ Literal or Rust-regex repository search without ripgrep.
 
 ## When to use
 
-Find bounded literal or regular-expression matches in file text when the source text is known but its location is not. The backend is a filesystem scan, not the symbol graph. Use `find_references` or `go_to_definition` for a symbol.
+Find bounded literal or regular-expression matches in file text when the source text is known but its location is not. The process keeps a resident content index: the first search builds it and later searches read it (`backend` `liveindex`). A `glob` still walks the filesystem. This is not a symbol-graph search. Use `find_references` or `go_to_definition` for a symbol.
 
 ## Inputs
 

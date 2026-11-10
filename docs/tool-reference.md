@@ -30,7 +30,7 @@ schemas returned by `tools/list` are the authoritative machine contract.
 
 ## Exact source context
 
-- `search_code`: bounded literal or regex scan of file text. The backend is the filesystem, not the symbol graph.
+- `search_code`: bounded literal or regex search of the resident content index. The first search in a process builds that index; later searches reuse it. A glob still walks the filesystem. This is not the symbol graph.
 - `read_source`: verified source excerpt with exact lines.
 - `inspect_symbol`: declaration, owner, inbound, and outbound evidence.
 - `context_bundle`: ranked minimal task workset around a target.

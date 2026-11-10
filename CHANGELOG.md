@@ -29,6 +29,11 @@
   methods, not MCP tools. The catalog is 64 tools. `semantic_link` remains.
   Nearest-neighbor search stays in `weavatrix-search-vector`, page links in
   `weavatrix-semantic`, and the event journal in `weavatrix-memory`.
+- `search_code` keeps a resident content index for the MCP process. The first
+  search builds it; later searches read it. A `glob` still walks files.
+- The IDE plugin launches with `--output-format=structured`, so a client that
+  reads `structuredContent` does not also receive the JSON text mirror. `json`
+  remains the default for a hand-written launch.
 
 ## 1.17.5 - 2026-09-21
 

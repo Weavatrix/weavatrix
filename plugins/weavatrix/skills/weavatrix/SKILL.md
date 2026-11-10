@@ -75,7 +75,9 @@ tool's summary/detail or result limits for conversational work. Use
 Call `rebuild_graph` only when the repository changed before automatic
 refresh completed or when deliberately changing graph mode.
 
-`search_code` scans file text. It does not resolve symbols. Use
+`search_code` reads a resident content index for this process. The first
+search builds it (`backend` is `liveindex`); later searches reuse it. A
+`glob` still walks the filesystem. It does not resolve symbols. Use
 `find_references`, `go_to_definition`, or `inspect_symbol` for a name.
 A column inside an identifier resolves; it does not have to be the first byte.
 

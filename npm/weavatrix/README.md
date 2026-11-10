@@ -26,7 +26,9 @@ Weavatrix Core, not new MCP products. See
 
 It does not answer from a larger grep or an invented confidence score. Every
 bounded result can carry the repository revision, file, line, extractor,
-evidence kind, and confidence that produced it.
+evidence kind, and confidence that produced it. `search_code` keeps a
+resident content index for the process: the first search builds it, and
+later searches read it. A `glob` still walks files.
 
 This npm package is the convenient **prebuilt native tarball**. That is the
 only reason it exists on npm. It is not a TypeScript rewrite, not a Serena
@@ -80,7 +82,7 @@ the plugin for the same server name:
   "mcpServers": {
     "weavatrix": {
       "command": "npx",
-      "args": ["-y", "weavatrix@1.17.6", "mcp", "${workspaceFolder}"]
+      "args": ["-y", "weavatrix@1.17.6", "mcp", "${workspaceFolder}", "--output-format=structured"]
     }
   }
 }

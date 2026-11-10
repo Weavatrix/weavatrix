@@ -20,7 +20,7 @@ cannot silently switch to another repository. Pass an explicit
 - [`list_communities`](tools/list_communities.md) — List deterministic coupling communities (containment and package edges excluded).
 - [`module_map`](tools/module_map.md) — Production folder map at a requested directory depth.
 - [`build_graph`](tools/build_graph.md) — Typed workspace, target, configuration, task, and runner topology from captured manifest evidence.
-- [`search_code`](tools/search_code.md) — Literal or Rust-regex repository search without ripgrep.
+- [`search_code`](tools/search_code.md) — Literal or Rust-regex search on the resident content index. A glob still walks files.
 - [`read_source`](tools/read_source.md) — Bounded source context by node or repository path.
 - [`inspect_symbol`](tools/inspect_symbol.md) — Definition, direct relationships and source evidence.
 - [`go_to_definition`](tools/go_to_definition.md) — Resolve the symbol at a source position to its definition without guessing by name.
