@@ -591,15 +591,15 @@ dependencies = [
 
 [[package]]
 name = "weavatrix-parse"
-version = "0.3.3"
+version = "0.3.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0b033bf477f1a615abdabb19de3b851fd4d64fe1914b4be583124608e8dbfb4f"
+checksum = "fa9015495d015e85ce1d2b337676d362efb82d19025f3bc8edf1516d14592f8e"
 
 [[package]]
 name = "weavatrix-rust"
-version = "2.17.4"
+version = "2.17.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4f05073172ee1c0cf7a34e01c3078c30adf19439252d2a1ffba614d45919b16a"
+checksum = "1c3c7ddc9e1c633610e77b74b49bcdc58a4b2dbb0ca5154de5d394a7a9e9ee67"
 dependencies = [
  "blazingly-json",
  "proc-macro2",
@@ -626,6 +626,7 @@ version = "0.4.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f411362c24f268e733b5820a6c118961a9954c9d9d8e3f23a4b9c8721f084557"
 dependencies = [
+ "notify",
  "winapi-util",
 ]
 
@@ -646,6 +647,7 @@ checksum = "3267206c667c89a56261617736ab18ec1083378ba9a16e0daf4d996795c44b36"
 dependencies = [
  "encoding_rs",
  "memchr",
+ "notify",
  "regex-automata",
  "regex-syntax",
  "sha2",
