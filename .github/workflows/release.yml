@@ -166,17 +166,27 @@ jobs:
 
           PUBLISHED_HEAD=""
           PREDICATE=""
-          # Registry metadata often lags a few minutes after a successful
-          # provenance publish; wait longer and print diagnostics on failure.
-          for attempt in $(seq 1 60); do
-            echo "npm provenance verification attempt $attempt/60"
-            PUBLISHED_HEAD="$(npm view "weavatrix@$VERSION" gitHead 2>/dev/null | tr -d '\r\n' || true)"
-            PREDICATE="$(npm view "weavatrix@$VERSION" dist.attestations.provenance.predicateType 2>/dev/null | tr -d '\r\n' || true)"
-            if [[ "$PUBLISHED_HEAD" == "$GITHUB_SHA" && "$PREDICATE" == "https://slsa.dev/provenance/v1" ]]; then
+          # npm scans a publish before the version is installable. The 27 MB
+          # native tarball stayed invisible for about 13 minutes. A real git
+          # SHA that is not this commit fails immediately; an empty view keeps
+          # waiting. 120 attempts of 10 seconds is 20 minutes.
+          for attempt in $(seq 1 120); do
+            echo "npm provenance verification attempt $attempt/120"
+            CANDIDATE="$(npm view "weavatrix@$VERSION" gitHead 2>/dev/null | tr -d '\r\n' || true)"
+            CANDIDATE_PREDICATE="$(npm view "weavatrix@$VERSION" dist.attestations.provenance.predicateType 2>/dev/null | tr -d '\r\n' || true)"
+            if [[ "$CANDIDATE" =~ ^[0-9a-f]{40}$ && "$CANDIDATE_PREDICATE" == "https://slsa.dev/provenance/v1" ]]; then
+              if [[ "$CANDIDATE" != "$GITHUB_SHA" ]]; then
+                echo "provenance verification failed"
+                echo "expected gitHead=$GITHUB_SHA"
+                echo "actual gitHead=$CANDIDATE"
+                exit 1
+              fi
+              PUBLISHED_HEAD="$CANDIDATE"
+              PREDICATE="$CANDIDATE_PREDICATE"
               echo "verified gitHead=$PUBLISHED_HEAD predicate=$PREDICATE"
               break
             fi
-            sleep 5
+            sleep 10
           done
           if [[ "$PUBLISHED_HEAD" != "$GITHUB_SHA" || "$PREDICATE" != "https://slsa.dev/provenance/v1" ]]; then
             echo "provenance verification failed"

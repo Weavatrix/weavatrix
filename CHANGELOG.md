@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.17.7 - 2026-11-11
+
+- Pin `weavatrix-rust` 2.17.7. `ci_restrictions` keeps the `token_budget`
+  receipt for the trim it applied.
+- The npm release waits through the registry scan before treating a missing
+  version as a failed publish.
+
 ## 1.17.6 - 2026-11-09
 
 - Pin `weavatrix-rust` 2.17.6 and `weavatrix-parse` 0.3.4.
