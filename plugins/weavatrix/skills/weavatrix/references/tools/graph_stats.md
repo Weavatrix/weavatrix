@@ -1,6 +1,6 @@
 # `graph_stats`
 
-Graph size, evidence and build freshness.
+Graph size, evidence and build freshness. `evidence` counts edges, not a percentage; `evidence_share` is that split. `freshness.state` `CURRENT` means the loaded snapshot, not a new disk walk.
 
 ## When to use
 

@@ -4,7 +4,7 @@ Repository structure and evidence completeness audit.
 
 ## When to use
 
-Run a broad repository health and evidence-completeness pass before targeted investigation.
+Run a broad repository health and evidence-completeness pass before targeted investigation. A named category collects only that section. At least 200 parsed edges with resolved edges under one fifth of that is REVIEW.
 
 ## Inputs
 

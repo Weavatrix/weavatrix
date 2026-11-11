@@ -5,7 +5,7 @@ Resolve the symbol at a source position to its definition without guessing by na
 ## When to use
 
 You already have `(path, line, column)` for a usage and need the definition the
-graph recorded for that occurrence - not a same-named overload elsewhere.
+graph recorded for that occurrence - not a same-named overload elsewhere. An unresolved position omits `definition`.
 
 ## Inputs
 

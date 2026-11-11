@@ -28,7 +28,7 @@ It does not answer from a larger grep or an invented confidence score. Every
 bounded result can carry the repository revision, file, line, extractor,
 evidence kind, and confidence that produced it. `search_code` keeps a
 resident content index for the process: the first search builds it, and
-later searches read it. A `glob` still walks files.
+later searches read it. A `glob` filters that index. The filesystem is scanned only when the widened search is truncated and the filter kept fewer hits than requested.
 
 This npm package is the convenient **prebuilt native tarball**. That is the
 only reason it exists on npm. It is not a TypeScript rewrite, not a Serena
@@ -60,7 +60,7 @@ weavatrix mcp .
 ```toml
 [mcp_servers.weavatrix]
 command = "npx"
-args = ["-y", "weavatrix@1.17.8", "mcp", "."]
+args = ["-y", "weavatrix@1.17.9", "mcp", "."]
 ```
 
 Pass an absolute repository path when the Codex process cwd is not the project
@@ -69,7 +69,7 @@ you intend to analyze.
 ### Claude Code
 
 ```sh
-claude mcp add weavatrix -- npx -y weavatrix@1.17.8 mcp .
+claude mcp add weavatrix -- npx -y weavatrix@1.17.9 mcp .
 ```
 
 ### Cursor
@@ -82,7 +82,7 @@ the plugin for the same server name:
   "mcpServers": {
     "weavatrix": {
       "command": "npx",
-      "args": ["-y", "weavatrix@1.17.8", "mcp", "${workspaceFolder}", "--output-format=structured"]
+      "args": ["-y", "weavatrix@1.17.9", "mcp", "${workspaceFolder}", "--output-format=structured"]
     }
   }
 }
@@ -91,14 +91,14 @@ the plugin for the same server name:
 Profiles expose bounded views of the same engine:
 
 ```sh
-npx -y weavatrix@1.17.8 mcp . --profile=all
-npx -y weavatrix@1.17.8 mcp . --profile=code
-npx -y weavatrix@1.17.8 mcp . --profile=seo
-npx -y weavatrix@1.17.8 mcp . --profile=n8n
-npx -y weavatrix@1.17.8 mcp . --profile=dify
-npx -y weavatrix@1.17.8 mcp . --profile=agent
-npx -y weavatrix@1.17.8 mcp . --profile=diagram
-npx -y weavatrix@1.17.8 mcp . --profile=web3
+npx -y weavatrix@1.17.9 mcp . --profile=all
+npx -y weavatrix@1.17.9 mcp . --profile=code
+npx -y weavatrix@1.17.9 mcp . --profile=seo
+npx -y weavatrix@1.17.9 mcp . --profile=n8n
+npx -y weavatrix@1.17.9 mcp . --profile=dify
+npx -y weavatrix@1.17.9 mcp . --profile=agent
+npx -y weavatrix@1.17.9 mcp . --profile=diagram
+npx -y weavatrix@1.17.9 mcp . --profile=web3
 ```
 
 The package contains native binaries for Windows x64/arm64, macOS x64/arm64,
@@ -329,11 +329,11 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.17.8
+weavatrix 1.17.9
     profile catalog · refresh · watcher · MCP framing
     |
     v
-weavatrix-rust 2.17.8
+weavatrix-rust 2.17.9
     typed graph · analysis · 65 product operations including local CI, n8n, Dify, agent packages, Mermaid, and Web3
 ```
 

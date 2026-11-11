@@ -4,7 +4,7 @@ Inventory statically extracted HTTP endpoints.
 
 ## When to use
 
-Inventory statically extracted HTTP endpoints with optional method and path filters.
+Inventory statically extracted HTTP endpoints with optional method and path filters. Each row is a compact node: id, label, kind, language, and span. `max_results` pages that list and the answer reports `endpoints_total`; omit it to return every visible endpoint.
 
 ## Inputs
 

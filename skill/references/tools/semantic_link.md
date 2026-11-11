@@ -4,7 +4,7 @@ Rank symbols for a phrase, or link caller-supplied vectors.
 
 ## When to use
 
-Pass `query` to rank functions, methods, and types by the local deterministic token hash `weavatrix-token-hash-v1` (name, path, and the declaration line). That hash is not a neural embedding, and Weavatrix does not create one.
+Pass `query` to rank functions, methods, and types by the local deterministic token hash `weavatrix-token-hash-v1` (name, path, a short doc comment above the declaration, the declaration line, and a short body). Test paths rank lower. That hash is not a neural embedding, and Weavatrix does not create one.
 
 Pass a non-empty `vectors` array only when you already have embeddings. An empty `vectors` array without `query` is an error and builds no links. When both are set, the supplied vectors are linked and the phrase is not ranked.
 

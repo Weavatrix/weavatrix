@@ -4,7 +4,7 @@ Read-only Git change impact with graph evidence.
 
 ## When to use
 
-Map a working-tree diff, explicit files, or Git revisions onto affected graph nodes. Naming `files` or `target` when that file matches HEAD still returns its symbols as `change: "file_scope"` and `change_basis: "explicit_file"`. That is a hypothetical blast radius, not a measured edit. A dirty file keeps the real symbol diff. `status` stays COMPLETE when the tool ran. Read `evidence_completeness` and `stop_reason`. `MAX_NODES` means the combined cap omitted nodes.
+Map a working-tree diff, explicit files, or Git revisions onto affected graph nodes. Naming `files` or `target` when that file matches HEAD still returns its symbols as `change: "file_scope"` and `change_basis: "explicit_file"`. That is a hypothetical blast radius, not a measured edit. A dirty file keeps the real symbol diff. `status` stays COMPLETE when the tool ran. Read `evidence_completeness` and `stop_reason`. `MAX_NODES` means the combined cap omitted nodes. Impacted nodes are id, label, kind, language, and span.
 
 Static impact is not proof that selected behavior executed.
 

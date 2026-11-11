@@ -5,7 +5,7 @@ Occurrences of the symbol at a position or label, from the graph and an on-disk 
 ## When to use
 
 List every recorded occurrence of one symbol after you have a label or a pinned
-`(path, line, column)` usage.
+`(path, line, column)` usage. Test and classified rows stay out unless `include_tests` or `include_classified` is set. The definition row stays.
 
 ## Inputs
 

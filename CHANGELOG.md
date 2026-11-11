@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.17.9 - 2026-11-11
+
+- Pin `weavatrix-rust` 2.17.9.
+- `list_endpoints` is a compact paged inventory. `ci_protection` answers use
+  path labels. Phrase `semantic_link` ranks a short doc comment and body and
+  ranks test paths lower.
+- Neighbors, impact, references, dead code, duplicates, and `run_audit` follow
+  the shorter engine answers.
+
 ## 1.17.8 - 2026-11-11
 
 - The catalog adds `ci_protection` for an explicit file list. Change and diff

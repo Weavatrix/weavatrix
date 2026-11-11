@@ -10,9 +10,9 @@ cannot silently switch to another repository. Pass an explicit
 
 ## Graph, source, and orientation
 
-- [`graph_stats`](tools/graph_stats.md) — Graph size, evidence and build freshness.
+- [`graph_stats`](tools/graph_stats.md) — Graph size, edge evidence and build freshness of the loaded snapshot.
 - [`get_node`](tools/get_node.md) — Resolve one exact graph node.
-- [`get_neighbors`](tools/get_neighbors.md) — Direct typed incoming and outgoing relationships.
+- [`get_neighbors`](tools/get_neighbors.md) — Direct typed incoming and outgoing relationships. The seed is compact unless `response_detail` is `full`.
 - [`query_graph`](tools/query_graph.md) — Bounded BFS or DFS around exact or textual seeds.
 - [`god_nodes`](tools/god_nodes.md) — Rank high-connectivity production nodes.
 - [`shortest_path`](tools/shortest_path.md) — Shortest typed dependency path between two nodes.
@@ -20,18 +20,18 @@ cannot silently switch to another repository. Pass an explicit
 - [`list_communities`](tools/list_communities.md) — List deterministic coupling communities (containment and package edges excluded).
 - [`module_map`](tools/module_map.md) — Production folder map at a requested directory depth.
 - [`build_graph`](tools/build_graph.md) — Typed workspace, target, configuration, task, and runner topology from captured manifest evidence.
-- [`search_code`](tools/search_code.md) — Literal or Rust-regex search on the resident content index. A glob still walks files.
+- [`search_code`](tools/search_code.md) — Literal or Rust-regex search on the resident content index. A glob filters that index.
 - [`read_source`](tools/read_source.md) — Bounded source context by node or repository path.
 - [`inspect_symbol`](tools/inspect_symbol.md) — Definition, direct relationships and source evidence.
-- [`go_to_definition`](tools/go_to_definition.md) — Resolve the symbol at a source position to its definition without guessing by name.
-- [`find_references`](tools/find_references.md) — Occurrences of the symbol at a position or label, from the graph and an on-disk SCIP index if present.
+- [`go_to_definition`](tools/go_to_definition.md) — Resolve the symbol at a source position to its definition without guessing by name. An unresolved position omits definition.
+- [`find_references`](tools/find_references.md) — Occurrences of the symbol at a position or label, from the graph and an on-disk SCIP index if present. Test and classified rows stay out unless opted in.
 - [`context_bundle`](tools/context_bundle.md) — Compact graph and source bundle for one symbol.
 - [`map_stacktrace`](tools/map_stacktrace.md) — Map stack-trace text onto repository files and symbols.
 
 ## Change impact and Git
 
 - [`get_dependents`](tools/get_dependents.md) — Bounded transitive reverse blast radius.
-- [`change_impact`](tools/change_impact.md) — Read-only Git change impact with graph evidence.
+- [`change_impact`](tools/change_impact.md) — Read-only Git change impact with graph evidence. Impacted nodes are id, label, kind, language, and span.
 - [`select_tests`](tools/select_tests.md) — Select the test suites a change most plausibly needs to run.
 - [`git_history`](tools/git_history.md) — Bounded direct Git history without launching git.
 - [`git_read_blob`](tools/git_read_blob.md) — Bounded UTF-8 file content at an immutable Git revision or blob OID; binary blobs are refused.
@@ -43,11 +43,11 @@ cannot silently switch to another repository. Pass an explicit
 
 - [`architecture_inventory`](tools/architecture_inventory.md) — Bounded architecture overview and evidence-bounded style hypotheses by default, with complete edge/cycle-candidate totals; `detail:"full"` gives paged evidence. Explain statuses and witnesses in prose, not as a JSON dump.
 - [`ci_restrictions`](tools/ci_restrictions.md) — Local GitHub Actions checks and conditional applicability.
-- [`ci_protection`](tools/ci_protection.md) — Candidate checks and declared rule bindings for an explicit file list. Not included in change or diff answers.
+- [`ci_protection`](tools/ci_protection.md) — Candidate checks and declared rule bindings for an explicit file list. Membership ids in the answer are path labels. Not included in change or diff answers.
 - [`explain_restriction`](tools/explain_restriction.md) — One restriction and its evidence limits.
-- [`find_duplicates`](tools/find_duplicates.md) — Deterministic Type-1/2/3 clone families.
-- [`find_dead_code`](tools/find_dead_code.md) — Conservative unreferenced-symbol review queue.
-- [`run_audit`](tools/run_audit.md) — Repository structure and evidence completeness audit.
+- [`find_duplicates`](tools/find_duplicates.md) — Deterministic Type-1/2/3 clone families. `.gen.` and `.generated.` files stay out unless `include_boilerplate` is set.
+- [`find_dead_code`](tools/find_dead_code.md) — Conservative unreferenced-symbol review queue. A type-only import does not keep its target live.
+- [`run_audit`](tools/run_audit.md) — Repository structure and evidence completeness audit. A named category collects only that section.
 - [`coverage_map`](tools/coverage_map.md) — Ingest a report Quality already built. Does not run tests. Missing report is unmeasured, not 0%.
 - [`hot_path_review`](tools/hot_path_review.md) — Rank functions by static complexity times resolved call fan-in.
 - [`perf_attribution`](tools/perf_attribution.md) — Correlate a measurement series with the declarations that changed between the revisions that produced it.
@@ -60,7 +60,7 @@ cannot silently switch to another repository. Pass an explicit
 
 ## APIs and transports
 
-- [`list_endpoints`](tools/list_endpoints.md) — Inventory statically extracted HTTP endpoints, including hand-rolled req.method/pathname conditions.
+- [`list_endpoints`](tools/list_endpoints.md) — Compact HTTP endpoint inventory. `max_results` pages it and reports `endpoints_total`.
 - [`trace_endpoint`](tools/trace_endpoint.md) — Resolve an endpoint and its bounded call neighborhood.
 - [`trace_api_contract`](tools/trace_api_contract.md) — Cross-repository HTTP, GraphQL, gRPC and event-transport contract evidence for named backend and client roots.
 
@@ -72,7 +72,7 @@ cannot silently switch to another repository. Pass an explicit
 
 ## Semantic link
 
-- [`semantic_link`](tools/semantic_link.md) — Rank a text query with the local token hash `weavatrix-token-hash-v1`, or link a non-empty caller-supplied vectors array. Nearest-neighbor search, SEO page links, and the event journal are library crates, not MCP tools.
+- [`semantic_link`](tools/semantic_link.md) — Rank a text query with `weavatrix-token-hash-v1` (name, path, doc comment, declaration, short body; test paths rank lower), or link a non-empty caller-supplied vectors array. Nearest-neighbor search, SEO page links, and the event journal are library crates, not MCP tools.
 
 ## n8n workflows
 

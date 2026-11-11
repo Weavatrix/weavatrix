@@ -4,7 +4,7 @@ Conservative unreferenced-symbol review queue.
 
 ## When to use
 
-Build a conservative dead-code review queue. Every `main.go` and every Go `func main` is an entry, so `main` itself is reachable. Receiver names and function-literal parameters are not symbols. Exported symbols with no callers stay at confidence 50; private ones at 85. `REVIEW_ONLY` means the queue is a review list.
+Build a conservative dead-code review queue. Every `main.go` and every Go `func main` is an entry, so `main` itself is reachable. Receiver names and function-literal parameters are not symbols. Exported symbols with no callers stay at confidence 50; private ones at 85. `REVIEW_ONLY` means the queue is a review list. Each candidate is id, label, kind, language, and span. A type-only import does not keep its target live.
 
 Never delete from this result alone; confirm source and framework registration points.
 

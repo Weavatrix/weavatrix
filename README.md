@@ -80,7 +80,7 @@ The same source is distributed in two forms:
 | Distribution | Install | Best for |
 | --- | --- | --- |
 | `weavatrix` on crates.io | `cargo install weavatrix` | Rust-first environments and source builds |
-| `weavatrix` on npm | `npx -y weavatrix@1.17.8 mcp <repo>` | Ready-made cross-platform binaries without a Rust toolchain |
+| `weavatrix` on npm | `npx -y weavatrix@1.17.9 mcp <repo>` | Ready-made cross-platform binaries without a Rust toolchain |
 
 The npm package exists for convenience; it does not contain a different
 JavaScript engine. Both distributions run the same native adapter and the same
@@ -194,7 +194,7 @@ process cwd — and avoid running both a user MCP and the plugin at once:
   "mcpServers": {
     "weavatrix": {
       "command": "npx",
-      "args": ["-y", "weavatrix@1.17.8", "mcp", "${workspaceFolder}", "--output-format=structured"]
+      "args": ["-y", "weavatrix@1.17.9", "mcp", "${workspaceFolder}", "--output-format=structured"]
     }
   }
 }
@@ -203,14 +203,14 @@ process cwd — and avoid running both a user MCP and the plugin at once:
 Profiles expose bounded views of the same engine:
 
 ```sh
-npx -y weavatrix@1.17.8 mcp . --profile=all
-npx -y weavatrix@1.17.8 mcp . --profile=code
-npx -y weavatrix@1.17.8 mcp . --profile=seo
-npx -y weavatrix@1.17.8 mcp . --profile=n8n
-npx -y weavatrix@1.17.8 mcp . --profile=dify
-npx -y weavatrix@1.17.8 mcp . --profile=agent
-npx -y weavatrix@1.17.8 mcp . --profile=diagram
-npx -y weavatrix@1.17.8 mcp . --profile=web3
+npx -y weavatrix@1.17.9 mcp . --profile=all
+npx -y weavatrix@1.17.9 mcp . --profile=code
+npx -y weavatrix@1.17.9 mcp . --profile=seo
+npx -y weavatrix@1.17.9 mcp . --profile=n8n
+npx -y weavatrix@1.17.9 mcp . --profile=dify
+npx -y weavatrix@1.17.9 mcp . --profile=agent
+npx -y weavatrix@1.17.9 mcp . --profile=diagram
+npx -y weavatrix@1.17.9 mcp . --profile=web3
 ```
 
 The npm package contains native binaries for Windows x64/arm64, macOS
@@ -310,7 +310,7 @@ refused unless you started with `--allow-retarget`, and omitted
 `"expected_repository": "weavatrix"` when you already know the folder name — a
 mismatched server fails loudly instead of answering about the wrong repository.
 
-`change_impact` with `files` or `target` reports that blast radius even when the file matches HEAD. Those symbols are `change: "file_scope"` and `change_basis: "explicit_file"`: a hypothetical scope, not a measured diff. `status` stays COMPLETE when the tool ran. Read `evidence_completeness` and `stop_reason`. `MAX_NODES` means the combined cap omitted nodes. `semantic_link` with `query` ranks symbols by the local token hash `weavatrix-token-hash-v1`. That is not a neural embedding. `git_history` with `path` is the history of that file; without `path` it is repository HEAD history. `search_code` keeps a resident content index for the process. The first search builds it (`backend` is `liveindex`); later searches read it. A `glob` still walks the filesystem.
+`change_impact` with `files` or `target` reports that blast radius even when the file matches HEAD. Those symbols are `change: "file_scope"` and `change_basis: "explicit_file"`: a hypothetical scope, not a measured diff. `status` stays COMPLETE when the tool ran. Read `evidence_completeness` and `stop_reason`. `MAX_NODES` means the combined cap omitted nodes. Impacted nodes are id, label, kind, language, and span. `semantic_link` with `query` ranks symbols by the local token hash `weavatrix-token-hash-v1`. That is not a neural embedding. `git_history` with `path` is the history of that file; without `path` it is repository HEAD history. `search_code` keeps a resident content index for the process. The first search builds it (`backend` is `liveindex`); later searches read it. A `glob` filters that index. The filesystem is scanned only when the widened search is truncated and the filter kept fewer hits than requested.
 
 **Blast radius before you edit:**
 
@@ -468,7 +468,7 @@ agent stays on the repository revision. It does not log into n8n.
   and `$env` values stay off the default graph and context.
 
 ```sh
-npx -y weavatrix@1.17.8 mcp . --profile=n8n
+npx -y weavatrix@1.17.9 mcp . --profile=n8n
 ```
 
 ### Dify (shipped in 1.13.0)
@@ -493,7 +493,7 @@ call the Dify console.
   inventory and context.
 
 ```sh
-npx -y weavatrix@1.17.8 mcp . --profile=dify
+npx -y weavatrix@1.17.9 mcp . --profile=dify
 ```
 
 ### Agent packages (shipped in 1.14.0)
@@ -509,7 +509,7 @@ keywords stay `undetermined`. Duplicate tool labels are
 `allowed-tools` is a declaration, not a proven call.
 
 ```sh
-npx -y weavatrix@1.17.8 mcp . --profile=agent
+npx -y weavatrix@1.17.9 mcp . --profile=agent
 ```
 
 ### Mermaid diagrams (shipped in 1.14.0)
@@ -523,7 +523,7 @@ Name match is not exact. `change_impact.documentation` is separate from
 production impact.
 
 ```sh
-npx -y weavatrix@1.17.8 mcp . --profile=diagram
+npx -y weavatrix@1.17.9 mcp . --profile=diagram
 ```
 
 ### Web3 integration (shipped in 1.15.0)
@@ -539,7 +539,7 @@ change can silently misdecode. ABI equality is not a live deployment
 proof. The engine does not compile contracts, call RPC, or open a wallet.
 
 ```sh
-npx -y weavatrix@1.17.8 mcp . --profile=web3
+npx -y weavatrix@1.17.9 mcp . --profile=web3
 ```
 
 ### Compared with adjacent tools
@@ -592,11 +592,11 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.17.8
+weavatrix 1.17.9
     profile catalog · session refresh · filesystem watcher · MCP framing
     |
     v
-weavatrix-rust 2.17.8
+weavatrix-rust 2.17.9
     typed graph · analysis pipeline · 65 product operations including local CI, n8n, Dify, agent packages, Mermaid, and Web3
     |
     +-- weavatrix-scan      repository discovery and selection

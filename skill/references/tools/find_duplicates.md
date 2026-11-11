@@ -4,7 +4,7 @@ Deterministic Type-1/2/3 clone families.
 
 ## When to use
 
-Review bounded Type-1, Type-2, or Type-3 clone families before confirming candidates in source.
+Review bounded Type-1, Type-2, or Type-3 clone families before confirming candidates in source. Files named `.gen.` or `.generated.` stay out unless `include_boilerplate` is set.
 
 ## Inputs
 

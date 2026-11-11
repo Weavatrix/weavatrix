@@ -22,5 +22,9 @@ call `ci_restrictions`. For one finding, call `explain_restriction`.
 ```
 
 `candidate_checks` and `declared_rule_bindings` are static candidates.
-Execution, path filters, and remote enforcement are not proven. The live
-MCP `tools/list` schema is authoritative.
+Component and build membership in the answer are path labels
+(`component:directory:src/api`, `test:architecture`, `Cargo.toml`), not
+repository hashes. `restrictions_unresolved` returns at most 20 strings and
+`restrictions_unresolved_total` is the full count. Execution, path filters,
+and remote enforcement are not proven. The live MCP `tools/list` schema is
+authoritative.

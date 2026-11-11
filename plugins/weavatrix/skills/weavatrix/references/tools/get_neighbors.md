@@ -4,7 +4,7 @@ Direct typed incoming and outgoing relationships.
 
 ## When to use
 
-Inspect only the direct typed incoming and outgoing relationships of one exact node.
+Inspect only the direct typed incoming and outgoing relationships of one exact node. The seed is id, label, kind, language, and span unless `response_detail` is `full`. Test and classified neighbors stay out unless `include_tests` or `include_classified` is set.
 
 For transitive reverse impact use `get_dependents`; for bounded multi-hop exploration use `query_graph`.
 

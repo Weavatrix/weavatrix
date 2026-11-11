@@ -7,7 +7,7 @@ schemas returned by `tools/list` are the authoritative machine contract.
 
 - `graph_stats`: root, revision, freshness, graph counts, and capabilities.
 - `get_node`: one exact file, symbol, endpoint, or graph node.
-- `get_neighbors`: typed direct inbound or outbound relationships.
+- `get_neighbors`: typed direct inbound or outbound relationships. The seed is id, label, kind, language, and span unless `response_detail` is `full`. Test and classified neighbors stay out unless `include_tests` or `include_classified` is set.
 - `query_graph`: bounded BFS/DFS around exact file or symbol seeds.
 - `god_nodes`: high-connectivity nodes for architecture review.
 - `shortest_path`: one bounded typed path between exact nodes.
@@ -21,7 +21,7 @@ schemas returned by `tools/list` are the authoritative machine contract.
 ## Change impact and proof
 
 - `get_dependents`: bounded reverse blast radius.
-- `change_impact`: Git changes mapped onto graph evidence. An explicit file that matches HEAD seeds its symbols as `file_scope` (`change_basis: "explicit_file"`), a hypothetical blast radius rather than a measured edit. `max_nodes` caps the combined impact of every seed, keeping production callers ahead of tests. `status` stays COMPLETE when the tool ran. Read `evidence_completeness` and `stop_reason`. `MAX_NODES` means the cap omitted nodes.
+- `change_impact`: Git changes mapped onto graph evidence. An explicit file that matches HEAD seeds its symbols as `file_scope` (`change_basis: "explicit_file"`), a hypothetical blast radius rather than a measured edit. `max_nodes` caps the combined impact of every seed, keeping production callers ahead of tests. `status` stays COMPLETE when the tool ran. Read `evidence_completeness` and `stop_reason`. `MAX_NODES` means the cap omitted nodes. Impacted nodes are id, label, kind, language, and span.
 - `select_tests`: graph-ranked test suites most plausibly affected by a change.
 - `verified_change`: impact, architecture, duplicate, API, and optional test
   evidence for planning or verification.
@@ -30,7 +30,7 @@ schemas returned by `tools/list` are the authoritative machine contract.
 
 ## Exact source context
 
-- `search_code`: bounded literal or regex search of the resident content index. The first search in a process builds that index; later searches reuse it. A glob still walks the filesystem. This is not the symbol graph.
+- `search_code`: bounded literal or regex search of the resident content index. The first search in a process builds that index; later searches reuse it. A glob filters that index, and scans the filesystem only when a truncated index search kept fewer hits than requested. This is not the symbol graph.
 - `read_source`: verified source excerpt with exact lines.
 - `inspect_symbol`: declaration, owner, inbound, and outbound evidence.
 - `context_bundle`: ranked minimal task workset around a target.
@@ -39,13 +39,13 @@ schemas returned by `tools/list` are the authoritative machine contract.
 
 ## Health and quality
 
-- `find_duplicates`: Type-1/2/3 clone families with boilerplate controls;
+- `find_duplicates`: Type-1/2/3 clone families with boilerplate controls. Files named `.gen.` or `.generated.` stay out unless `include_boilerplate` is set.
   filtering and `top_n` rebuild families from surviving pairs so members,
   pair identifiers, and connected components stay mutually consistent.
 - `find_dead_code`: review candidates with entry-point, test, configuration,
   dynamic, and external-use classification. Every `main.go` and every Go
-  `func main` is an entry.
-- `run_audit`: dependency, runtime, graph, and capability health.
+  `func main` is an entry. Each candidate is id, label, kind, language, and span. A type-only import does not keep its target live.
+- `run_audit`: dependency, runtime, graph, and capability health. A named category collects only that section. At least 200 parsed edges with resolved edges under one fifth of that is REVIEW.
 - `coverage_map`: ingest LCOV, Istanbul, Tarpaulin JSON, or LLVM coverage
   onto graph nodes. The MCP tool does not run tests. Weavatrix Quality
   `quality_run` writes `.weavatrix/coverage/lcov.info`. Absence is
@@ -57,7 +57,7 @@ result.
 
 ## APIs and transports
 
-- `list_endpoints`: bounded HTTP endpoint inventory.
+- `list_endpoints`: compact HTTP endpoint inventory. `max_results` pages the rows and reports `endpoints_total`; omit it to return every visible endpoint.
 - `trace_endpoint`: one route neighborhood and related callers.
 - `trace_api_contract`: cross-repository HTTP, GraphQL, gRPC, Kafka,
   RabbitMQ/AMQP, JMS, NATS, SQS, and SNS evidence.
@@ -92,8 +92,10 @@ result.
   byte span when available. A configured threshold is not a measured result.
 
 - `ci_protection`: candidate checks and declared architecture rule bindings
-  for an explicit file list. Change and diff tools do not include this block
-  and do not infer a passing CI or remote required check.
+  for an explicit file list. Component and membership ids in the answer are
+  path labels. `restrictions_unresolved` is capped at 20. Change and diff
+  tools do not include this block and do not infer a passing CI or remote
+  required check.
 
 ## Git and repositories
 
@@ -107,7 +109,7 @@ result.
 
 ## Native extensions
 
-- `semantic_link`: rank a text `query` with the local token hash `weavatrix-token-hash-v1` (not a neural embedding), or link a non-empty caller-supplied `vectors` array. An empty `vectors` array without `query` is an error.
+- `semantic_link`: rank a text `query` with the local token hash `weavatrix-token-hash-v1` (name, path, nearby doc comment, declaration line, and a short body; test paths rank lower; not a neural embedding), or link a non-empty caller-supplied `vectors` array. An empty `vectors` array without `query` is an error.
 
 Nearest-neighbor search, SEO page links, and the event journal stay in
 `weavatrix-search-vector`, `weavatrix-semantic`, and `weavatrix-memory`.
