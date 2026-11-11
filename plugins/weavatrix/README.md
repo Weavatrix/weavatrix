@@ -2,7 +2,7 @@
 
 <img src="assets/logo.svg" alt="Weavatrix logo" width="72" align="right">
 
-Weavatrix gives Cursor, Codex, Claude, and Grok Build **64 read-only
+Weavatrix gives Cursor, Codex, Claude, and Grok Build **65 read-only
 operations** over one revision-bound graph. Ask it what breaks if a file
 changes, who consumes an n8n field, whether an MCP schema still accepts
 yesterday’s request, which viem sites follow an ABI layout change, or
@@ -16,7 +16,7 @@ impact (`web3_*`), observed architecture (`architecture_inventory`), and local
 GitHub Actions restrictions (`ci_restrictions`, `explain_restriction`). See
 [n8n](https://weavatrix.com/n8n) and [Dify](https://weavatrix.com/dify).
 
-The plugin starts the published `weavatrix@1.17.7` npm package with
+The plugin starts the published `weavatrix@1.17.8` npm package with
 `--output-format=structured`, so a client that reads `structuredContent` does
 not also receive the JSON text mirror. That package already contains the
 matching prebuilt native binaries; it has no lifecycle scripts or runtime

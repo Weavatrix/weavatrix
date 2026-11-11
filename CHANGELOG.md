@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.17.8 - 2026-11-11
+
+- The catalog adds `ci_protection` for an explicit file list. Change and diff
+  answers no longer carry that block. `search_code` counts live only under
+  `totals`. A missing coverage report is `UNMEASURED`.
+- Answer cuts follow the engine: no constant coverage block on
+  `change_impact`, one `changeImpact` on `verified_change`, a shorter
+  `run_audit`, compact `query_graph` and `god_nodes`, and counts from
+  `rebuild_graph`.
+
 ## 1.17.7 - 2026-11-11
 
 - Pin `weavatrix-rust` 2.17.7. `ci_restrictions` keeps the `token_budget`

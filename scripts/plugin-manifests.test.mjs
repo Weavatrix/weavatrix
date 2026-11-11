@@ -29,6 +29,7 @@ const toolNames = [
     'architecture_inventory',
     'build_graph',
     'change_impact',
+    'ci_protection',
     'ci_restrictions',
     'context_bundle',
     'coverage_map',
@@ -158,7 +159,7 @@ test('the plugin skill is the released Weavatrix skill', () => {
         .filter((name) => name.endsWith('.md'))
         .map((name) => name.slice(0, -3))
         .sort()
-    assert.equal(toolNames.length, 64)
+    assert.equal(toolNames.length, 65)
     assert.deepEqual(canonicalCards, toolNames)
     assert.deepEqual(bundledCards, toolNames)
     for (const name of toolNames) {

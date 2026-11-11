@@ -1,6 +1,6 @@
 # Operation reference
 
-The full native product exposes 64 bounded read-only MCP operations. JSON
+The full native product exposes 65 bounded read-only MCP operations. JSON
 schemas returned by `tools/list` are the authoritative machine contract.
 
 ## Graph and orientation
@@ -91,8 +91,9 @@ result.
 - `explain_restriction`: one finding by stable ID, with source digest and
   byte span when available. A configured threshold is not a measured result.
 
-Change tools expose `ci_protection` candidates and declared architecture
-rule bindings. They do not infer a passing CI or remote required check.
+- `ci_protection`: candidate checks and declared architecture rule bindings
+  for an explicit file list. Change and diff tools do not include this block
+  and do not infer a passing CI or remote required check.
 
 ## Git and repositories
 
