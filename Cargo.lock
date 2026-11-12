@@ -546,7 +546,7 @@ checksum = "ccf3ec651a847eb01de73ccad15eb7d99f80485de043efb2f370cd654f4ea44b"
 
 [[package]]
 name = "weavatrix"
-version = "1.17.14"
+version = "1.17.15"
 dependencies = [
  "blazingly-json",
  "mcport",
@@ -597,9 +597,9 @@ checksum = "64bb8dc309d55d1b3742f2868554bb373f19959c19c146b6e607d7d5ab5aaaca"
 
 [[package]]
 name = "weavatrix-rust"
-version = "2.17.12"
+version = "2.17.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "754852c32163fab3364967fe6514b3ff49d5d543501515fe1790f4a7f3621a31"
+checksum = "17781bc6e72d0be51b549f73d03a2b631e547ba896e230ec80b2740406745da7"
 dependencies = [
  "blazingly-json",
  "proc-macro2",

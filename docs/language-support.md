@@ -1,6 +1,6 @@
 # Languages and repository surfaces
 
-The native registry recognizes 24 named source surfaces across 65 registered
+The native registry recognizes 24 named source surfaces across 92 registered
 extensions. Support is evidence-specific: lossless source recovery does not
 pretend to provide the same semantic depth as a typed adapter.
 
@@ -9,17 +9,17 @@ pretend to provide the same semantic depth as a typed adapter.
 | Surface | Evidence extracted |
 | --- | --- |
 | Rust | modules, `use`/re-exports, items, impl ownership, traits, calls, tests, Axum/Actix/Rocket-style routes |
-| JavaScript / JSX | ESM/CommonJS imports and exports, declarations, members, calls, routes, event clients |
+| JavaScript / JSX | ESM/CommonJS imports and exports, declarations, members, calls, routes, event clients, and package frameworks (Next.js, Nuxt, React Native, Expo, Electron, Nest, Express, Fastify, and the other package.json frameworks) |
 | TypeScript / TSX | JavaScript evidence plus interfaces, type-only coupling, aliases, and typed member ownership |
-| Python | imports, declarations, classes, calls, decorators, framework routes, and messaging |
+| Python | imports, declarations, classes, calls, decorators, Django/Flask/FastAPI routes, PyTorch and other ML framework imports, `nn.Module` models, and messaging |
 | Go | packages, imports, declarations, receivers, calls, HTTP, and gRPC evidence |
 | Java | packages, classes, methods, inheritance, Spring endpoints, JMS, and event clients |
 | C# | namespaces, types, members, calls, attributes, and routes |
-| C | includes, declarations, functions, and calls |
-| C++ | C evidence plus namespace and class structure |
+| C | includes, declarations, functions, calls, and bindings into Java (JNI), Go (cgo), C# (P/Invoke), Python (pybind11, nanobind, cffi), Node (node-addon), and Rust (cxx) |
+| C++ | C evidence plus namespace and class structure, native frameworks (Qt, Boost, OpenCV, Unreal, Godot, SDL, GTK, gRPC, CUDA, JUCE, and the other include markers), and cpp-httplib, Crow, Drogon, and oatpp routes |
 | SQL | schemas, tables, fields, statements, and host references |
 | Bash / Zsh | commands, functions, variable references, and script structure |
-| Swift | same-module files, imports, types, heritage, calls, and URLSession/WebSocket client routes |
+| Swift | same-module files, imports, types, heritage, calls, URLSession/WebSocket client routes, and an App Store `@main` entry |
 | Solidity | contracts, functions, events, and calls |
 
 ## Contracts and configuration
@@ -34,7 +34,7 @@ pretend to provide the same semantic depth as a typed adapter.
 | Mermaid | `.mmd`, `.mermaid`, and fenced flowcharts; `diagram_inventory` / `diagram_trace` / `diagram_context` |
 | Web3 | ABI JSON, solc/Foundry artifacts, and static viem/wagmi consumers; `web3_inventory` / `web3_trace` / `web3_impact` / `web3_context` |
 | Terraform / HCL | blocks, resources, providers, variables, outputs, references, and deployment evidence |
-| XML | elements, attributes, configuration structure, and recognized build/application manifests |
+| XML | elements, attributes, configuration structure, Info.plist and ExportOptions application identity, and AndroidManifest.xml |
 
 ## Documents and UI sources
 
@@ -51,6 +51,15 @@ pretend to provide the same semantic depth as a typed adapter.
 Operation passes connect source facts to repository domains:
 
 - HTTP route handlers, mount chains, clients, and cross-repository contracts;
+  a client and a server of the same `METHOD /path` share one endpoint;
+- App Store targets, StoreKit products, entitlements, privacy manifests, Android
+  applications, and framework/application nodes (`FRAMEWORK`, `APP`, `MODEL`);
+- C and C++ frameworks and the same framework node from the other language that
+  binds them. Studio specs share those nodes: Visual Studio (`.sln`, `.vcxproj`),
+  Qt (`.pro`, `.pri`), Unreal (`.uproject`, `.uplugin`), JUCE (`.jucer`), Godot
+  (`.gdextension`), Unity (`.asmdef`), CMake (`.cmake`), Code::Blocks (`.cbp`),
+  and Xcode (`.xcconfig`). `CMakeLists.txt`, `Makefile`, `meson.build`, and
+  `conanfile.txt` are read by file name. `vcpkg.json` names the vcpkg app;
 - GraphQL operations and referenced schema types;
 - Protobuf messages, gRPC services, methods, and streaming modes;
 - Kafka, RabbitMQ/AMQP, JMS, NATS, SQS, and SNS producers, consumers, topics,

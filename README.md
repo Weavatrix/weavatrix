@@ -80,7 +80,7 @@ The same source is distributed in two forms:
 | Distribution | Install | Best for |
 | --- | --- | --- |
 | `weavatrix` on crates.io | `cargo install weavatrix` | Rust-first environments and source builds |
-| `weavatrix` on npm | `npx -y weavatrix@1.17.14 mcp <repo>` | Ready-made cross-platform binaries without a Rust toolchain |
+| `weavatrix` on npm | `npx -y weavatrix@1.17.15 mcp <repo>` | Ready-made cross-platform binaries without a Rust toolchain |
 
 The npm package exists for convenience; it does not contain a different
 JavaScript engine. Both distributions run the same native adapter and the same
@@ -194,7 +194,7 @@ process cwd — and avoid running both a user MCP and the plugin at once:
   "mcpServers": {
     "weavatrix": {
       "command": "npx",
-      "args": ["-y", "weavatrix@1.17.14", "mcp", "${workspaceFolder}", "--output-format=structured"]
+      "args": ["-y", "weavatrix@1.17.15", "mcp", "${workspaceFolder}", "--output-format=structured"]
     }
   }
 }
@@ -203,14 +203,14 @@ process cwd — and avoid running both a user MCP and the plugin at once:
 Profiles expose bounded views of the same engine:
 
 ```sh
-npx -y weavatrix@1.17.14 mcp . --profile=all
-npx -y weavatrix@1.17.14 mcp . --profile=code
-npx -y weavatrix@1.17.14 mcp . --profile=seo
-npx -y weavatrix@1.17.14 mcp . --profile=n8n
-npx -y weavatrix@1.17.14 mcp . --profile=dify
-npx -y weavatrix@1.17.14 mcp . --profile=agent
-npx -y weavatrix@1.17.14 mcp . --profile=diagram
-npx -y weavatrix@1.17.14 mcp . --profile=web3
+npx -y weavatrix@1.17.15 mcp . --profile=all
+npx -y weavatrix@1.17.15 mcp . --profile=code
+npx -y weavatrix@1.17.15 mcp . --profile=seo
+npx -y weavatrix@1.17.15 mcp . --profile=n8n
+npx -y weavatrix@1.17.15 mcp . --profile=dify
+npx -y weavatrix@1.17.15 mcp . --profile=agent
+npx -y weavatrix@1.17.15 mcp . --profile=diagram
+npx -y weavatrix@1.17.15 mcp . --profile=web3
 ```
 
 The npm package contains native binaries for Windows x64/arm64, macOS
@@ -409,7 +409,7 @@ workflow file alone never establishes a passing gate.
 
 ## Languages and repository surfaces
 
-The engine recognizes 24 named surfaces across 65 registered extensions.
+The engine recognizes 24 named surfaces across 92 registered extensions.
 Support is evidence-specific: lossless tokenization is not presented as typed
 semantic resolution.
 
@@ -418,6 +418,13 @@ semantic resolution.
 | Code | Rust; JavaScript/JSX; TypeScript/TSX; Python; Go; Java; C#; C; C++; SQL; Bash/Zsh; Swift; Solidity |
 | Contracts and configuration | GraphQL; Protobuf/gRPC; JSON/JSONC (n8n after parse); YAML/Kubernetes (Dify after parse); Terraform/HCL; XML |
 | Documents and UI | HTML/Vue/Svelte; CSS/SCSS/Sass/Less; Markdown/MDX; reStructuredText; AsciiDoc |
+
+The same graph names App Store and Android applications, Next.js and other
+package frameworks, Django, Flask, FastAPI, and PyTorch models. A client and a
+server of the same `METHOD /path` share one endpoint. C and C++ frameworks,
+their bindings from Python, Java, Go, C#, Node, and Rust, and studio specs
+(Visual Studio, Qt, Unreal, JUCE, Godot, Unity, CMake, Meson, Conan, vcpkg)
+share the same `FRAMEWORK` and `APP` nodes.
 
 Cross-surface passes connect HTTP routes and calls, GraphQL operations and
 schema types, gRPC services and streaming modes, and Kafka, RabbitMQ/AMQP, JMS,
@@ -470,7 +477,7 @@ agent stays on the repository revision. It does not log into n8n.
   and `$env` values stay off the default graph and context.
 
 ```sh
-npx -y weavatrix@1.17.14 mcp . --profile=n8n
+npx -y weavatrix@1.17.15 mcp . --profile=n8n
 ```
 
 ### Dify (shipped in 1.13.0)
@@ -495,7 +502,7 @@ call the Dify console.
   inventory and context.
 
 ```sh
-npx -y weavatrix@1.17.14 mcp . --profile=dify
+npx -y weavatrix@1.17.15 mcp . --profile=dify
 ```
 
 ### Agent packages (shipped in 1.14.0)
@@ -511,7 +518,7 @@ keywords stay `undetermined`. Duplicate tool labels are
 `allowed-tools` is a declaration, not a proven call.
 
 ```sh
-npx -y weavatrix@1.17.14 mcp . --profile=agent
+npx -y weavatrix@1.17.15 mcp . --profile=agent
 ```
 
 ### Mermaid diagrams (shipped in 1.14.0)
@@ -525,7 +532,7 @@ Name match is not exact. `change_impact.documentation` is separate from
 production impact.
 
 ```sh
-npx -y weavatrix@1.17.14 mcp . --profile=diagram
+npx -y weavatrix@1.17.15 mcp . --profile=diagram
 ```
 
 ### Web3 integration (shipped in 1.15.0)
@@ -541,7 +548,7 @@ change can silently misdecode. ABI equality is not a live deployment
 proof. The engine does not compile contracts, call RPC, or open a wallet.
 
 ```sh
-npx -y weavatrix@1.17.14 mcp . --profile=web3
+npx -y weavatrix@1.17.15 mcp . --profile=web3
 ```
 
 ### Compared with adjacent tools
@@ -594,11 +601,11 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.17.14
+weavatrix 1.17.15
     profile catalog · session refresh · filesystem watcher · MCP framing
     |
     v
-weavatrix-rust 2.17.12
+weavatrix-rust 2.17.13
     typed graph · analysis pipeline · 66 product operations including local CI, n8n, Dify, agent packages, Mermaid, and Web3
     |
     +-- weavatrix-scan      repository discovery and selection
