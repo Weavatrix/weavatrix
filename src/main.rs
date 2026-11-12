@@ -5,6 +5,8 @@ use mcp_launch::parse_mcp_launch;
 use std::env;
 use std::path::PathBuf;
 use std::process::ExitCode;
+use std::sync::Arc;
+use std::time::Duration;
 use weavatrix_rust::{Analyzer, Weavatrix, operations};
 
 fn main() -> ExitCode {
@@ -52,10 +54,17 @@ fn serve_mcp(arguments: &[String]) -> Result<ExitCode, String> {
         default_payload: mcp::parse_output_format(&default_output_format(launch.output_format))?,
         allow_retarget: launch.allow_retarget,
     };
-    // Stdio serve is the product entrypoint; unit coverage lives under `mcp::build_server`.
-    let mut server =
-        mcp::build_server(&launch.repository, options).map_err(|error| error.to_string())?;
-    mcport::serve(&mut server)
+    // Many agents share this process. Each repository has its own lane.
+    let server = mcp::build_parallel_server(&launch.repository, options)
+        .map_err(|error| error.to_string())?;
+    let config = mcport::RuntimeConfig {
+        max_in_flight: mcp::IN_FLIGHT,
+        queue_depth: mcp::QUEUE_DEPTH,
+        output_queue_depth: mcp::QUEUE_DEPTH,
+        handler_deadline: Some(Duration::from_secs(mcp::HANDLER_DEADLINE_SECS)),
+        ..mcport::RuntimeConfig::default()
+    };
+    mcport::serve_controlled(Arc::new(server), config)
         .map(|()| ExitCode::SUCCESS)
         .map_err(|error| error.to_string())
 }
@@ -161,8 +170,9 @@ Usage:\n  weavatrix mcp [REPOSITORY] [--profile=all|code|seo|n8n|dify|agent|diag
   weavatrix tool NAME [REPOSITORY] ['{{\"argument\":\"value\"}}']\n\
   weavatrix --version\n\n\
 By default the MCP process pins REPOSITORY (or cwd) for its lifetime: \
-open_repo to another path is refused, and every tool call is checked against \
-that pin. Pass --allow-retarget only for intentional multi-root sessions.\n\n\
+open_repo to another path is refused. Pass repository to read a child \
+directory; the pin stays fixed. Up to 128 calls run at once. Pass \
+--allow-retarget only for intentional multi-root sessions.\n\n\
 Legacy JS launches that passed a second positional capability token are \
 accepted only as:\n\
   offline → --profile=all (native is always offline)\n\

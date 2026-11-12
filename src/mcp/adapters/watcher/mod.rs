@@ -1,4 +1,5 @@
 //! Filesystem change detection for a watched repository root.
+#![cfg_attr(not(test), allow(dead_code))]
 //!
 //! A monitor is asked one question - `changed()` - and never asked *what*
 //! changed, so the only state kept between tool calls is a single flag.

@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.17.12 - 2026-11-12
+
+- Pin `weavatrix-rust` 2.17.11.
+- `weavatrix mcp` serves calls concurrently (128 in flight, 120s deadline).
+  A call may pass `repository` for a child of the launch root. The pin stays.
+
 ## 1.17.11 - 2026-11-12
 
 - The npm release gate expects 66 operations, including `git_fetch`.

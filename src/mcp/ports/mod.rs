@@ -1,3 +1,5 @@
+#![cfg_attr(not(test), allow(dead_code))]
+
 use blazingly_json::Value;
 use std::io;
 use std::path::Path;

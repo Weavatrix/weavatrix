@@ -5,7 +5,10 @@ mod ports;
 mod server;
 
 pub use error::McpError;
-pub use server::{ServeOptions, build_server, parse_output_format};
+pub use server::{
+    HANDLER_DEADLINE_SECS, IN_FLIGHT, QUEUE_DEPTH, ServeOptions, build_parallel_server,
+    parse_output_format,
+};
 pub use weavatrix_rust::operations::ToolProfile as McpProfile;
 
 /// Library methods that engine 2.17.4 still lists. The MCP catalog and call

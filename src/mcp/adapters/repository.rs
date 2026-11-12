@@ -1,3 +1,5 @@
+#![cfg_attr(not(test), allow(dead_code))]
+
 use crate::mcp::ports::RepositoryPort;
 use blazingly_json::Value;
 use std::collections::BTreeSet;
@@ -26,6 +28,7 @@ impl ToolCatalog {
     }
 }
 
+#[cfg_attr(not(test), allow(dead_code))]
 pub(crate) struct CoreRepository {
     root: PathBuf,
     engine: Option<Weavatrix>,

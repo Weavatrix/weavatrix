@@ -1,3 +1,5 @@
+#![cfg_attr(not(test), allow(dead_code))]
+
 use crate::mcp::application::RootPin;
 use crate::mcp::ports::{ChangeMonitor, ChangeMonitorFactory, RepositoryPort};
 use blazingly_json::Value;

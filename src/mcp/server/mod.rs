@@ -1,3 +1,5 @@
+mod parallel;
+
 use crate::mcp::adapters::{CoreRepository, NotifyMonitorFactory, ToolCatalog};
 use crate::mcp::application::{RepositorySession, RootPin, resolve_pin_root};
 use crate::mcp::{McpError, McpProfile};
@@ -49,6 +51,7 @@ pub fn parse_output_format(value: &str) -> Result<ToolPayload, String> {
     }
 }
 
+#[cfg_attr(not(test), allow(dead_code))]
 pub struct WeavatrixServer {
     profile: McpProfile,
     default_payload: ToolPayload,
@@ -58,6 +61,7 @@ pub struct WeavatrixServer {
     session: RepositorySession,
 }
 
+#[cfg_attr(not(test), allow(dead_code))]
 impl WeavatrixServer {
     fn new(root: impl AsRef<Path>, options: ServeOptions) -> Result<Self, McpError> {
         let profile = options.profile;
@@ -110,6 +114,7 @@ impl WeavatrixServer {
     }
 }
 
+#[cfg_attr(not(test), allow(dead_code))]
 impl ToolServer for WeavatrixServer {
     fn identity(&self) -> ServerIdentity {
         self.identity.clone()
@@ -146,6 +151,7 @@ impl ToolServer for WeavatrixServer {
 ///
 /// Returns stdio failures or a missing repository root.
 /// Builds the MCP tool server for a repository root (does not block on stdio).
+#[cfg_attr(not(test), allow(dead_code))]
 pub fn build_server(
     root: impl AsRef<Path>,
     options: ServeOptions,
@@ -190,3 +196,5 @@ fn log_default_payload(payload: ToolPayload) {
 
 #[cfg(test)]
 mod tests;
+
+pub use parallel::{HANDLER_DEADLINE_SECS, IN_FLIGHT, QUEUE_DEPTH, build_parallel_server};

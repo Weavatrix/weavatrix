@@ -5,11 +5,13 @@ use std::path::{Path, PathBuf};
 
 /// Policy for the process-wide active repository.
 #[derive(Debug, Clone)]
+#[cfg_attr(not(test), allow(dead_code))]
 pub(crate) struct RootPin {
     pinned: PathBuf,
     allow_retarget: bool,
 }
 
+#[cfg_attr(not(test), allow(dead_code))]
 impl RootPin {
     pub(crate) fn new(pinned: PathBuf, allow_retarget: bool) -> Self {
         Self {
@@ -61,6 +63,7 @@ impl RootPin {
     }
 }
 
+#[cfg_attr(not(test), allow(dead_code))]
 pub(crate) fn paths_match(left: &Path, right: &Path) -> bool {
     if let (Ok(a), Ok(b)) = (left.canonicalize(), right.canonicalize()) {
         return a == b;
@@ -76,6 +79,7 @@ pub(crate) fn paths_match(left: &Path, right: &Path) -> bool {
     path_key(left) == path_key(right)
 }
 
+#[cfg_attr(not(test), allow(dead_code))]
 fn path_key(path: &Path) -> String {
     let raw = path.to_string_lossy();
     #[cfg(windows)]
