@@ -4,7 +4,7 @@ Bounded transitive reverse blast radius.
 
 ## When to use
 
-Measure a bounded transitive reverse blast radius from one exact node.
+Measure a bounded transitive reverse blast radius from one exact node. The seed and each dependent are id, label, kind, language, and span. Attributes stay on `get_node`.
 
 ## Inputs
 

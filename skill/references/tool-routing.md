@@ -12,8 +12,8 @@ cannot silently switch to another repository. Pass an explicit
 
 - [`graph_stats`](tools/graph_stats.md) — Graph size, edge evidence and build freshness of the loaded snapshot.
 - [`get_node`](tools/get_node.md) — Resolve one exact graph node.
-- [`get_neighbors`](tools/get_neighbors.md) — Direct typed incoming and outgoing relationships. The seed is compact unless `response_detail` is `full`.
-- [`query_graph`](tools/query_graph.md) — Bounded BFS or DFS around exact or textual seeds.
+- [`get_neighbors`](tools/get_neighbors.md) — Direct typed incoming and outgoing relationships. Compact rows are direction, relation, the other node, and, when present, coupling and the call line.
+- [`query_graph`](tools/query_graph.md) — Bounded BFS or DFS around exact or textual seeds. Edges are source, target, kind, and, when present, coupling and the call line.
 - [`god_nodes`](tools/god_nodes.md) — Rank high-connectivity production nodes.
 - [`shortest_path`](tools/shortest_path.md) — Shortest typed dependency path between two nodes.
 - [`get_community`](tools/get_community.md) — Return one coupling community (containment and package edges excluded).
@@ -25,18 +25,19 @@ cannot silently switch to another repository. Pass an explicit
 - [`inspect_symbol`](tools/inspect_symbol.md) — Definition, direct relationships and source evidence.
 - [`go_to_definition`](tools/go_to_definition.md) — Resolve the symbol at a source position to its definition without guessing by name. An unresolved position omits definition.
 - [`find_references`](tools/find_references.md) — Occurrences of the symbol at a position or label, from the graph and an on-disk SCIP index if present. Test and classified rows stay out unless opted in.
-- [`context_bundle`](tools/context_bundle.md) — Compact graph and source bundle for one symbol.
+- [`context_bundle`](tools/context_bundle.md) — Compact graph and source bundle for one symbol. The subject and relationship rows are compact.
 - [`map_stacktrace`](tools/map_stacktrace.md) — Map stack-trace text onto repository files and symbols.
 
 ## Change impact and Git
 
-- [`get_dependents`](tools/get_dependents.md) — Bounded transitive reverse blast radius.
+- [`get_dependents`](tools/get_dependents.md) — Bounded transitive reverse blast radius. The seed and each dependent are id, label, kind, language, and span.
 - [`change_impact`](tools/change_impact.md) — Read-only Git change impact with graph evidence. Impacted nodes are id, label, kind, language, and span.
 - [`select_tests`](tools/select_tests.md) — Select the test suites a change most plausibly needs to run.
 - [`git_history`](tools/git_history.md) — Bounded direct Git history without launching git.
 - [`git_read_blob`](tools/git_read_blob.md) — Bounded UTF-8 file content at an immutable Git revision or blob OID; binary blobs are refused.
+- [`git_fetch`](tools/git_fetch.md) — Shallow-clone one URL at one ref into a cache and return `checkout`. Depth is 1. The process root stays pinned.
 - [`cross_repo_git`](tools/cross_repo_git.md) — Parallel histories, shared commits, or diffs across named local repositories.
-- [`verified_change`](tools/verified_change.md) — Composite pre-commit evidence and conservative verdict.
+- [`verified_change`](tools/verified_change.md) — Composite pre-commit evidence and conservative verdict. `impact_depth` bounds the embedded blast radius. Selected symbols and data-flow edges are compact.
 - [`graph_diff`](tools/graph_diff.md) — Compare the current snapshot with an immutable Git revision.
 
 ## Quality and architecture
@@ -45,7 +46,7 @@ cannot silently switch to another repository. Pass an explicit
 - [`ci_restrictions`](tools/ci_restrictions.md) — Local GitHub Actions checks and conditional applicability.
 - [`ci_protection`](tools/ci_protection.md) — Candidate checks and declared rule bindings for an explicit file list. Membership ids in the answer are path labels. Not included in change or diff answers.
 - [`explain_restriction`](tools/explain_restriction.md) — One restriction and its evidence limits.
-- [`find_duplicates`](tools/find_duplicates.md) — Deterministic Type-1/2/3 clone families. `.gen.` and `.generated.` files stay out unless `include_boilerplate` is set.
+- [`find_duplicates`](tools/find_duplicates.md) — Deterministic Type-1/2/3 clone families. `.gen.`, `.generated.`, and OpenAPI Generator headers stay out unless `include_boilerplate` is set.
 - [`find_dead_code`](tools/find_dead_code.md) — Conservative unreferenced-symbol review queue. A type-only import does not keep its target live.
 - [`run_audit`](tools/run_audit.md) — Repository structure and evidence completeness audit. A named category collects only that section.
 - [`coverage_map`](tools/coverage_map.md) — Ingest a report Quality already built. Does not run tests. Missing report is unmeasured, not 0%.
@@ -60,7 +61,7 @@ cannot silently switch to another repository. Pass an explicit
 
 ## APIs and transports
 
-- [`list_endpoints`](tools/list_endpoints.md) — Compact HTTP endpoint inventory. `max_results` pages it and reports `endpoints_total`.
+- [`list_endpoints`](tools/list_endpoints.md) — Compact HTTP endpoint inventory. `max_results` pages it and reports `endpoints_total`. App Router `route.*` files contribute one endpoint per exported HTTP method. A Go struct that embeds `Unimplemented*Server` contributes `GRPC Service/Method`. A `"use server"` file contributes `ACTION /path/name`.
 - [`trace_endpoint`](tools/trace_endpoint.md) — Resolve an endpoint and its bounded call neighborhood.
 - [`trace_api_contract`](tools/trace_api_contract.md) — Cross-repository HTTP, GraphQL, gRPC and event-transport contract evidence for named backend and client roots.
 

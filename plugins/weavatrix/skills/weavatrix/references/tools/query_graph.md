@@ -4,7 +4,7 @@ Bounded BFS or DFS around exact or textual seeds.
 
 ## When to use
 
-Traverse a bounded BFS or DFS when a question needs several hops, direction controls, or multiple seeds.
+Traverse a bounded BFS or DFS when a question needs several hops, direction controls, or multiple seeds. Each edge is source, target, kind, and, when present, coupling and the call line.
 
 Start with exact seeds and a small depth, node cap, and `token_budget`.
 

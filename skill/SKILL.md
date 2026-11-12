@@ -95,7 +95,10 @@ tool ran. Read `evidence_completeness` and `stop_reason`. `MAX_NODES` means
 the combined cap omitted nodes.
 
 `git_history` without `path` is repository HEAD history. Pass `path` for the
-commits that touch one file or directory.
+commits that touch one file or directory. `git_fetch` is separate: one `url`
+and an optional `ref`, depth 1, into a cache. It returns `checkout` and does
+not retarget this process. Analyze that path by launching on it, or by
+`open_repo` only when this process was started with `--allow-retarget`.
 
 `find_dead_code` treats every `main.go` and every Go `func main` as an entry.
 Receiver names and function-literal parameters are not symbols.
@@ -118,6 +121,8 @@ audit and coverage results.
   `coverage_map` is an ingest. Quality builds the LCOV file.
 - Preserve exact transport identity; do not merge Kafka, AMQP/RabbitMQ, NATS,
   SNS/SQS, JMS, GraphQL, and gRPC evidence because operation names match.
-- The core is local, offline, and read-only. Use `weavatrix-refactor` only for
-  an explicitly approved write plan and `weavatrix-online` only for explicitly
-  approved network work.
+- The core reads the launch root and leaves that tree unchanged. `git_fetch`
+  is the one call that contacts a remote: it shallow-clones one URL into a
+  cache and returns that path. Use `weavatrix-refactor` only for an explicitly
+  approved write plan and `weavatrix-online` only for explicitly approved
+  network work beyond that clone.

@@ -4,7 +4,7 @@ Composite pre-commit evidence and conservative verdict.
 
 ## When to use
 
-Produce one conservative plan or verify envelope combining impact, architecture, duplicate, API, and optional test evidence.
+Produce one conservative plan or verify envelope combining impact, architecture, duplicate, API, and optional test evidence. `impact_depth` and `max_impact_nodes` bound the embedded blast radius. Selected symbols are compact nodes. Data-flow edges are source, target, kind, and, when present, coupling and the call line. Each edit context keeps at most 8 relationship rows.
 
 Use the same `task` and base revision in `phase:"plan"` and `phase:"verify"`.
 

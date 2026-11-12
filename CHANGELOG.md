@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.17.10 - 2026-11-12
+
+- Pin `weavatrix-rust` 2.17.10 and `weavatrix-parse` 0.3.5.
+- `list_endpoints` adds Next.js App Router routes, Go `GRPC Service/Method`
+  from an `Unimplemented*Server` embed, and `ACTION /path/name` from a
+  file-level `"use server"` directive.
+- `git_fetch` shallow-clones one Git URL into a cache. The launch root stays
+  pinned.
+- Neighbors, query, dependents, context, and `verified_change` follow the
+  compact engine rows.
+
 ## 1.17.9 - 2026-11-11
 
 - Pin `weavatrix-rust` 2.17.9.

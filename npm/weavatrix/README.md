@@ -12,8 +12,8 @@
 Weavatrix answers the questions agents otherwise invent: what breaks if this
 file changes, who consumes this n8n field, whether an MCP schema still
 accepts yesterday’s request, which viem call sites follow an ABI layout
-change, and whether `.weavatrix/architecture.json` still holds. **65
-read-only operations**, one revision-bound graph, no LSP and no prompt pack.
+change, and whether `.weavatrix/architecture.json` still holds. **66
+operations**, one revision-bound graph, no LSP and no prompt pack.
 
 Codex, Claude Code, Cursor, and Grok get impact, architecture, APIs, Git
 history, duplicates, dead code, search, semantic links,
@@ -60,7 +60,7 @@ weavatrix mcp .
 ```toml
 [mcp_servers.weavatrix]
 command = "npx"
-args = ["-y", "weavatrix@1.17.9", "mcp", "."]
+args = ["-y", "weavatrix@1.17.10", "mcp", "."]
 ```
 
 Pass an absolute repository path when the Codex process cwd is not the project
@@ -69,7 +69,7 @@ you intend to analyze.
 ### Claude Code
 
 ```sh
-claude mcp add weavatrix -- npx -y weavatrix@1.17.9 mcp .
+claude mcp add weavatrix -- npx -y weavatrix@1.17.10 mcp .
 ```
 
 ### Cursor
@@ -82,7 +82,7 @@ the plugin for the same server name:
   "mcpServers": {
     "weavatrix": {
       "command": "npx",
-      "args": ["-y", "weavatrix@1.17.9", "mcp", "${workspaceFolder}", "--output-format=structured"]
+      "args": ["-y", "weavatrix@1.17.10", "mcp", "${workspaceFolder}", "--output-format=structured"]
     }
   }
 }
@@ -91,14 +91,14 @@ the plugin for the same server name:
 Profiles expose bounded views of the same engine:
 
 ```sh
-npx -y weavatrix@1.17.9 mcp . --profile=all
-npx -y weavatrix@1.17.9 mcp . --profile=code
-npx -y weavatrix@1.17.9 mcp . --profile=seo
-npx -y weavatrix@1.17.9 mcp . --profile=n8n
-npx -y weavatrix@1.17.9 mcp . --profile=dify
-npx -y weavatrix@1.17.9 mcp . --profile=agent
-npx -y weavatrix@1.17.9 mcp . --profile=diagram
-npx -y weavatrix@1.17.9 mcp . --profile=web3
+npx -y weavatrix@1.17.10 mcp . --profile=all
+npx -y weavatrix@1.17.10 mcp . --profile=code
+npx -y weavatrix@1.17.10 mcp . --profile=seo
+npx -y weavatrix@1.17.10 mcp . --profile=n8n
+npx -y weavatrix@1.17.10 mcp . --profile=dify
+npx -y weavatrix@1.17.10 mcp . --profile=agent
+npx -y weavatrix@1.17.10 mcp . --profile=diagram
+npx -y weavatrix@1.17.10 mcp . --profile=web3
 ```
 
 The package contains native binaries for Windows x64/arm64, macOS x64/arm64,
@@ -233,7 +233,7 @@ Three commits before `ec8bf30` this package was 1.9.2; the agent reads that
 follow-up to a diff without touching the worktree. Binary blobs fail closed
 instead of being decoded into garbage.
 
-## The 65 read-only operations
+## The 66 operations
 
 | Workflow | Operations |
 | --- | --- |
@@ -244,7 +244,7 @@ instead of being decoded into garbage.
 | APIs and transports | `list_endpoints`, `trace_endpoint`, `trace_api_contract` |
 | Architecture | `architecture_inventory`, `get_architecture_contract`, `verify_architecture`, `verify_capabilities`, `explain_architecture_violation`, `propose_architecture_exception` |
 | Local CI | `ci_restrictions`, `ci_protection`, `explain_restriction` |
-| Git and repositories | `git_history`, `git_read_blob`, `cross_repo_git`, `open_repo`, `list_known_repos`, `rebuild_graph` |
+| Git and repositories | `git_history`, `git_read_blob`, `cross_repo_git`, `git_fetch`, `open_repo`, `list_known_repos`, `rebuild_graph` |
 | Native extensions | `semantic_link` |
 | n8n workflows | `n8n_inventory`, `n8n_trace`, `n8n_context` |
 | Dify apps | `dify_inventory`, `dify_trace`, `dify_context` |
@@ -252,7 +252,9 @@ instead of being decoded into garbage.
 | Mermaid diagrams | `diagram_inventory`, `diagram_trace`, `diagram_context` |
 | Web3 integration | `web3_inventory`, `web3_trace`, `web3_impact`, `web3_context` |
 
-Every operation is read-only with respect to the analyzed repository.
+Every operation leaves the analyzed repository unchanged.
+`git_fetch` writes only its cache: a depth-1 checkout of one URL. The launch
+root stays pinned.
 Pagination and explicit limits bound large neighborhoods, histories, searches,
 and contract inventories.
 
@@ -329,12 +331,12 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.17.9
+weavatrix 1.17.10
     profile catalog · refresh · watcher · MCP framing
     |
     v
-weavatrix-rust 2.17.9
-    typed graph · analysis · 65 product operations including local CI, n8n, Dify, agent packages, Mermaid, and Web3
+weavatrix-rust 2.17.10
+    typed graph · analysis · 66 product operations including local CI, n8n, Dify, agent packages, Mermaid, and Web3
 ```
 
 This npm product owns MCP transport and native distribution. The

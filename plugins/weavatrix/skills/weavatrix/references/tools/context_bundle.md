@@ -4,7 +4,7 @@ Compact graph and source bundle for one symbol.
 
 ## When to use
 
-Assemble a ranked, token-bounded workset around one task or target.
+Assemble a ranked, token-bounded workset around one task or target. The subject is id, label, kind, language, and span. Relationship rows match compact `get_neighbors`.
 
 ## Inputs
 

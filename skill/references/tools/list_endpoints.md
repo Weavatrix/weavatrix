@@ -4,7 +4,7 @@ Inventory statically extracted HTTP endpoints.
 
 ## When to use
 
-Inventory statically extracted HTTP endpoints with optional method and path filters. Each row is a compact node: id, label, kind, language, and span. `max_results` pages that list and the answer reports `endpoints_total`; omit it to return every visible endpoint.
+Inventory statically extracted HTTP endpoints with optional method and path filters. Each row is a compact node: id, label, kind, language, and span. `max_results` pages that list and the answer reports `endpoints_total`; omit it to return every visible endpoint. An App Router `route.*` file under `app` contributes one endpoint per exported HTTP method. The URL is the directory path; route groups are omitted. A Go struct that embeds `Unimplemented*Server` contributes `GRPC Service/Method`. A file whose first statement is `"use server"` contributes `ACTION /path/name` for each exported function. Page, layout, and route modules stay on their own rules.
 
 ## Inputs
 
