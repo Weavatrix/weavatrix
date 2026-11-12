@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.17.16 - 2026-11-12
+
+- Pin `weavatrix-rust` 2.17.14.
+- Shortest path returns candidates for an ambiguous label. Architecture
+  answers stay bounded. A missing domain label returns an empty inventory.
+  The catalog stays 66 tools.
+
 ## 1.17.15 - 2026-11-12
 
 - Pin `weavatrix-rust` 2.17.13.
