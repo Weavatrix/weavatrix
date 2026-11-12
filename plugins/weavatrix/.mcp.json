@@ -5,7 +5,7 @@
       "command": "npx",
       "args": [
         "-y",
-        "weavatrix@1.17.16",
+        "weavatrix@1.17.17",
         "mcp",
         "${workspaceFolder}",
         "--output-format=structured"

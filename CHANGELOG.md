@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.17.17 - 2026-11-12
+
+- Pin `weavatrix-rust` 2.17.15.
+- `git_history` stops at a missing parent and reports `history_truncated`.
+  `get_community` accepts a numeric string id. The catalog stays 66 tools.
+
 ## 1.17.16 - 2026-11-12
 
 - Pin `weavatrix-rust` 2.17.14.

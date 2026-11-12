@@ -60,7 +60,7 @@ weavatrix mcp .
 ```toml
 [mcp_servers.weavatrix]
 command = "npx"
-args = ["-y", "weavatrix@1.17.16", "mcp", "."]
+args = ["-y", "weavatrix@1.17.17", "mcp", "."]
 ```
 
 Pass an absolute repository path when the Codex process cwd is not the project
@@ -69,7 +69,7 @@ you intend to analyze.
 ### Claude Code
 
 ```sh
-claude mcp add weavatrix -- npx -y weavatrix@1.17.16 mcp .
+claude mcp add weavatrix -- npx -y weavatrix@1.17.17 mcp .
 ```
 
 ### Cursor
@@ -82,7 +82,7 @@ the plugin for the same server name:
   "mcpServers": {
     "weavatrix": {
       "command": "npx",
-      "args": ["-y", "weavatrix@1.17.16", "mcp", "${workspaceFolder}", "--output-format=structured"]
+      "args": ["-y", "weavatrix@1.17.17", "mcp", "${workspaceFolder}", "--output-format=structured"]
     }
   }
 }
@@ -91,14 +91,14 @@ the plugin for the same server name:
 Profiles expose bounded views of the same engine:
 
 ```sh
-npx -y weavatrix@1.17.16 mcp . --profile=all
-npx -y weavatrix@1.17.16 mcp . --profile=code
-npx -y weavatrix@1.17.16 mcp . --profile=seo
-npx -y weavatrix@1.17.16 mcp . --profile=n8n
-npx -y weavatrix@1.17.16 mcp . --profile=dify
-npx -y weavatrix@1.17.16 mcp . --profile=agent
-npx -y weavatrix@1.17.16 mcp . --profile=diagram
-npx -y weavatrix@1.17.16 mcp . --profile=web3
+npx -y weavatrix@1.17.17 mcp . --profile=all
+npx -y weavatrix@1.17.17 mcp . --profile=code
+npx -y weavatrix@1.17.17 mcp . --profile=seo
+npx -y weavatrix@1.17.17 mcp . --profile=n8n
+npx -y weavatrix@1.17.17 mcp . --profile=dify
+npx -y weavatrix@1.17.17 mcp . --profile=agent
+npx -y weavatrix@1.17.17 mcp . --profile=diagram
+npx -y weavatrix@1.17.17 mcp . --profile=web3
 ```
 
 The package contains native binaries for Windows x64/arm64, macOS x64/arm64,
@@ -331,11 +331,11 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.17.16
+weavatrix 1.17.17
     profile catalog · refresh · watcher · MCP framing
     |
     v
-weavatrix-rust 2.17.14
+weavatrix-rust 2.17.15
     typed graph · analysis · 66 product operations including local CI, n8n, Dify, agent packages, Mermaid, and Web3
 ```
 
