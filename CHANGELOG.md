@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.17.11 - 2026-11-12
+
+- The npm release gate expects 66 operations, including `git_fetch`.
+
 ## 1.17.10 - 2026-11-12
 
 - Pin `weavatrix-rust` 2.17.10 and `weavatrix-parse` 0.3.5.
