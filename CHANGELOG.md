@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.17.14 - 2026-11-12
+
+- Pin `weavatrix-rust` 2.17.12.
+- The launch root is scanned on the first call that uses it. A child
+  `repository` does not wait for that scan.
+
 ## 1.17.13 - 2026-11-12
 
 - A closed stdout pipe no longer aborts `list-tools`, `tool`, or `analyze`.
