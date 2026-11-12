@@ -7,6 +7,7 @@ use std::path::PathBuf;
 use std::process::ExitCode;
 use std::sync::Arc;
 use std::time::Duration;
+use std::io::Write;
 use weavatrix_rust::{Analyzer, Weavatrix, operations};
 
 fn main() -> ExitCode {
@@ -94,10 +95,8 @@ fn list_operations(arguments: &[String]) -> Result<ExitCode, String> {
         .into_iter()
         .filter(|tool| mcp::closed_library_tool_error(tool.name).is_none())
         .collect::<Vec<_>>();
-    println!(
-        "{}",
-        blazingly_json::to_string_pretty(&catalog).map_err(|error| error.to_string())?
-    );
+    let json = blazingly_json::to_string_pretty(&catalog).map_err(|error| error.to_string())?;
+    print_stdout(&json)?;
     Ok(ExitCode::SUCCESS)
 }
 
@@ -118,10 +117,8 @@ fn call_operation(arguments: &[String]) -> Result<ExitCode, String> {
     }
     let mut engine = Weavatrix::open(repository).map_err(|error| error.to_string())?;
     let output = operations::call(&mut engine, name, input)?;
-    println!(
-        "{}",
-        blazingly_json::to_string_pretty(&output).map_err(|error| error.to_string())?
-    );
+    let json = blazingly_json::to_string_pretty(&output).map_err(|error| error.to_string())?;
+    print_stdout(&json)?;
     // A blocked verification is a failed gate, not a tool error: the report
     // stays on stdout and the exit code carries the verdict.
     if matches!(name.as_str(), "verify_architecture" | "verify_capabilities")
@@ -156,8 +153,16 @@ fn analyze(arguments: Vec<String>) -> Result<ExitCode, String> {
         analyzer.analyze_json(repository, pretty)
     }
     .map_err(|error| error.to_string())?;
-    println!("{json}");
+    print_stdout(&json)?;
     Ok(ExitCode::SUCCESS)
+}
+
+fn print_stdout(text: &str) -> Result<(), String> {
+    match writeln!(std::io::stdout(), "{text}") {
+        Ok(()) => Ok(()),
+        Err(error) if error.kind() == std::io::ErrorKind::BrokenPipe => Ok(()),
+        Err(error) => Err(error.to_string()),
+    }
 }
 
 fn print_help() {

@@ -135,12 +135,14 @@ jobs:
         run: |
           PACKAGE="$(npm pack ./npm/dist/weavatrix --json | node scripts/npm-pack-json.mjs filename)"
           ROOT="$(mktemp -d)"
-          trap 'rm -rf "$ROOT" "$PACKAGE"' EXIT
+          TOOLS="$(mktemp)"
+          trap 'rm -rf "$ROOT" "$PACKAGE" "$TOOLS"' EXIT
           npm install --prefix "$ROOT" --ignore-scripts --no-audit --no-fund "./$PACKAGE"
           PRODUCT_VERSION="$(node -p "require('./npm/weavatrix/package.json').version")"
           ENGINE_VERSION="$(node -p "require('./npm/weavatrix/package.json').weavatrixEngineVersion")"
           [[ "$("$ROOT/node_modules/.bin/weavatrix" --version)" == "weavatrix $PRODUCT_VERSION (engine $ENGINE_VERSION)" ]]
-          "$ROOT/node_modules/.bin/weavatrix" list-tools | grep -q '"graph_stats"'
+          "$ROOT/node_modules/.bin/weavatrix" list-tools > "$TOOLS"
+          grep -q '"graph_stats"' "$TOOLS"
       - name: Run the installed-package basic and short-load gate
         shell: bash
         run: node scripts/verify-installed-load.mjs ./npm/dist/weavatrix . target/npm-native-basic.json 1000

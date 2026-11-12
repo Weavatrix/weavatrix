@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.17.13 - 2026-11-12
+
+- A closed stdout pipe no longer aborts `list-tools`, `tool`, or `analyze`.
+
 ## 1.17.12 - 2026-11-12
 
 - Pin `weavatrix-rust` 2.17.11.

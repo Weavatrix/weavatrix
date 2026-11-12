@@ -16,7 +16,7 @@ impact (`web3_*`), observed architecture (`architecture_inventory`), and local
 GitHub Actions restrictions (`ci_restrictions`, `explain_restriction`). See
 [n8n](https://weavatrix.com/n8n) and [Dify](https://weavatrix.com/dify).
 
-The plugin starts the published `weavatrix@1.17.12` npm package with
+The plugin starts the published `weavatrix@1.17.13` npm package with
 `--output-format=structured`, so a client that reads `structuredContent` does
 not also receive the JSON text mirror. That package already contains the
 matching prebuilt native binaries; it has no lifecycle scripts or runtime
