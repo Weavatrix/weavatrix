@@ -80,7 +80,7 @@ The same source is distributed in two forms:
 | Distribution | Install | Best for |
 | --- | --- | --- |
 | `weavatrix` on crates.io | `cargo install weavatrix` | Rust-first environments and source builds |
-| `weavatrix` on npm | `npx -y weavatrix@1.17.18 mcp <repo>` | Ready-made cross-platform binaries without a Rust toolchain |
+| `weavatrix` on npm | `npx -y weavatrix@1.17.19 mcp <repo>` | Ready-made cross-platform binaries without a Rust toolchain |
 
 The npm package exists for convenience; it does not contain a different
 JavaScript engine. Both distributions run the same native adapter and the same
@@ -194,7 +194,7 @@ process cwd — and avoid running both a user MCP and the plugin at once:
   "mcpServers": {
     "weavatrix": {
       "command": "npx",
-      "args": ["-y", "weavatrix@1.17.18", "mcp", "${workspaceFolder}", "--output-format=structured"]
+      "args": ["-y", "weavatrix@1.17.19", "mcp", "${workspaceFolder}", "--output-format=structured"]
     }
   }
 }
@@ -203,19 +203,35 @@ process cwd — and avoid running both a user MCP and the plugin at once:
 Profiles expose bounded views of the same engine:
 
 ```sh
-npx -y weavatrix@1.17.18 mcp . --profile=all
-npx -y weavatrix@1.17.18 mcp . --profile=code
-npx -y weavatrix@1.17.18 mcp . --profile=seo
-npx -y weavatrix@1.17.18 mcp . --profile=n8n
-npx -y weavatrix@1.17.18 mcp . --profile=dify
-npx -y weavatrix@1.17.18 mcp . --profile=agent
-npx -y weavatrix@1.17.18 mcp . --profile=diagram
-npx -y weavatrix@1.17.18 mcp . --profile=web3
+npx -y weavatrix@1.17.19 mcp . --profile=all
+npx -y weavatrix@1.17.19 mcp . --profile=code
+npx -y weavatrix@1.17.19 mcp . --profile=seo
+npx -y weavatrix@1.17.19 mcp . --profile=n8n
+npx -y weavatrix@1.17.19 mcp . --profile=dify
+npx -y weavatrix@1.17.19 mcp . --profile=agent
+npx -y weavatrix@1.17.19 mcp . --profile=diagram
+npx -y weavatrix@1.17.19 mcp . --profile=web3
 ```
 
 The npm package contains native binaries for Windows x64/arm64, macOS
 x64/arm64, and glibc Linux x64/arm64. It has no install script and performs no
 runtime download.
+
+## Where data is stored
+
+The 66 MCP tools do not modify source files. The graph they answer from is process memory. A lane that sits unused for 20 minutes unloads. There is no database. `rebuild_graph` replaces that in-memory lane. A child `repository` argument reads that child and does not move the process pin.
+
+`search_code` keeps a resident index for the life of the process and an on-disk index at `~/.weavatrix/search/<fingerprint>/index`. On Windows that home is `USERPROFILE`; elsewhere it is `HOME`. Set `WEAVATRIX_SEARCH_HOME` to move it. A repository under the temp directory uses `<temp>/weavatrix-search-indexes` instead. The directory is created on the first search.
+
+`git_fetch` writes a depth-1 checkout under `~/.weavatrix/fetches` and a marker file `.weavatrix-fetch` inside that checkout. Set `WEAVATRIX_FETCH_HOME` to move it. A repository under the temp directory uses `<temp>/weavatrix-fetches`. The fetch does not move the process pin and does not replace a checkout you already have.
+
+`weavatrix-rust report` writes `index.html`, `REPORT.md`, and `data.json` into `<repo>/.weavatrix/report/`. `--out=` overrides the directory. It removes nothing. The `weavatrix` commands are `mcp`, `analyze`, `tool`, and `list-tools`. They do not write that report.
+
+The tools read `.weavatrix/architecture.json` and do not write it. `propose_architecture_exception` returns `PROPOSAL_ONLY` and `write` `NONE`.
+
+`coverage_map` reads the first existing report among `lcov.info`, `coverage/lcov.info`, `.weavatrix/coverage/lcov.info`, `tarpaulin-report.json`, `target/tarpaulin/tarpaulin-report.json`, `target/llvm-cov/coverage.json`, and `coverage/coverage-final.json`. It does not run tests and does not write the report. Weavatrix Quality writes `.weavatrix/coverage/lcov.info`.
+
+`trace_api_contract` may read `.weavatrix/transport-runtime.json` or `.weavatrix/reports/transport-runtime.json` when that file is already present. It does not call the network.
 
 ### Halve every answer on a client that reads structured output
 
@@ -479,7 +495,7 @@ These are the descriptions the MCP `tools/list` response returns. Every call may
 
 **`trace_endpoint`.** Resolve one HTTP endpoint and return its bounded call path. path is required. method is the exact method, such as GET or POST; a prefix such as PO does not match POST. match is exact (the default), prefix, or suffix. handler_file limits candidates to one repo-relative file or an unambiguous path suffix. A miss returns state NOT_FOUND, an empty path, and up to 25 available_endpoints labels. Several handlers return state AMBIGUOUS and candidates; pass handler_file to pick one. max_depth, max_nodes, max_excerpts, and context_lines bound the walk and the source excerpts. include_classified adds hidden nodes. Dynamic dispatch that is not proved stays unresolved.
 
-**`rebuild_graph`.** Rebuild the derived in-memory graph for the active repository and store that state back on the session lane. No source file is written. The answer is the node and edge counts before and after. Call graph_stats for the census, the evidence split, and freshness. mode, precision, and scope select how the rebuild is bounded. A child repository argument reads that child and does not move the process pin.
+**`rebuild_graph`.** Rebuild the derived in-memory graph for the active repository and store that state back on the session lane. No source file is written. The answer is the node and edge counts before and after, plus mode, precision, scope, files_scanned, and files_parsed. mode full is the default and parses every scanned file. no-tests drops test paths. tests-only keeps test paths. scope is an optional repository-relative file or directory; files outside it are not parsed. An empty scope, an absolute path, or .. is an error. precision is graph or omitted; any other value is an error. A cut that leaves files out marks the snapshot incomplete. Call graph_stats for the census. A child repository argument reads that child and does not move the process pin.
 
 **`graph_diff`.** Compare the current snapshot with an immutable Git revision. base_ref is required. head_ref defaults to the worktree when omitted. detail file_pairs (the default) aggregates edge churn by source file, target file, and relation. detail edges returns individual edge provenance and is the larger answer. path limits the diff to one path. max_results pages the pairs or edges. token_budget trims the tail. ci_protection is not included. This reads git objects and does not check out a worktree.
 
@@ -503,7 +519,7 @@ These are the descriptions the MCP `tools/list` response returns. Every call may
 
 **`propose_architecture_exception`.** Return a reviewable exception proposal and write nothing. fingerprint and reason are required. fingerprint comes from an active verify_architecture violation. An unknown fingerprint returns state NOT_FOUND. A hit returns state PROPOSAL_ONLY, write NONE, and a proposal that echoes fingerprint, reason, the optional expires value, and a brief violation. Save and review any exception yourself in .weavatrix/architecture.json. This tool does not approve it.
 
-**`open_repo`.** Retarget this process to another local repository. path is required. The call is refused unless the process was started with --allow-retarget. Without that flag the launch root stays fixed, and a child graph is requested with the repository argument on the tool you actually want. build, mode, and precision apply only after a retarget is allowed. Graphs unused for 20 minutes unload. Do not use this to escape a pin, and do not use git_fetch as a substitute for a checkout you already have.
+**`open_repo`.** Retarget this process to another local repository. path is required. The call is refused unless the process was started with --allow-retarget. Without that flag the launch root stays fixed, and a child graph is requested with the repository argument on the tool you actually want. build defaults to true. When a build runs, mode is full (the default), no-tests, or tests-only, and precision is graph or omitted. Any other precision is an error. scope is not an open_repo argument. When build is false and that root is already loaded, the cached graph is reused, mode_applied is false, and mode does not change it. A fresh build sets mode_applied true and reports files_scanned and files_parsed. Graphs unused for 20 minutes unload. Do not use this to escape a pin, and do not use git_fetch as a substitute for a checkout you already have.
 
 **`list_known_repos`.** List the graphs this process has open and the recent request log. recent_requests rows carry agent, repository, tool, time, reused, and ok. requests_total counts completed calls. The agent value comes from the agent argument on each call, truncated to about 80 characters; omitted calls are stored as unset. There is no separate request id. This is the session log. It is not a scan of every repository on disk.
 
@@ -613,7 +629,7 @@ agent stays on the repository revision. It does not log into n8n.
   and `$env` values stay off the default graph and context.
 
 ```sh
-npx -y weavatrix@1.17.18 mcp . --profile=n8n
+npx -y weavatrix@1.17.19 mcp . --profile=n8n
 ```
 
 ### Dify (shipped in 1.13.0)
@@ -638,7 +654,7 @@ call the Dify console.
   inventory and context.
 
 ```sh
-npx -y weavatrix@1.17.18 mcp . --profile=dify
+npx -y weavatrix@1.17.19 mcp . --profile=dify
 ```
 
 ### Agent packages (shipped in 1.14.0)
@@ -654,7 +670,7 @@ keywords stay `undetermined`. Duplicate tool labels are
 `allowed-tools` is a declaration, not a proven call.
 
 ```sh
-npx -y weavatrix@1.17.18 mcp . --profile=agent
+npx -y weavatrix@1.17.19 mcp . --profile=agent
 ```
 
 ### Mermaid diagrams (shipped in 1.14.0)
@@ -668,7 +684,7 @@ Name match is not exact. `change_impact.documentation` is separate from
 production impact.
 
 ```sh
-npx -y weavatrix@1.17.18 mcp . --profile=diagram
+npx -y weavatrix@1.17.19 mcp . --profile=diagram
 ```
 
 ### Web3 integration (shipped in 1.15.0)
@@ -684,7 +700,7 @@ change can silently misdecode. ABI equality is not a live deployment
 proof. The engine does not compile contracts, call RPC, or open a wallet.
 
 ```sh
-npx -y weavatrix@1.17.18 mcp . --profile=web3
+npx -y weavatrix@1.17.19 mcp . --profile=web3
 ```
 
 ### Compared with adjacent tools
@@ -737,11 +753,11 @@ coding agent
     |
     | MCP over stdio
     v
-weavatrix 1.17.18
+weavatrix 1.17.19
     profile catalog · session refresh · filesystem watcher · MCP framing
     |
     v
-weavatrix-rust 2.17.16
+weavatrix-rust 2.17.17
     typed graph · analysis pipeline · 66 product operations including local CI, n8n, Dify, agent packages, Mermaid, and Web3
     |
     +-- weavatrix-scan      repository discovery and selection
@@ -813,8 +829,8 @@ regress the installed boundary. Raw evidence and methodology live in
 - read-only MCP surface;
 - no source-writing operation;
 - no execution of repository code;
-- no spawned `git`, `rg`, language server, Node, or Python from the native
-  engine;
+- no spawned `rg`, language server, Node, or Python from the native engine;
+  `git_fetch` is the one tool that launches `git`, and it writes only the fetch cache;
 - no network path in repository analysis;
 - no npm install script or post-install binary download;
 - bounded files, bytes, results, histories, and pagination;

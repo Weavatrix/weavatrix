@@ -67,9 +67,9 @@ cannot silently switch to another repository. Pass an explicit
 
 ## Repositories and refresh
 
-- [`open_repo`](tools/open_repo.md) — Retarget to another local repository. Default launches refuse this unless started with `--allow-retarget`. Graphs unused for 20 minutes unload; asking for one again rescans that folder.
+- [`open_repo`](tools/open_repo.md) — Retarget to another local repository. Default launches refuse this unless started with `--allow-retarget`. `build`, `mode`, and `precision` apply when a build runs. `scope` is not an argument. Graphs unused for 20 minutes unload.
 - [`list_known_repos`](tools/list_known_repos.md) — List repositories with an in-process graph.
-- [`rebuild_graph`](tools/rebuild_graph.md) — Rebuild the derived in-memory graph without source writes.
+- [`rebuild_graph`](tools/rebuild_graph.md) — Rebuild the in-memory graph. `mode`, `precision`, and `scope` choose which scanned files are parsed. No source write.
 
 ## Semantic link
 

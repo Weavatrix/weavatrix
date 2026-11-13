@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.17.19 - 2026-11-13
+
+- Pin `weavatrix-rust` 2.17.17.
+- `rebuild_graph` applies `mode`, `precision`, and `scope`. `open_repo` applies
+  `mode` and `precision` when a build runs. The READMEs on GitHub, crates.io,
+  and npm describe every tool, the install paths, and where data is stored.
+  The catalog stays 66 tools.
+
 ## 1.17.18 - 2026-11-13
 
 - Pin `weavatrix-rust` 2.17.16.
