@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.17.18 - 2026-11-13
+
+- Pin `weavatrix-rust` 2.17.16.
+- The MCP catalog describes every tool: arguments, the answer, and the honest
+  empty or error result. The npm and crate READMEs carry the same guide.
+  The catalog stays 66 tools.
+
 ## 1.17.17 - 2026-11-12
 
 - Pin `weavatrix-rust` 2.17.15.
